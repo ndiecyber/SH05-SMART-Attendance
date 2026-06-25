@@ -668,6 +668,27 @@
                   </div>
                 </div>
 
+                <!-- Weekly Attendance Chart -->
+                <div class="rounded-3xl bg-white p-6 shadow-sm">
+                  <div class="flex items-center justify-between">
+                    <div>
+                      <p class="text-sm text-slate-500">Weekly Attendance</p>
+                      <h3 class="mt-1 text-xl font-semibold text-slate-800">
+                        Attendance vs Absence
+                      </h3>
+                    </div>
+                    <span
+                      class="rounded-full bg-indigo-50 px-3 py-1 text-sm font-medium text-indigo-600"
+                    >
+                      Last 7 Days
+                    </span>
+                  </div>
+
+                  <div class="mt-6 h-[320px]">
+                    <canvas id="weeklyAttendanceChart"></canvas>
+                  </div>
+                </div>
+
                 <!-- Schedule -->
                 <div class="rounded-3xl bg-white p-6 shadow-sm">
                   <p class="text-sm text-slate-500">Today's Schedule</p>
@@ -754,6 +775,8 @@
         </main>
       </div>
     </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
     <script>
       // =========================
@@ -961,6 +984,64 @@
       updateWorkDuration();
       updateAttendanceStatus();
       requestLocation();
+
+      const weeklyAttendanceCtx = document
+        .getElementById("weeklyAttendanceChart")
+        .getContext("2d");
+
+      new Chart(weeklyAttendanceCtx, {
+        type: "bar",
+        data: {
+          labels: ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"],
+          datasets: [
+            {
+              label: "Present",
+              data: [1, 1, 1, 0, 1, 0, 0],
+              backgroundColor: "#10b981",
+              borderRadius: 10,
+              barThickness: 19,
+            },
+            {
+              label: "Absent",
+              data: [0, 0, 0, 1, 0, 1, 1],
+              backgroundColor: "#ef4444",
+              borderRadius: 10,
+              barThickness: 19,
+            },
+          ],
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: {
+              position: "top",
+              labels: {
+                usePointStyle: true,
+                pointStyle: "circle",
+                padding: 20,
+              },
+            },
+          },
+          scales: {
+            y: {
+              beginAtZero: true,
+              max: 1,
+              ticks: {
+                stepSize: 1,
+              },
+              grid: {
+                color: "#e2e8f0",
+              },
+            },
+            x: {
+              grid: {
+                display: false,
+              },
+            },
+          },
+        },
+      });
     </script>
   </body>
 </html>
