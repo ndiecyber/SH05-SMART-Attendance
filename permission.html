@@ -546,14 +546,14 @@
                 </div>
 
                 <div>
-                  <p class="text-sm text-slate-500">Approved (YTD)</p>
+                  <p class="text-sm text-slate-500">Approved</p>
                   <h2
                     id="weeklyShifts"
                     class="text-3xl font-bold text-emerald-600"
                   >
                     8
                   </h2>
-                  <p class="text-sm text-slate-500">Approved this year</p>
+                  <p class="text-sm text-slate-500">Approved this month</p>
                 </div>
               </div>
 
@@ -593,15 +593,15 @@
                 </div>
 
                 <div>
-                  <p class="text-sm text-slate-500">Rejected (YTD)</p>
+                  <p class="text-sm text-slate-500">Rejected</p>
                   <h2 id="weeklyHours" class="text-3xl font-bold text-red-600">
                     1
                   </h2>
-                  <p class="text-sm text-slate-500">Rejected this year</p>
+                  <p class="text-sm text-slate-500">Rejected this month</p>
                 </div>
               </div>
 
-              <!-- day taken -->
+              <!-- hour taken -->
               <div
                 class="flex items-center gap-4 rounded-3xl bg-white p-5 shadow-sm"
               >
@@ -619,181 +619,152 @@
                       stroke-linecap="round"
                       stroke-linejoin="round"
                       stroke-width="2"
-                      d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
+                      d="M12 8v5l3 2M9 2h6M12 5v3M19.07 6.93l1.41-1.41M12 22a8 8 0 100-16 8 8 0 000 16z"
                     />
                   </svg>
                 </div>
 
                 <div>
-                  <p class="text-sm text-slate-500">Day's Taken</p>
+                  <p class="text-sm text-slate-500">Total Hours</p>
                   <h2 id="todayShift" class="text-3xl font-bold text-blue-600">
-                    13
+                    31h 30m
                   </h2>
                   <p class="text-sm text-slate-500">
-                    Total days of leave this year
+                    this month's accumulation
                   </p>
                 </div>
               </div>
             </div>
 
-            <div class="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
-              <!-- Annual Leave -->
+            <div
+              class="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5"
+            >
+              <!-- arrive late -->
               <div class="rounded-3xl bg-white p-5 shadow-sm">
-                <p class="text-sm text-slate-500">Annual Leave</p>
+                <p class="text-sm text-slate-500">arrive late</p>
 
                 <h2 class="mt-2 text-3xl font-bold text-slate-800">
-                  11<span class="text-lg font-medium text-slate-400"
-                    >/14 Days</span
+                  1<span class="pl-1 text-xs font-medium text-slate-400"
+                    >this month</span
                   >
                 </h2>
 
-                <div class="mt-5">
-                  <div class="mb-2 flex items-center justify-between text-sm">
-                    <span class="text-slate-500">Used</span>
-                    <span class="font-semibold text-slate-700">3 Days</span>
-                  </div>
-
-                  <div class="h-2 overflow-hidden rounded-full bg-slate-200">
-                    <div
-                      class="h-full w-[21%] rounded-full bg-indigo-500"
-                    ></div>
-                  </div>
-                </div>
-
                 <p class="mt-4 text-sm text-slate-500">
-                  <span class="font-medium text-indigo-600"
-                    >11 days remaining</span
-                  >
-                  this year
+                  Avg. duration :
+                  <span class="font-medium text-black">1h 30m</span>
                 </p>
               </div>
 
-              <!-- Sick Leave -->
+              <!-- go home early -->
               <div class="rounded-3xl bg-white p-5 shadow-sm">
-                <p class="text-sm text-slate-500">Sick Leave</p>
+                <p class="text-sm text-slate-500">leave early</p>
 
                 <h2 class="mt-2 text-3xl font-bold text-slate-800">
-                  9<span class="text-lg font-medium text-slate-400"
-                    >/12 Days</span
+                  1<span class="pl-1 text-xs font-medium text-slate-400"
+                    >this month</span
                   >
                 </h2>
 
-                <div class="mt-5">
-                  <div class="mb-2 flex items-center justify-between text-sm">
-                    <span class="text-slate-500">Used</span>
-                    <span class="font-semibold text-slate-700">3 Days</span>
-                  </div>
-
-                  <div class="h-2 overflow-hidden rounded-full bg-slate-200">
-                    <div
-                      class="h-full w-[25%] rounded-full bg-yellow-500"
-                    ></div>
-                  </div>
-                </div>
-
                 <p class="mt-4 text-sm text-slate-500">
-                  <span class="font-medium text-yellow-600"
-                    >9 days remaining</span
-                  >
-                  this year
+                  Avg. duration :
+                  <span class="font-medium text-black">2h</span>
                 </p>
               </div>
 
-              <!-- Personal Leave -->
+              <!-- out of office -->
               <div class="rounded-3xl bg-white p-5 shadow-sm">
-                <p class="text-sm text-slate-500">Personal Leave</p>
+                <p class="text-sm text-slate-500">pop out</p>
 
                 <h2 class="mt-2 text-3xl font-bold text-slate-800">
-                  2<span class="text-lg font-medium text-slate-400"
-                    >/5 Days</span
+                  1<span class="pl-1 text-xs font-medium text-slate-400"
+                    >this month</span
                   >
                 </h2>
 
-                <div class="mt-5">
-                  <div class="mb-2 flex items-center justify-between text-sm">
-                    <span class="text-slate-500">Used</span>
-                    <span class="font-semibold text-slate-700">3 Days</span>
-                  </div>
-
-                  <div class="h-2 overflow-hidden rounded-full bg-slate-200">
-                    <div class="h-full w-[60%] rounded-full bg-blue-500"></div>
-                  </div>
-                </div>
-
                 <p class="mt-4 text-sm text-slate-500">
-                  <span class="font-medium text-blue-600"
-                    >2 days remaining</span
-                  >
-                  this year
+                  Avg. duration :
+                  <span class="font-medium text-black">2h 30m</span>
                 </p>
               </div>
 
-              <!-- Unpaid Leave -->
-              <div
-                class="rounded-3xl bg-gradient-to-br from-slate-50 to-slate-200 p-5 text-white shadow-sm"
-              >
-                <p class="text-sm text-slate-500">Unpaid Leave</p>
+              <!-- WFH -->
+              <div class="rounded-3xl bg-white p-5 shadow-sm">
+                <p class="text-sm text-slate-500">WFH</p>
 
-                <h2 class="mt-2 text-3xl font-bold text-black">Unlimited</h2>
-
-                <div class="mt-5">
-                  <div class="mb-2 flex items-center justify-between text-sm">
-                    <span class="text-slate-500">Used</span>
-                    <span class="font-semibold text-slate-700">5 Days</span>
-                  </div>
-
-                  <div class="h-2 overflow-hidden rounded-full bg-white/15">
-                    <div class="h-full w-full rounded-full bg-white/40"></div>
-                  </div>
-                </div>
+                <h2 class="mt-2 text-3xl font-bold text-slate-800">
+                  2<span class="pl-1 text-xs font-medium text-slate-400"
+                    >this month</span
+                  >
+                </h2>
 
                 <p class="mt-4 text-sm text-slate-500">
-                  No limit - Approval required per submission.
+                  Avg. duration :
+                  <span class="font-medium text-black">9h</span>
+                </p>
+              </div>
+
+              <!-- dinas -->
+              <div class="rounded-3xl bg-white p-5 shadow-sm">
+                <p class="text-sm text-slate-500">bussines trip</p>
+
+                <h2 class="mt-2 text-3xl font-bold text-slate-800">
+                  1<span class="pl-1 text-xs font-medium text-slate-400"
+                    >this month</span
+                  >
+                </h2>
+
+                <p class="mt-4 text-sm text-slate-500">
+                  Avg. duration :
+                  <span class="font-medium text-black">2h 30m</span>
                 </p>
               </div>
             </div>
 
             <div class="grid gap-6 lg:grid-cols-2">
-              <!-- ================= LEFT : annual leave ================= -->
+              <!-- ================= LEFT : permission ================= -->
               <div class="rounded-3xl bg-white p-6 shadow-sm">
                 <div class="flex items-center justify-between">
                   <div>
-                    <p class="text-sm text-slate-500">Upcoming Permission</p>
                     <h3 class="mt-1 text-xl font-semibold text-slate-800">
-                      Approved Permission
+                      Permission Today's
                     </h3>
+                    <p class="text-sm text-slate-500">
+                      Permission Timeline for today
+                    </p>
                   </div>
 
-                  <span
-                    id="upcomingLeaveCount"
-                    class="rounded-full bg-emerald-100 px-3 py-1 text-xs font-medium text-emerald-700"
+                  <button
+                    id="addPermission"
+                    class="rounded-3xl bg-indigo-500 px-3 py-5 text-xs font-medium text-white"
                   >
-                    0 Permissions
-                  </span>
+                    + Add Permissions
+                  </button>
                 </div>
 
-                <div id="upcomingLeaveList" class="mt-6 space-y-4"></div>
+                <div id="upcomingPermissionList" class="mt-6 space-y-4"></div>
               </div>
 
-              <!-- ================= RIGHT : team leave ================= -->
+              <!-- ================= RIGHT : team permission ================= -->
               <div class="rounded-3xl bg-white p-6 shadow-sm">
                 <div class="flex items-center justify-between">
                   <div>
-                    <p class="text-sm text-slate-500">Team Permission</p>
                     <h3 class="mt-1 text-xl font-semibold text-slate-800">
-                      On Permission & Upcoming
+                      On Permission Team
                     </h3>
+                    <p class="text-sm text-slate-500">
+                      Team members on permission / WFH today
+                    </p>
                   </div>
 
                   <span
-                    id="teamLeaveCount"
+                    id="teamPermissionCount"
                     class="rounded-full bg-amber-100 px-3 py-1 text-xs font-medium text-amber-700"
                   >
                     4 Members
                   </span>
                 </div>
 
-                <div id="teamLeaveList" class="mt-6 space-y-4"></div>
+                <div id="teamPermissionList" class="mt-6 space-y-4"></div>
               </div>
             </div>
 
@@ -803,14 +774,14 @@
                 <!-- Search -->
                 <div class="flex-1">
                   <label
-                    for="searchLeave"
+                    for="searchPermission"
                     class="mb-2 block text-sm font-medium text-slate-700"
                   >
                     Search
                   </label>
 
                   <input
-                    id="searchLeave"
+                    id="searchPermission"
                     type="text"
                     placeholder="Search by leave type, reason..."
                     class="w-full rounded-xl border border-slate-200 px-4 py-2.5 text-sm outline-none transition focus:border-indigo-500 focus:ring-4 focus:ring-indigo-100"
@@ -831,10 +802,11 @@
                     class="w-full rounded-xl border border-slate-200 px-4 py-2.5 text-sm outline-none transition focus:border-indigo-500 focus:ring-4 focus:ring-indigo-100"
                   >
                     <option value="">All Types</option>
-                    <option value="annual">Annual Leave</option>
-                    <option value="sick">Sick Leave</option>
-                    <option value="personal">Personal Leave</option>
-                    <option value="unpaid">Unpaid Leave</option>
+                    <option value="arriveLate">Arrive late</option>
+                    <option value="leaveEarly">Leave early</option>
+                    <option value="WFH">WFH</option>
+                    <option value="popOut">pop out</option>
+                    <option value="bussinesTrip">Bussines Trip</option>
                   </select>
                 </div>
 
@@ -857,24 +829,27 @@
                   </select>
                 </div>
 
-                <!-- Year -->
+                <!-- month -->
                 <div class="min-w-[150px]">
                   <label
-                    for="filterYear"
+                    for="filterMonth"
                     class="mb-2 block text-sm font-medium text-slate-700"
                   >
-                    Year
+                    Month
                   </label>
 
                   <select
-                    id="filterYear"
+                    id="filterMonth"
                     class="w-full rounded-xl border border-slate-200 px-4 py-2.5 text-sm outline-none transition focus:border-indigo-500 focus:ring-4 focus:ring-indigo-100"
                   >
-                    <option value="">All Years</option>
-                    <option>2026</option>
-                    <option>2025</option>
-                    <option>2024</option>
-                    <option>2023</option>
+                    <option value="">All Months</option>
+                    <option>January</option>
+                    <option>February</option>
+                    <option>March</option>
+                    <option>April</option>
+                    <option>May</option>
+                    <option>June</option>
+                    <option>July</option>
                   </select>
                 </div>
 
@@ -914,9 +889,10 @@
                   <thead class="border-b border-slate-200">
                     <tr class="text-left text-sm font-semibold text-slate-600">
                       <th class="px-4 py-3">Request ID</th>
-                      <th class="px-4 py-3">Leave Type</th>
-                      <th class="px-4 py-3">Period</th>
-                      <th class="px-4 py-3">Days</th>
+                      <th class="px-4 py-3">Type</th>
+                      <th class="px-4 py-3">Date</th>
+                      <th class="px-4 py-3">Time</th>
+                      <th class="px-4 py-3">Duration</th>
                       <th class="px-4 py-3">Reason</th>
                       <th class="px-4 py-3">Status</th>
                       <th class="px-4 py-3">Submitted</th>
@@ -925,52 +901,58 @@
                   </thead>
 
                   <tbody class="divide-y divide-slate-100 text-sm">
-                    <!-- Row 1 -->
                     <tr class="hover:bg-slate-50">
                       <td class="px-4 py-4 font-medium text-slate-800">
-                        LR-2026-001
+                        PM-2026-001
                       </td>
-                      <td class="px-4 py-4">Annual Leave</td>
-                      <td class="px-4 py-4">15 Jul - 17 Jul 2026</td>
-                      <td class="px-4 py-4">3 Days</td>
-                      <td class="px-4 py-4">Family Vacation</td>
+                      <td class="px-4 py-4">
+                        <span
+                          class="rounded-full bg-sky-100 px-3 py-1 text-xs font-semibold text-sky-700"
+                          >WFH</span
+                        >
+                      </td>
+                      <td class="px-4 py-4">18 Jul 2026</td>
+                      <td class="px-4 py-4">08:00 - 17:00</td>
+                      <td class="px-4 py-4">9 Hours</td>
+                      <td class="px-4 py-4">Internet maintenance at home</td>
                       <td class="px-4 py-4">
                         <span
                           class="rounded-full bg-green-100 px-3 py-1 text-xs font-semibold text-green-700"
+                          >Approved</span
                         >
-                          Approved
-                        </span>
                       </td>
-                      <td class="px-4 py-4">10 Jul 2026</td>
-                      <td class="px-4 py-4">
-                        <div class="flex justify-center gap-2">
-                          <button
-                            class="rounded-lg bg-indigo-600 px-3 py-1.5 text-xs font-medium text-white transition hover:bg-indigo-700"
-                          >
-                            View
-                          </button>
-                        </div>
+                      <td class="px-4 py-4">17 Jul 2026 16:35</td>
+                      <td class="px-4 py-4 text-center">
+                        <button
+                          class="rounded-lg bg-indigo-600 px-3 py-1.5 text-xs font-medium text-white hover:bg-indigo-700"
+                        >
+                          View
+                        </button>
                       </td>
                     </tr>
 
-                    <!-- Row 2 -->
                     <tr class="hover:bg-slate-50">
                       <td class="px-4 py-4 font-medium text-slate-800">
-                        LR-2026-002
+                        PM-2026-002
                       </td>
-                      <td class="px-4 py-4">Sick Leave</td>
-                      <td class="px-4 py-4">08 Jul 2026</td>
-                      <td class="px-4 py-4">1 Day</td>
-                      <td class="px-4 py-4">Fever</td>
+                      <td class="px-4 py-4">
+                        <span
+                          class="rounded-full bg-amber-100 px-3 py-1 text-xs font-semibold text-amber-700"
+                          >Arrive Late</span
+                        >
+                      </td>
+                      <td class="px-4 py-4">19 Jul 2026</td>
+                      <td class="px-4 py-4">09:30 - 10:30</td>
+                      <td class="px-4 py-4">1 Hour</td>
+                      <td class="px-4 py-4">Hospital appointment</td>
                       <td class="px-4 py-4">
                         <span
                           class="rounded-full bg-yellow-100 px-3 py-1 text-xs font-semibold text-yellow-700"
+                          >Pending</span
                         >
-                          Pending
-                        </span>
                       </td>
-                      <td class="px-4 py-4">07 Jul 2026</td>
-                      <td class="px-4 py-4">
+                      <td class="px-4 py-4">18 Jul 2026 19:10</td>
+                      <td class="px-4 py-4 text-center">
                         <div class="flex justify-center gap-2">
                           <button
                             class="rounded-lg bg-indigo-600 px-3 py-1.5 text-xs font-medium text-white transition hover:bg-indigo-700"
@@ -987,80 +969,118 @@
                       </td>
                     </tr>
 
-                    <!-- Row 3 -->
                     <tr class="hover:bg-slate-50">
                       <td class="px-4 py-4 font-medium text-slate-800">
-                        LR-2026-003
+                        PM-2026-003
                       </td>
-                      <td class="px-4 py-4">Personal Leave</td>
-                      <td class="px-4 py-4">20 Jun 2026</td>
-                      <td class="px-4 py-4">1 Day</td>
-                      <td class="px-4 py-4">Personal Matters</td>
+                      <td class="px-4 py-4">
+                        <span
+                          class="rounded-full bg-indigo-100 px-3 py-1 text-xs font-semibold text-indigo-700"
+                          >Business Trip</span
+                        >
+                      </td>
+                      <td class="px-4 py-4">20 Jul 2026</td>
+                      <td class="px-4 py-4">09:00 - 16:00</td>
+                      <td class="px-4 py-4">7 Hours</td>
+                      <td class="px-4 py-4">Client meeting</td>
+                      <td class="px-4 py-4">
+                        <span
+                          class="rounded-full bg-green-100 px-3 py-1 text-xs font-semibold text-green-700"
+                          >Approved</span
+                        >
+                      </td>
+                      <td class="px-4 py-4">18 Jul 2026 14:25</td>
+                      <td class="px-4 py-4 text-center">
+                        <button
+                          class="rounded-lg bg-indigo-600 px-3 py-1.5 text-xs font-medium text-white hover:bg-indigo-700"
+                        >
+                          View
+                        </button>
+                      </td>
+                    </tr>
+
+                    <tr class="hover:bg-slate-50">
+                      <td class="px-4 py-4 font-medium text-slate-800">
+                        PM-2026-004
+                      </td>
+                      <td class="px-4 py-4">
+                        <span
+                          class="rounded-full bg-orange-100 px-3 py-1 text-xs font-semibold text-orange-700"
+                          >Leave Early</span
+                        >
+                      </td>
+                      <td class="px-4 py-4">21 Jul 2026</td>
+                      <td class="px-4 py-4">15:00 - 17:00</td>
+                      <td class="px-4 py-4">2 Hours</td>
+                      <td class="px-4 py-4">Family event</td>
                       <td class="px-4 py-4">
                         <span
                           class="rounded-full bg-red-100 px-3 py-1 text-xs font-semibold text-red-700"
+                          >Rejected</span
                         >
-                          Rejected
-                        </span>
                       </td>
-                      <td class="px-4 py-4">18 Jun 2026</td>
-                      <td class="px-4 py-4">
-                        <div class="flex justify-center gap-2">
-                          <button
-                            class="rounded-lg bg-indigo-600 px-3 py-1.5 text-xs font-medium text-white transition hover:bg-indigo-700"
-                          >
-                            View
-                          </button>
-                        </div>
+                      <td class="px-4 py-4">20 Jul 2026 08:42</td>
+                      <td class="px-4 py-4 text-center">
+                        <button
+                          class="rounded-lg bg-indigo-600 px-3 py-1.5 text-xs font-medium text-white hover:bg-indigo-700"
+                        >
+                          View
+                        </button>
                       </td>
                     </tr>
 
-                    <!-- Row 4 -->
                     <tr class="hover:bg-slate-50">
                       <td class="px-4 py-4 font-medium text-slate-800">
-                        LR-2026-004
+                        PM-2026-005
                       </td>
-                      <td class="px-4 py-4">Unpaid Leave</td>
-                      <td class="px-4 py-4">25 May - 29 May 2026</td>
-                      <td class="px-4 py-4">5 Days</td>
-                      <td class="px-4 py-4">Family Emergency</td>
+                      <td class="px-4 py-4">
+                        <span
+                          class="rounded-full bg-violet-100 px-3 py-1 text-xs font-semibold text-violet-700"
+                          >Pop Out</span
+                        >
+                      </td>
+                      <td class="px-4 py-4">22 Jul 2026</td>
+                      <td class="px-4 py-4">13:00 - 14:00</td>
+                      <td class="px-4 py-4">1 Hour</td>
+                      <td class="px-4 py-4">Bank administration</td>
                       <td class="px-4 py-4">
                         <span
                           class="rounded-full bg-green-100 px-3 py-1 text-xs font-semibold text-green-700"
+                          >Approved</span
                         >
-                          Approved
-                        </span>
                       </td>
-                      <td class="px-4 py-4">18 May 2026</td>
-                      <td class="px-4 py-4">
-                        <div class="flex justify-center gap-2">
-                          <button
-                            class="rounded-lg bg-indigo-600 px-3 py-1.5 text-xs font-medium text-white transition hover:bg-indigo-700"
-                          >
-                            View
-                          </button>
-                        </div>
+                      <td class="px-4 py-4">21 Jul 2026 17:18</td>
+                      <td class="px-4 py-4 text-center">
+                        <button
+                          class="rounded-lg bg-indigo-600 px-3 py-1.5 text-xs font-medium text-white hover:bg-indigo-700"
+                        >
+                          View
+                        </button>
                       </td>
                     </tr>
 
-                    <!-- Row 5 -->
                     <tr class="hover:bg-slate-50">
                       <td class="px-4 py-4 font-medium text-slate-800">
-                        LR-2026-005
+                        PM-2026-006
                       </td>
-                      <td class="px-4 py-4">Annual Leave</td>
-                      <td class="px-4 py-4">30 Jul - 01 Aug 2026</td>
-                      <td class="px-4 py-4">3 Days</td>
-                      <td class="px-4 py-4">Vacation</td>
+                      <td class="px-4 py-4">
+                        <span
+                          class="rounded-full bg-sky-100 px-3 py-1 text-xs font-semibold text-sky-700"
+                          >WFH</span
+                        >
+                      </td>
+                      <td class="px-4 py-4">23 Jul 2026</td>
+                      <td class="px-4 py-4">08:00 - 17:00</td>
+                      <td class="px-4 py-4">9 Hours</td>
+                      <td class="px-4 py-4">Home renovation</td>
                       <td class="px-4 py-4">
                         <span
                           class="rounded-full bg-yellow-100 px-3 py-1 text-xs font-semibold text-yellow-700"
+                          >Pending</span
                         >
-                          Pending
-                        </span>
                       </td>
-                      <td class="px-4 py-4">14 Jul 2026</td>
-                      <td class="px-4 py-4">
+                      <td class="px-4 py-4">22 Jul 2026 15:40</td>
+                      <td class="px-4 py-4 text-center">
                         <div class="flex justify-center gap-2">
                           <button
                             class="rounded-lg bg-indigo-600 px-3 py-1.5 text-xs font-medium text-white transition hover:bg-indigo-700"
@@ -1079,181 +1099,121 @@
 
                     <tr class="hover:bg-slate-50">
                       <td class="px-4 py-4 font-medium text-slate-800">
-                        LR-2026-005
+                        PM-2026-007
                       </td>
-                      <td class="px-4 py-4">Annual Leave</td>
-                      <td class="px-4 py-4">30 Jul - 01 Aug 2026</td>
-                      <td class="px-4 py-4">3 Days</td>
-                      <td class="px-4 py-4">Vacation</td>
                       <td class="px-4 py-4">
                         <span
-                          class="rounded-full bg-yellow-100 px-3 py-1 text-xs font-semibold text-yellow-700"
+                          class="rounded-full bg-indigo-100 px-3 py-1 text-xs font-semibold text-indigo-700"
+                          >Business Trip</span
                         >
-                          Pending
-                        </span>
                       </td>
-                      <td class="px-4 py-4">14 Jul 2026</td>
-                      <td class="px-4 py-4">
-                        <div class="flex justify-center gap-2">
-                          <button
-                            class="rounded-lg bg-indigo-600 px-3 py-1.5 text-xs font-medium text-white transition hover:bg-indigo-700"
-                          >
-                            View
-                          </button>
-
-                          <button
-                            class="rounded-lg bg-red-600 px-3 py-1.5 text-xs font-medium text-white transition hover:bg-red-700"
-                          >
-                            Cancel
-                          </button>
-                        </div>
-                      </td>
-                    </tr>
-
-                    <tr class="hover:bg-slate-50">
-                      <td class="px-4 py-4 font-medium text-slate-800">
-                        LR-2026-004
-                      </td>
-                      <td class="px-4 py-4">Unpaid Leave</td>
-                      <td class="px-4 py-4">25 May - 29 May 2026</td>
-                      <td class="px-4 py-4">5 Days</td>
-                      <td class="px-4 py-4">Family Emergency</td>
+                      <td class="px-4 py-4">24 Jul 2026</td>
+                      <td class="px-4 py-4">08:30 - 15:30</td>
+                      <td class="px-4 py-4">7 Hours</td>
+                      <td class="px-4 py-4">Site inspection</td>
                       <td class="px-4 py-4">
                         <span
                           class="rounded-full bg-green-100 px-3 py-1 text-xs font-semibold text-green-700"
+                          >Approved</span
                         >
-                          Approved
-                        </span>
                       </td>
-                      <td class="px-4 py-4">18 May 2026</td>
-                      <td class="px-4 py-4">
-                        <div class="flex justify-center gap-2">
-                          <button
-                            class="rounded-lg bg-indigo-600 px-3 py-1.5 text-xs font-medium text-white transition hover:bg-indigo-700"
-                          >
-                            View
-                          </button>
-                        </div>
+                      <td class="px-4 py-4">22 Jul 2026 10:12</td>
+                      <td class="px-4 py-4 text-center">
+                        <button
+                          class="rounded-lg bg-indigo-600 px-3 py-1.5 text-xs font-medium text-white hover:bg-indigo-700"
+                        >
+                          View
+                        </button>
                       </td>
                     </tr>
 
                     <tr class="hover:bg-slate-50">
                       <td class="px-4 py-4 font-medium text-slate-800">
-                        LR-2026-005
+                        PM-2026-008
                       </td>
-                      <td class="px-4 py-4">Annual Leave</td>
-                      <td class="px-4 py-4">30 Jul - 01 Aug 2026</td>
-                      <td class="px-4 py-4">3 Days</td>
-                      <td class="px-4 py-4">Vacation</td>
                       <td class="px-4 py-4">
                         <span
-                          class="rounded-full bg-yellow-100 px-3 py-1 text-xs font-semibold text-yellow-700"
+                          class="rounded-full bg-orange-100 px-3 py-1 text-xs font-semibold text-orange-700"
+                          >Leave Early</span
                         >
-                          Pending
-                        </span>
                       </td>
-                      <td class="px-4 py-4">14 Jul 2026</td>
-                      <td class="px-4 py-4">
-                        <div class="flex justify-center gap-2">
-                          <button
-                            class="rounded-lg bg-indigo-600 px-3 py-1.5 text-xs font-medium text-white transition hover:bg-indigo-700"
-                          >
-                            View
-                          </button>
-
-                          <button
-                            class="rounded-lg bg-red-600 px-3 py-1.5 text-xs font-medium text-white transition hover:bg-red-700"
-                          >
-                            Cancel
-                          </button>
-                        </div>
-                      </td>
-                    </tr>
-
-                    <tr class="hover:bg-slate-50">
-                      <td class="px-4 py-4 font-medium text-slate-800">
-                        LR-2026-005
-                      </td>
-                      <td class="px-4 py-4">Annual Leave</td>
-                      <td class="px-4 py-4">30 Jul - 01 Aug 2026</td>
-                      <td class="px-4 py-4">3 Days</td>
-                      <td class="px-4 py-4">Vacation</td>
+                      <td class="px-4 py-4">25 Jul 2026</td>
+                      <td class="px-4 py-4">16:00 - 17:00</td>
+                      <td class="px-4 py-4">1 Hour</td>
+                      <td class="px-4 py-4">Pick up child</td>
                       <td class="px-4 py-4">
                         <span
-                          class="rounded-full bg-yellow-100 px-3 py-1 text-xs font-semibold text-yellow-700"
+                          class="rounded-full bg-green-100 px-3 py-1 text-xs font-semibold text-green-700"
+                          >Approved</span
                         >
-                          Pending
-                        </span>
                       </td>
-                      <td class="px-4 py-4">14 Jul 2026</td>
-                      <td class="px-4 py-4">
-                        <div class="flex justify-center gap-2">
-                          <button
-                            class="rounded-lg bg-indigo-600 px-3 py-1.5 text-xs font-medium text-white transition hover:bg-indigo-700"
-                          >
-                            View
-                          </button>
-
-                          <button
-                            class="rounded-lg bg-red-600 px-3 py-1.5 text-xs font-medium text-white transition hover:bg-red-700"
-                          >
-                            Cancel
-                          </button>
-                        </div>
+                      <td class="px-4 py-4">24 Jul 2026 18:03</td>
+                      <td class="px-4 py-4 text-center">
+                        <button
+                          class="rounded-lg bg-indigo-600 px-3 py-1.5 text-xs font-medium text-white hover:bg-indigo-700"
+                        >
+                          View
+                        </button>
                       </td>
                     </tr>
 
                     <tr class="hover:bg-slate-50">
                       <td class="px-4 py-4 font-medium text-slate-800">
-                        LR-2026-003
+                        PM-2026-009
                       </td>
-                      <td class="px-4 py-4">Personal Leave</td>
-                      <td class="px-4 py-4">20 Jun 2026</td>
-                      <td class="px-4 py-4">1 Day</td>
-                      <td class="px-4 py-4">Personal Matters</td>
+                      <td class="px-4 py-4">
+                        <span
+                          class="rounded-full bg-violet-100 px-3 py-1 text-xs font-semibold text-violet-700"
+                          >Pop Out</span
+                        >
+                      </td>
+                      <td class="px-4 py-4">26 Jul 2026</td>
+                      <td class="px-4 py-4">10:00 - 11:30</td>
+                      <td class="px-4 py-4">1.5 Hours</td>
+                      <td class="px-4 py-4">Government office</td>
                       <td class="px-4 py-4">
                         <span
                           class="rounded-full bg-red-100 px-3 py-1 text-xs font-semibold text-red-700"
+                          >Rejected</span
                         >
-                          Rejected
-                        </span>
                       </td>
-                      <td class="px-4 py-4">18 Jun 2026</td>
-                      <td class="px-4 py-4">
-                        <div class="flex justify-center gap-2">
-                          <button
-                            class="rounded-lg bg-indigo-600 px-3 py-1.5 text-xs font-medium text-white transition hover:bg-indigo-700"
-                          >
-                            View
-                          </button>
-                        </div>
+                      <td class="px-4 py-4">25 Jul 2026 20:01</td>
+                      <td class="px-4 py-4 text-center">
+                        <button
+                          class="rounded-lg bg-indigo-600 px-3 py-1.5 text-xs font-medium text-white hover:bg-indigo-700"
+                        >
+                          View
+                        </button>
                       </td>
                     </tr>
 
                     <tr class="hover:bg-slate-50">
                       <td class="px-4 py-4 font-medium text-slate-800">
-                        LR-2026-004
+                        PM-2026-010
                       </td>
-                      <td class="px-4 py-4">Unpaid Leave</td>
-                      <td class="px-4 py-4">25 May - 29 May 2026</td>
-                      <td class="px-4 py-4">5 Days</td>
-                      <td class="px-4 py-4">Family Emergency</td>
+                      <td class="px-4 py-4">
+                        <span
+                          class="rounded-full bg-amber-100 px-3 py-1 text-xs font-semibold text-amber-700"
+                          >Arrive Late</span
+                        >
+                      </td>
+                      <td class="px-4 py-4">27 Jul 2026</td>
+                      <td class="px-4 py-4">09:00 - 10:00</td>
+                      <td class="px-4 py-4">1 Hour</td>
+                      <td class="px-4 py-4">Vehicle breakdown</td>
                       <td class="px-4 py-4">
                         <span
                           class="rounded-full bg-green-100 px-3 py-1 text-xs font-semibold text-green-700"
+                          >Approved</span
                         >
-                          Approved
-                        </span>
                       </td>
-                      <td class="px-4 py-4">18 May 2026</td>
-                      <td class="px-4 py-4">
-                        <div class="flex justify-center gap-2">
-                          <button
-                            class="rounded-lg bg-indigo-600 px-3 py-1.5 text-xs font-medium text-white transition hover:bg-indigo-700"
-                          >
-                            View
-                          </button>
-                        </div>
+                      <td class="px-4 py-4">26 Jul 2026 22:14</td>
+                      <td class="px-4 py-4 text-center">
+                        <button
+                          class="rounded-lg bg-indigo-600 px-3 py-1.5 text-xs font-medium text-white hover:bg-indigo-700"
+                        >
+                          View
+                        </button>
                       </td>
                     </tr>
                   </tbody>
