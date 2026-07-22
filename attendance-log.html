@@ -527,12 +527,12 @@
 
             <!-- Main grid -->
             <div class="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
-              <!-- Pending -->
+              <!-- event taken -->
               <div
                 class="flex items-center gap-4 rounded-3xl bg-white p-5 shadow-sm"
               >
                 <div
-                  class="flex h-14 w-14 items-center justify-center rounded-2xl bg-amber-100 text-amber-500"
+                  class="flex h-14 w-14 items-center justify-center rounded-2xl bg-blue-100 text-blue-600"
                 >
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
@@ -545,24 +545,21 @@
                       stroke-linecap="round"
                       stroke-linejoin="round"
                       stroke-width="2"
-                      d="M12 8v4l3 3m7-3A10 10 0 1112 2a10 10 0 0110 10z"
+                      d="M6 3v6m0 3v9M12 3v3m0 3v12M18 3v10m0 3v5M3 6h18M3 18h18"
                     />
                   </svg>
                 </div>
 
                 <div>
-                  <p class="text-sm text-slate-500">Pending</p>
-                  <h2
-                    id="upcomingShifts"
-                    class="text-3xl font-bold text-amber-500"
-                  >
-                    3
+                  <p class="text-sm text-slate-500">Total Events</p>
+                  <h2 id="totalEvents" class="text-3xl font-bold text-blue-600">
+                    64
                   </h2>
-                  <p class="text-sm text-slate-500">Waiting Approval</p>
+                  <p class="text-sm text-slate-500">last 14 days</p>
                 </div>
               </div>
 
-              <!-- Approved -->
+              <!-- ontime -->
               <div
                 class="flex items-center gap-4 rounded-3xl bg-white p-5 shadow-sm"
               >
@@ -586,18 +583,53 @@
                 </div>
 
                 <div>
-                  <p class="text-sm text-slate-500">Approved</p>
+                  <p class="text-sm text-slate-500">On-time Check-ins</p>
                   <h2
-                    id="weeklyShifts"
+                    id="ontimeCheckins"
                     class="text-3xl font-bold text-emerald-600"
                   >
-                    8
+                    10
                   </h2>
-                  <p class="text-sm text-slate-500">Approved this month</p>
+                  <p class="text-sm text-slate-500">before 09:00</p>
                 </div>
               </div>
 
-              <!-- reject -->
+              <!-- late -->
+              <div
+                class="flex items-center gap-4 rounded-3xl bg-white p-5 shadow-sm"
+              >
+                <div
+                  class="flex h-14 w-14 items-center justify-center rounded-2xl bg-amber-100 text-amber-500"
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    class="h-7 w-7"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M12 8v4l3 3m7-3A10 10 0 1112 2a10 10 0 0110 10z"
+                    />
+                  </svg>
+                </div>
+
+                <div>
+                  <p class="text-sm text-slate-500">Late Check-ins</p>
+                  <h2
+                    id="lateCheckins"
+                    class="text-3xl font-bold text-amber-500"
+                  >
+                    3
+                  </h2>
+                  <p class="text-sm text-slate-500">after 09:00</p>
+                </div>
+              </div>
+
+              <!-- anomaly -->
               <div
                 class="flex items-center gap-4 rounded-3xl bg-white p-5 shadow-sm"
               >
@@ -615,63 +647,29 @@
                       stroke-linecap="round"
                       stroke-linejoin="round"
                       stroke-width="2"
-                      d="M12 21a9 9 0 100-18 9 9 0 000 18z"
+                      d="M12 9v4"
                     />
                     <path
                       stroke-linecap="round"
                       stroke-linejoin="round"
                       stroke-width="2"
-                      d="M9 9l6 6"
+                      d="M12 17h.01"
                     />
                     <path
                       stroke-linecap="round"
                       stroke-linejoin="round"
                       stroke-width="2"
-                      d="M15 9l-6 6"
+                      d="M10.3 3.9L1.8 18.2A2 2 0 003.5 21h17a2 2 0 001.7-2.8L13.7 3.9a2 2 0 00-3.4 0z"
                     />
                   </svg>
                 </div>
 
                 <div>
-                  <p class="text-sm text-slate-500">Rejected</p>
-                  <h2 id="weeklyHours" class="text-3xl font-bold text-red-600">
+                  <p class="text-sm text-slate-500">Anomaly Flags</p>
+                  <h2 id="anomalyFlags" class="text-3xl font-bold text-red-600">
                     1
                   </h2>
-                  <p class="text-sm text-slate-500">Rejected this month</p>
-                </div>
-              </div>
-
-              <!-- hour taken -->
-              <div
-                class="flex items-center gap-4 rounded-3xl bg-white p-5 shadow-sm"
-              >
-                <div
-                  class="flex h-14 w-14 items-center justify-center rounded-2xl bg-blue-100 text-blue-600"
-                >
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    class="h-7 w-7"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                  >
-                    <path
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                      stroke-width="2"
-                      d="M12 8v5l3 2M9 2h6M12 5v3M19.07 6.93l1.41-1.41M12 22a8 8 0 100-16 8 8 0 000 16z"
-                    />
-                  </svg>
-                </div>
-
-                <div>
-                  <p class="text-sm text-slate-500">Total Hours</p>
-                  <h2 id="todayShift" class="text-3xl font-bold text-blue-600">
-                    31h 30m
-                  </h2>
-                  <p class="text-sm text-slate-500">
-                    this month's accumulation
-                  </p>
+                  <p class="text-sm text-slate-500">Requires review</p>
                 </div>
               </div>
             </div>
@@ -690,7 +688,10 @@
 
                 <!-- Chart -->
                 <div class="mt-6 h-80">
-                  <canvas id="activityTrendChart"></canvas>
+                  <canvas
+                    id="activityTrendChart"
+                    class="h-full w-full block"
+                  ></canvas>
                 </div>
 
                 <!-- Legend -->
@@ -1015,14 +1016,14 @@
                 <div>
                   <p class="text-sm text-slate-500">History</p>
                   <h2 class="text-2xl font-semibold text-slate-800">
-                    Permission Request History
+                    Log Entries
                   </h2>
                 </div>
 
                 <span
                   class="inline-flex items-center rounded-full bg-slate-100 px-3 py-1 text-sm font-medium text-slate-600"
                 >
-                  5 Requests
+                  10 Records
                 </span>
               </div>
 
@@ -1031,40 +1032,50 @@
                 <table class="min-w-full">
                   <thead class="border-b border-slate-200">
                     <tr class="text-left text-sm font-semibold text-slate-600">
-                      <th class="px-4 py-3">Request ID</th>
-                      <th class="px-4 py-3">Type</th>
-                      <th class="px-4 py-3">Date</th>
                       <th class="px-4 py-3">Time</th>
-                      <th class="px-4 py-3">Duration</th>
-                      <th class="px-4 py-3">Reason</th>
+                      <th class="px-4 py-3">Event</th>
+                      <th class="px-4 py-3">Location / Device</th>
+                      <th class="px-4 py-3">IP Address</th>
+                      <th class="px-4 py-3">Verify</th>
                       <th class="px-4 py-3">Status</th>
-                      <th class="px-4 py-3">Submitted</th>
                       <th class="px-4 py-3 text-center">Action</th>
                     </tr>
                   </thead>
 
                   <tbody class="divide-y divide-slate-100 text-sm">
                     <tr class="hover:bg-slate-50">
-                      <td class="px-4 py-4 font-medium text-slate-800">
-                        PM-2026-001
+                      <td class="px-4 py-4">
+                        <p class="font-medium text-slate-800">08:01:14</p>
+                        <p class="text-xs text-slate-500">22 Jul 2026</p>
                       </td>
+
                       <td class="px-4 py-4">
                         <span
-                          class="rounded-full bg-sky-100 px-3 py-1 text-xs font-semibold text-sky-700"
-                          >WFH</span
+                          class="rounded-full bg-emerald-100 px-3 py-1 text-xs font-semibold text-emerald-700"
                         >
+                          Check In
+                        </span>
                       </td>
-                      <td class="px-4 py-4">18 Jul 2026</td>
-                      <td class="px-4 py-4">08:00 - 17:00</td>
-                      <td class="px-4 py-4">9 Hours</td>
-                      <td class="px-4 py-4">Internet maintenance at home</td>
+
+                      <td class="px-4 py-4">
+                        <p class="font-medium">Head Office</p>
+                        <p class="text-xs text-slate-500">
+                          Chrome • Windows 11
+                        </p>
+                      </td>
+
+                      <td class="px-4 py-4">192.168.1.12</td>
+
+                      <td class="px-4 py-4">Face ID</td>
+
                       <td class="px-4 py-4">
                         <span
                           class="rounded-full bg-green-100 px-3 py-1 text-xs font-semibold text-green-700"
-                          >Approved</span
                         >
+                          Success
+                        </span>
                       </td>
-                      <td class="px-4 py-4">17 Jul 2026 16:35</td>
+
                       <td class="px-4 py-4 text-center">
                         <button
                           class="rounded-lg bg-indigo-600 px-3 py-1.5 text-xs font-medium text-white hover:bg-indigo-700"
@@ -1075,67 +1086,291 @@
                     </tr>
 
                     <tr class="hover:bg-slate-50">
-                      <td class="px-4 py-4 font-medium text-slate-800">
-                        PM-2026-002
+                      <td class="px-4 py-4">
+                        <p class="font-medium">12:00:05</p>
+                        <p class="text-xs text-slate-500">22 Jul 2026</p>
                       </td>
                       <td class="px-4 py-4">
                         <span
                           class="rounded-full bg-amber-100 px-3 py-1 text-xs font-semibold text-amber-700"
-                          >Arrive Late</span
+                          >Break</span
                         >
                       </td>
-                      <td class="px-4 py-4">19 Jul 2026</td>
-                      <td class="px-4 py-4">09:30 - 10:30</td>
-                      <td class="px-4 py-4">1 Hour</td>
-                      <td class="px-4 py-4">Hospital appointment</td>
+                      <td class="px-4 py-4">
+                        <p class="font-medium">Head Office</p>
+                        <p class="text-xs text-slate-500">Android App</p>
+                      </td>
+                      <td class="px-4 py-4">192.168.1.12</td>
+                      <td class="px-4 py-4">QR Code</td>
+                      <td class="px-4 py-4">
+                        <span
+                          class="rounded-full bg-green-100 px-3 py-1 text-xs font-semibold text-green-700"
+                          >Success</span
+                        >
+                      </td>
+                      <td class="px-4 py-4 text-center">
+                        <button
+                          class="rounded-lg bg-indigo-600 px-3 py-1.5 text-xs text-white hover:bg-indigo-700"
+                        >
+                          View
+                        </button>
+                      </td>
+                    </tr>
+
+                    <tr class="hover:bg-slate-50">
+                      <td class="px-4 py-4">
+                        <p class="font-medium">13:01:33</p>
+                        <p class="text-xs text-slate-500">22 Jul 2026</p>
+                      </td>
+                      <td class="px-4 py-4">
+                        <span
+                          class="rounded-full bg-indigo-100 px-3 py-1 text-xs font-semibold text-indigo-700"
+                          >Break End</span
+                        >
+                      </td>
+                      <td class="px-4 py-4">
+                        <p class="font-medium">Head Office</p>
+                        <p class="text-xs text-slate-500">Android App</p>
+                      </td>
+                      <td class="px-4 py-4">192.168.1.12</td>
+                      <td class="px-4 py-4">QR Code</td>
+                      <td class="px-4 py-4">
+                        <span
+                          class="rounded-full bg-green-100 px-3 py-1 text-xs font-semibold text-green-700"
+                          >Success</span
+                        >
+                      </td>
+                      <td class="px-4 py-4 text-center">
+                        <button
+                          class="rounded-lg bg-indigo-600 px-3 py-1.5 text-xs text-white hover:bg-indigo-700"
+                        >
+                          View
+                        </button>
+                      </td>
+                    </tr>
+
+                    <tr class="hover:bg-slate-50">
+                      <td class="px-4 py-4">
+                        <p class="font-medium">17:02:48</p>
+                        <p class="text-xs text-slate-500">22 Jul 2026</p>
+                      </td>
+                      <td class="px-4 py-4">
+                        <span
+                          class="rounded-full bg-rose-100 px-3 py-1 text-xs font-semibold text-rose-700"
+                          >Check Out</span
+                        >
+                      </td>
+                      <td class="px-4 py-4">
+                        <p class="font-medium">Head Office</p>
+                        <p class="text-xs text-slate-500">
+                          Chrome • Windows 11
+                        </p>
+                      </td>
+                      <td class="px-4 py-4">192.168.1.12</td>
+                      <td class="px-4 py-4">Face ID</td>
+                      <td class="px-4 py-4">
+                        <span
+                          class="rounded-full bg-green-100 px-3 py-1 text-xs font-semibold text-green-700"
+                          >Success</span
+                        >
+                      </td>
+                      <td class="px-4 py-4 text-center">
+                        <button
+                          class="rounded-lg bg-indigo-600 px-3 py-1.5 text-xs text-white hover:bg-indigo-700"
+                        >
+                          View
+                        </button>
+                      </td>
+                    </tr>
+
+                    <tr class="hover:bg-slate-50">
+                      <td class="px-4 py-4">
+                        <p class="font-medium">08:03:21</p>
+                        <p class="text-xs text-slate-500">21 Jul 2026</p>
+                      </td>
+                      <td class="px-4 py-4">
+                        <span
+                          class="rounded-full bg-slate-100 px-3 py-1 text-xs font-semibold text-slate-700"
+                          >Verification</span
+                        >
+                      </td>
+                      <td class="px-4 py-4">
+                        <p class="font-medium">Branch Office</p>
+                        <p class="text-xs text-slate-500">Chrome • macOS</p>
+                      </td>
+                      <td class="px-4 py-4">10.20.30.45</td>
+                      <td class="px-4 py-4">Fingerprint</td>
+                      <td class="px-4 py-4">
+                        <span
+                          class="rounded-full bg-red-100 px-3 py-1 text-xs font-semibold text-red-700"
+                          >Failed</span
+                        >
+                      </td>
+                      <td class="px-4 py-4 text-center">
+                        <button
+                          class="rounded-lg bg-indigo-600 px-3 py-1.5 text-xs text-white hover:bg-indigo-700"
+                        >
+                          View
+                        </button>
+                      </td>
+                    </tr>
+
+                    <tr class="hover:bg-slate-50">
+                      <td class="px-4 py-4">
+                        <p class="font-medium">08:04:07</p>
+                        <p class="text-xs text-slate-500">21 Jul 2026</p>
+                      </td>
+                      <td class="px-4 py-4">
+                        <span
+                          class="rounded-full bg-blue-100 px-3 py-1 text-xs font-semibold text-blue-700"
+                          >Login</span
+                        >
+                      </td>
+                      <td class="px-4 py-4">
+                        <p class="font-medium">Remote Office</p>
+                        <p class="text-xs text-slate-500">Microsoft Edge</p>
+                      </td>
+                      <td class="px-4 py-4">36.88.120.8</td>
+                      <td class="px-4 py-4">PIN</td>
+                      <td class="px-4 py-4">
+                        <span
+                          class="rounded-full bg-green-100 px-3 py-1 text-xs font-semibold text-green-700"
+                          >Success</span
+                        >
+                      </td>
+                      <td class="px-4 py-4 text-center">
+                        <button
+                          class="rounded-lg bg-indigo-600 px-3 py-1.5 text-xs text-white hover:bg-indigo-700"
+                        >
+                          View
+                        </button>
+                      </td>
+                    </tr>
+
+                    <tr class="hover:bg-slate-50">
+                      <td class="px-4 py-4">
+                        <p class="font-medium">09:12:41</p>
+                        <p class="text-xs text-slate-500">20 Jul 2026</p>
+                      </td>
+                      <td class="px-4 py-4">
+                        <span
+                          class="rounded-full bg-emerald-100 px-3 py-1 text-xs font-semibold text-emerald-700"
+                          >Check In</span
+                        >
+                      </td>
+                      <td class="px-4 py-4">
+                        <p class="font-medium">Warehouse</p>
+                        <p class="text-xs text-slate-500">Android App</p>
+                      </td>
+                      <td class="px-4 py-4">172.16.2.4</td>
+                      <td class="px-4 py-4">QR Code</td>
+                      <td class="px-4 py-4">
+                        <span
+                          class="rounded-full bg-green-100 px-3 py-1 text-xs font-semibold text-green-700"
+                          >Success</span
+                        >
+                      </td>
+                      <td class="px-4 py-4 text-center">
+                        <button
+                          class="rounded-lg bg-indigo-600 px-3 py-1.5 text-xs text-white hover:bg-indigo-700"
+                        >
+                          View
+                        </button>
+                      </td>
+                    </tr>
+
+                    <tr class="hover:bg-slate-50">
+                      <td class="px-4 py-4">
+                        <p class="font-medium">17:15:54</p>
+                        <p class="text-xs text-slate-500">20 Jul 2026</p>
+                      </td>
+                      <td class="px-4 py-4">
+                        <span
+                          class="rounded-full bg-rose-100 px-3 py-1 text-xs font-semibold text-rose-700"
+                          >Check Out</span
+                        >
+                      </td>
+                      <td class="px-4 py-4">
+                        <p class="font-medium">Warehouse</p>
+                        <p class="text-xs text-slate-500">Android App</p>
+                      </td>
+                      <td class="px-4 py-4">172.16.2.4</td>
+                      <td class="px-4 py-4">QR Code</td>
+                      <td class="px-4 py-4">
+                        <span
+                          class="rounded-full bg-green-100 px-3 py-1 text-xs font-semibold text-green-700"
+                          >Success</span
+                        >
+                      </td>
+                      <td class="px-4 py-4 text-center">
+                        <button
+                          class="rounded-lg bg-indigo-600 px-3 py-1.5 text-xs text-white hover:bg-indigo-700"
+                        >
+                          View
+                        </button>
+                      </td>
+                    </tr>
+
+                    <tr class="hover:bg-slate-50">
+                      <td class="px-4 py-4">
+                        <p class="font-medium">08:15:33</p>
+                        <p class="text-xs text-slate-500">19 Jul 2026</p>
+                      </td>
+                      <td class="px-4 py-4">
+                        <span
+                          class="rounded-full bg-slate-100 px-3 py-1 text-xs font-semibold text-slate-700"
+                          >Verification</span
+                        >
+                      </td>
+                      <td class="px-4 py-4">
+                        <p class="font-medium">Head Office</p>
+                        <p class="text-xs text-slate-500">Firefox • Linux</p>
+                      </td>
+                      <td class="px-4 py-4">192.168.0.50</td>
+                      <td class="px-4 py-4">Face ID</td>
                       <td class="px-4 py-4">
                         <span
                           class="rounded-full bg-yellow-100 px-3 py-1 text-xs font-semibold text-yellow-700"
                           >Pending</span
                         >
                       </td>
-                      <td class="px-4 py-4">18 Jul 2026 19:10</td>
                       <td class="px-4 py-4 text-center">
-                        <div class="flex justify-center gap-2">
-                          <button
-                            class="rounded-lg bg-indigo-600 px-3 py-1.5 text-xs font-medium text-white transition hover:bg-indigo-700"
-                          >
-                            View
-                          </button>
-
-                          <button
-                            class="rounded-lg bg-red-600 px-3 py-1.5 text-xs font-medium text-white transition hover:bg-red-700"
-                          >
-                            Cancel
-                          </button>
-                        </div>
+                        <button
+                          class="rounded-lg bg-indigo-600 px-3 py-1.5 text-xs text-white hover:bg-indigo-700"
+                        >
+                          View
+                        </button>
                       </td>
                     </tr>
 
                     <tr class="hover:bg-slate-50">
-                      <td class="px-4 py-4 font-medium text-slate-800">
-                        PM-2026-003
+                      <td class="px-4 py-4">
+                        <p class="font-medium">08:16:02</p>
+                        <p class="text-xs text-slate-500">19 Jul 2026</p>
                       </td>
                       <td class="px-4 py-4">
                         <span
-                          class="rounded-full bg-indigo-100 px-3 py-1 text-xs font-semibold text-indigo-700"
-                          >Business Trip</span
+                          class="rounded-full bg-blue-100 px-3 py-1 text-xs font-semibold text-blue-700"
+                          >Login</span
                         >
                       </td>
-                      <td class="px-4 py-4">20 Jul 2026</td>
-                      <td class="px-4 py-4">09:00 - 16:00</td>
-                      <td class="px-4 py-4">7 Hours</td>
-                      <td class="px-4 py-4">Client meeting</td>
+                      <td class="px-4 py-4">
+                        <p class="font-medium">Head Office</p>
+                        <p class="text-xs text-slate-500">
+                          Chrome • Windows 11
+                        </p>
+                      </td>
+                      <td class="px-4 py-4">192.168.0.50</td>
+                      <td class="px-4 py-4">PIN</td>
                       <td class="px-4 py-4">
                         <span
                           class="rounded-full bg-green-100 px-3 py-1 text-xs font-semibold text-green-700"
-                          >Approved</span
+                          >Success</span
                         >
                       </td>
-                      <td class="px-4 py-4">18 Jul 2026 14:25</td>
                       <td class="px-4 py-4 text-center">
                         <button
-                          class="rounded-lg bg-indigo-600 px-3 py-1.5 text-xs font-medium text-white hover:bg-indigo-700"
+                          class="rounded-lg bg-indigo-600 px-3 py-1.5 text-xs text-white hover:bg-indigo-700"
                         >
                           View
                         </button>
@@ -1143,217 +1378,33 @@
                     </tr>
 
                     <tr class="hover:bg-slate-50">
-                      <td class="px-4 py-4 font-medium text-slate-800">
-                        PM-2026-004
+                      <td class="px-4 py-4">
+                        <p class="font-medium">08:16:02</p>
+                        <p class="text-xs text-slate-500">19 Jul 2026</p>
                       </td>
                       <td class="px-4 py-4">
                         <span
-                          class="rounded-full bg-orange-100 px-3 py-1 text-xs font-semibold text-orange-700"
-                          >Leave Early</span
+                          class="rounded-full bg-blue-100 px-3 py-1 text-xs font-semibold text-blue-700"
+                          >Login</span
                         >
-                      </td>
-                      <td class="px-4 py-4">21 Jul 2026</td>
-                      <td class="px-4 py-4">15:00 - 17:00</td>
-                      <td class="px-4 py-4">2 Hours</td>
-                      <td class="px-4 py-4">Family event</td>
-                      <td class="px-4 py-4">
-                        <span
-                          class="rounded-full bg-red-100 px-3 py-1 text-xs font-semibold text-red-700"
-                          >Rejected</span
-                        >
-                      </td>
-                      <td class="px-4 py-4">20 Jul 2026 08:42</td>
-                      <td class="px-4 py-4 text-center">
-                        <button
-                          class="rounded-lg bg-indigo-600 px-3 py-1.5 text-xs font-medium text-white hover:bg-indigo-700"
-                        >
-                          View
-                        </button>
-                      </td>
-                    </tr>
-
-                    <tr class="hover:bg-slate-50">
-                      <td class="px-4 py-4 font-medium text-slate-800">
-                        PM-2026-005
                       </td>
                       <td class="px-4 py-4">
-                        <span
-                          class="rounded-full bg-violet-100 px-3 py-1 text-xs font-semibold text-violet-700"
-                          >Pop Out</span
-                        >
+                        <p class="font-medium">Head Office</p>
+                        <p class="text-xs text-slate-500">
+                          Chrome • Windows 11
+                        </p>
                       </td>
-                      <td class="px-4 py-4">22 Jul 2026</td>
-                      <td class="px-4 py-4">13:00 - 14:00</td>
-                      <td class="px-4 py-4">1 Hour</td>
-                      <td class="px-4 py-4">Bank administration</td>
+                      <td class="px-4 py-4">192.168.0.50</td>
+                      <td class="px-4 py-4">PIN</td>
                       <td class="px-4 py-4">
                         <span
                           class="rounded-full bg-green-100 px-3 py-1 text-xs font-semibold text-green-700"
-                          >Approved</span
+                          >Success</span
                         >
                       </td>
-                      <td class="px-4 py-4">21 Jul 2026 17:18</td>
                       <td class="px-4 py-4 text-center">
                         <button
-                          class="rounded-lg bg-indigo-600 px-3 py-1.5 text-xs font-medium text-white hover:bg-indigo-700"
-                        >
-                          View
-                        </button>
-                      </td>
-                    </tr>
-
-                    <tr class="hover:bg-slate-50">
-                      <td class="px-4 py-4 font-medium text-slate-800">
-                        PM-2026-006
-                      </td>
-                      <td class="px-4 py-4">
-                        <span
-                          class="rounded-full bg-sky-100 px-3 py-1 text-xs font-semibold text-sky-700"
-                          >WFH</span
-                        >
-                      </td>
-                      <td class="px-4 py-4">23 Jul 2026</td>
-                      <td class="px-4 py-4">08:00 - 17:00</td>
-                      <td class="px-4 py-4">9 Hours</td>
-                      <td class="px-4 py-4">Home renovation</td>
-                      <td class="px-4 py-4">
-                        <span
-                          class="rounded-full bg-yellow-100 px-3 py-1 text-xs font-semibold text-yellow-700"
-                          >Pending</span
-                        >
-                      </td>
-                      <td class="px-4 py-4">22 Jul 2026 15:40</td>
-                      <td class="px-4 py-4 text-center">
-                        <div class="flex justify-center gap-2">
-                          <button
-                            class="rounded-lg bg-indigo-600 px-3 py-1.5 text-xs font-medium text-white transition hover:bg-indigo-700"
-                          >
-                            View
-                          </button>
-
-                          <button
-                            class="rounded-lg bg-red-600 px-3 py-1.5 text-xs font-medium text-white transition hover:bg-red-700"
-                          >
-                            Cancel
-                          </button>
-                        </div>
-                      </td>
-                    </tr>
-
-                    <tr class="hover:bg-slate-50">
-                      <td class="px-4 py-4 font-medium text-slate-800">
-                        PM-2026-007
-                      </td>
-                      <td class="px-4 py-4">
-                        <span
-                          class="rounded-full bg-indigo-100 px-3 py-1 text-xs font-semibold text-indigo-700"
-                          >Business Trip</span
-                        >
-                      </td>
-                      <td class="px-4 py-4">24 Jul 2026</td>
-                      <td class="px-4 py-4">08:30 - 15:30</td>
-                      <td class="px-4 py-4">7 Hours</td>
-                      <td class="px-4 py-4">Site inspection</td>
-                      <td class="px-4 py-4">
-                        <span
-                          class="rounded-full bg-green-100 px-3 py-1 text-xs font-semibold text-green-700"
-                          >Approved</span
-                        >
-                      </td>
-                      <td class="px-4 py-4">22 Jul 2026 10:12</td>
-                      <td class="px-4 py-4 text-center">
-                        <button
-                          class="rounded-lg bg-indigo-600 px-3 py-1.5 text-xs font-medium text-white hover:bg-indigo-700"
-                        >
-                          View
-                        </button>
-                      </td>
-                    </tr>
-
-                    <tr class="hover:bg-slate-50">
-                      <td class="px-4 py-4 font-medium text-slate-800">
-                        PM-2026-008
-                      </td>
-                      <td class="px-4 py-4">
-                        <span
-                          class="rounded-full bg-orange-100 px-3 py-1 text-xs font-semibold text-orange-700"
-                          >Leave Early</span
-                        >
-                      </td>
-                      <td class="px-4 py-4">25 Jul 2026</td>
-                      <td class="px-4 py-4">16:00 - 17:00</td>
-                      <td class="px-4 py-4">1 Hour</td>
-                      <td class="px-4 py-4">Pick up child</td>
-                      <td class="px-4 py-4">
-                        <span
-                          class="rounded-full bg-green-100 px-3 py-1 text-xs font-semibold text-green-700"
-                          >Approved</span
-                        >
-                      </td>
-                      <td class="px-4 py-4">24 Jul 2026 18:03</td>
-                      <td class="px-4 py-4 text-center">
-                        <button
-                          class="rounded-lg bg-indigo-600 px-3 py-1.5 text-xs font-medium text-white hover:bg-indigo-700"
-                        >
-                          View
-                        </button>
-                      </td>
-                    </tr>
-
-                    <tr class="hover:bg-slate-50">
-                      <td class="px-4 py-4 font-medium text-slate-800">
-                        PM-2026-009
-                      </td>
-                      <td class="px-4 py-4">
-                        <span
-                          class="rounded-full bg-violet-100 px-3 py-1 text-xs font-semibold text-violet-700"
-                          >Pop Out</span
-                        >
-                      </td>
-                      <td class="px-4 py-4">26 Jul 2026</td>
-                      <td class="px-4 py-4">10:00 - 11:30</td>
-                      <td class="px-4 py-4">1.5 Hours</td>
-                      <td class="px-4 py-4">Government office</td>
-                      <td class="px-4 py-4">
-                        <span
-                          class="rounded-full bg-red-100 px-3 py-1 text-xs font-semibold text-red-700"
-                          >Rejected</span
-                        >
-                      </td>
-                      <td class="px-4 py-4">25 Jul 2026 20:01</td>
-                      <td class="px-4 py-4 text-center">
-                        <button
-                          class="rounded-lg bg-indigo-600 px-3 py-1.5 text-xs font-medium text-white hover:bg-indigo-700"
-                        >
-                          View
-                        </button>
-                      </td>
-                    </tr>
-
-                    <tr class="hover:bg-slate-50">
-                      <td class="px-4 py-4 font-medium text-slate-800">
-                        PM-2026-010
-                      </td>
-                      <td class="px-4 py-4">
-                        <span
-                          class="rounded-full bg-amber-100 px-3 py-1 text-xs font-semibold text-amber-700"
-                          >Arrive Late</span
-                        >
-                      </td>
-                      <td class="px-4 py-4">27 Jul 2026</td>
-                      <td class="px-4 py-4">09:00 - 10:00</td>
-                      <td class="px-4 py-4">1 Hour</td>
-                      <td class="px-4 py-4">Vehicle breakdown</td>
-                      <td class="px-4 py-4">
-                        <span
-                          class="rounded-full bg-green-100 px-3 py-1 text-xs font-semibold text-green-700"
-                          >Approved</span
-                        >
-                      </td>
-                      <td class="px-4 py-4">26 Jul 2026 22:14</td>
-                      <td class="px-4 py-4 text-center">
-                        <button
-                          class="rounded-lg bg-indigo-600 px-3 py-1.5 text-xs font-medium text-white hover:bg-indigo-700"
+                          class="rounded-lg bg-indigo-600 px-3 py-1.5 text-xs text-white hover:bg-indigo-700"
                         >
                           View
                         </button>
@@ -1368,8 +1419,8 @@
                   <!-- Info -->
                   <p class="text-sm text-slate-500">
                     Showing <span id="startItem">1</span> -
-                    <span id="endItem">8</span> of
-                    <span id="totalItems">15</span> requests
+                    <span id="endItem">10</span> of
+                    <span id="totalItems">25</span> log entries
                   </p>
 
                   <!-- Controls -->
@@ -1400,99 +1451,96 @@
               </div>
             </div>
 
-            <!-- kebijakan cuti -->
-            <div
-              class="rounded-3xl bg-indigo-50 p-6 shadow-xl border border-slate-300"
-            >
-              <div class="mb-5">
-                <p class="text-sm text-slate-500">Information</p>
+            <!-- insights -->
+            <div class="rounded-3xl bg-white p-6 shadow-sm">
+              <!-- Header -->
+              <div class="mb-6">
+                <p class="text-sm text-slate-500">Insights</p>
                 <h2 class="text-2xl font-semibold text-slate-800">
-                  Permission Policy - LEXA
+                  Attendance Pattern Summary
                 </h2>
+                <p class="mt-1 text-sm text-slate-500">
+                  Generated from attendance activity over the last 14 days.
+                </p>
               </div>
 
-              <div class="grid gap-4 md:grid-cols-2">
-                <!-- Policy 1 -->
+              <div class="grid gap-4 lg:grid-cols-3">
+                <!-- Average Check In -->
                 <div
-                  class="flex items-start gap-4 rounded-2xl border border-slate-300 p-4"
+                  class="h-full rounded-2xl border border-slate-200 bg-slate-50 p-5"
                 >
-                  <div
-                    class="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-indigo-100 font-semibold text-indigo-600"
-                  >
-                    1
-                  </div>
+                  <div class="flex items-start justify-between">
+                    <div>
+                      <p class="text-sm text-slate-500">Average Check-In</p>
 
-                  <div>
-                    <h3 class="font-semibold text-slate-800">
-                      Submit Leave in Advance
-                    </h3>
-                    <p class="mt-1 text-sm leading-6 text-slate-500">
-                      Submit annual or personal leave at least
-                      <strong>3 working days</strong>
-                      before the leave date unless it is an emergency.
-                    </p>
+                      <h3 class="mt-1 text-3xl font-bold text-slate-800">
+                        08:06 AM
+                      </h3>
+
+                      <p class="mt-2 text-sm text-slate-600">
+                        Average arrival time during the last
+                        <span class="font-medium">14 days.</span>
+                      </p>
+                    </div>
+
+                    <span
+                      class="rounded-full bg-emerald-100 px-3 py-1 text-xs font-semibold text-emerald-700"
+                    >
+                      On Time
+                    </span>
                   </div>
                 </div>
 
-                <!-- Policy 2 -->
+                <!-- Most Late -->
                 <div
-                  class="flex items-start gap-4 rounded-2xl border border-slate-300 p-4"
+                  class="h-full rounded-2xl border border-slate-200 bg-slate-50 p-5"
                 >
-                  <div
-                    class="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-indigo-100 font-semibold text-indigo-600"
-                  >
-                    2
-                  </div>
+                  <div class="flex items-start justify-between">
+                    <div>
+                      <p class="text-sm text-slate-500">
+                        Most Frequent Late Day
+                      </p>
 
-                  <div>
-                    <h3 class="font-semibold text-slate-800">
-                      Medical Certificate
-                    </h3>
-                    <p class="mt-1 text-sm leading-6 text-slate-500">
-                      Sick leave exceeding
-                      <strong>2 consecutive days</strong> must be supported by a
-                      valid medical certificate.
-                    </p>
+                      <h3 class="mt-1 text-2xl font-bold text-slate-800">—</h3>
+
+                      <p class="mt-2 text-sm text-slate-600">
+                        No dominant late-arrival pattern has been detected.
+                      </p>
+                    </div>
+
+                    <span
+                      class="rounded-full bg-slate-200 px-3 py-1 text-xs font-semibold text-slate-600"
+                    >
+                      No Pattern
+                    </span>
                   </div>
                 </div>
 
-                <!-- Policy 3 -->
+                <!-- Anomaly -->
                 <div
-                  class="flex items-start gap-4 rounded-2xl border border-slate-300 p-4"
+                  class="h-full rounded-2xl border border-amber-200 bg-amber-50 p-5"
                 >
-                  <div
-                    class="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-indigo-100 font-semibold text-indigo-600"
-                  >
-                    3
-                  </div>
+                  <div class="flex items-start justify-between">
+                    <div>
+                      <p class="text-sm text-amber-700">
+                        Anomaly Event Warning
+                      </p>
 
-                  <div>
-                    <h3 class="font-semibold text-slate-800">
-                      Approval Required
-                    </h3>
-                    <p class="mt-1 text-sm leading-6 text-slate-500">
-                      Leave requests are valid only after receiving approval
-                      from the employee's direct supervisor.
-                    </p>
-                  </div>
-                </div>
+                      <h3 class="mt-1 text-lg font-semibold text-slate-800">
+                        1 suspicious verification detected
+                      </h3>
 
-                <!-- Policy 4 -->
-                <div
-                  class="flex items-start gap-4 rounded-2xl border border-slate-300 p-4"
-                >
-                  <div
-                    class="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-indigo-100 font-semibold text-indigo-600"
-                  >
-                    4
-                  </div>
+                      <p class="mt-2 text-sm text-slate-600">
+                        Multiple verification attempts from different devices
+                        within a short period (2 minutes).
+                      </p>
+                    </div>
 
-                  <div>
-                    <h3 class="font-semibold text-slate-800">Unpaid Leave</h3>
-                    <p class="mt-1 text-sm leading-6 text-slate-500">
-                      Unpaid leave is subject to management approval and company
-                      operational requirements.
-                    </p>
+                    <span
+                      class="rounded-full bg-amber-200 px-3 py-1 text-xs font-semibold text-amber-800"
+                    >
+                      Warning
+                    </span>
                   </div>
                 </div>
               </div>
