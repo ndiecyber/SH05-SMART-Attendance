@@ -96,7 +96,7 @@ const attendanceData = {
   "2026-07-18": "absent",
   "2026-07-20": "present",
   "2026-07-24": "late",
-  "2026-07-28": "present",
+  "2026-08-28": "late",
 };
 
 const colors = {
@@ -148,12 +148,6 @@ function renderCalendar(date) {
 
     let dot = "";
 
-    if (status === "present") dot = "bg-emerald-500";
-
-    if (status === "late") dot = "bg-amber-500";
-
-    if (status === "absent") dot = "bg-red-500";
-
     attendanceCalendar.innerHTML += `
             <div
                 class="
@@ -172,13 +166,6 @@ function renderCalendar(date) {
                 <p class="font-semibold text-slate-700">
                     ${day}
                 </p>
-
-                ${
-                  dot
-                    ? `<div class="mx-auto mt-2 h-2 w-2 rounded-full ${dot}"></div>`
-                    : ""
-                }
-
             </div>
         `;
   }
