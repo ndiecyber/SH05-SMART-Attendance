@@ -1,4 +1,6 @@
-// Sidebar mobile
+// ==========================================
+// 1. NAVIGATION & SIDEBAR MANAGEMENT
+// ==========================================
 const sidebar = document.getElementById("sidebar");
 const sidebarOverlay = document.getElementById("sidebarOverlay");
 const openSidebar = document.getElementById("openSidebar");
@@ -30,39 +32,29 @@ openSidebar?.addEventListener("click", showSidebar);
 closeSidebar?.addEventListener("click", hideSidebar);
 sidebarOverlay?.addEventListener("click", hideSidebar);
 window.addEventListener("resize", handleResize);
+
+// Initialization
 handleResize();
 
-// Attendance UI elements
-const locationText = document.getElementById("locationText");
-const locationAddress = document.getElementById("locationAddress");
-const coordinates = document.getElementById("coordinates");
-const refreshLocation = document.getElementById("refreshLocation");
-const checkInBtn = document.getElementById("checkInBtn");
-const checkOutBtn = document.getElementById("checkOutBtn");
-const checkInStatus = document.getElementById("checkInStatus");
-const checkOutStatus = document.getElementById("checkOutStatus");
-const cameraPreview = document.getElementById("cameraPreview");
-const cameraOverlay = document.getElementById("cameraOverlay");
-const attendanceMap = document.getElementById("attendanceMap");
-const toggleCameraBtn = document.getElementById("toggleCameraBtn");
+// ==========================================
+// 2. REAL-TIME CLOCK SYSTEM
+// ==========================================
 const headerTime = document.getElementById("headerTime");
 const headerDate = document.getElementById("headerDate");
 const heroTime = document.getElementById("heroTime");
 const heroDay = document.getElementById("heroDay");
 const heroDate = document.getElementById("heroDate");
 
-let stream = null;
-let checkedIn = false;
-let checkedOut = false;
-
 function updateClock() {
   const now = new Date();
+
   const timeText = now.toLocaleTimeString("en-US", {
     hour: "2-digit",
     minute: "2-digit",
     second: "2-digit",
     hour12: false,
   });
+
   const dayText = now.toLocaleDateString("en-US", { weekday: "long" });
   const dateText = now.toLocaleDateString("en-US", {
     day: "numeric",
@@ -77,31 +69,42 @@ function updateClock() {
   if (heroDate) heroDate.textContent = dateText;
 }
 
+updateClock();
+setInterval(updateClock, 1000);
+
+// ==========================================
+// 3. GEOLOCATION & MAP SYSTEM
+// ==========================================
+const locationText = document.getElementById("locationText");
+const locationAddress = document.getElementById("locationAddress");
+const coordinates = document.getElementById("coordinates");
+const refreshLocation = document.getElementById("refreshLocation");
+const attendanceMap = document.getElementById("attendanceMap");
+
 async function getAddress(latitude, longitude) {
   try {
+    // Menggunakan API BigDataCloud (Bisa diakses langsung dari browser tanpa kendala User-Agent)
     const response = await fetch(
-      `https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=${latitude}&lon=${longitude}`,
-      {
-        headers: {
-          Accept: "application/json",
-        },
-      },
+      `https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${latitude}&longitude=${longitude}&localityLanguage=en`,
     );
 
-    if (!response.ok) {
-      throw new Error("Failed to fetch address");
-    }
+    if (!response.ok) throw new Error("Failed to retrieve address data");
 
     const data = await response.json();
+    const formattedAddress =
+      `${data.locality || ""}, ${data.principalSubdivision || ""}, ${data.countryName || ""}`.replace(
+        /^,\s*/,
+        "",
+      );
 
     if (locationAddress) {
-      locationAddress.textContent = data.display_name || "Address not found";
+      locationAddress.textContent =
+        formattedAddress || data.locality || "Address found";
     }
   } catch (error) {
-    console.error(error);
-
+    console.error("Geocoding Error:", error);
     if (locationAddress) {
-      locationAddress.textContent = "Unable to retrieve address.";
+      locationAddress.textContent = "Failed to load address details.";
     }
   }
 }
@@ -110,7 +113,7 @@ function setLocation(position) {
   const { latitude, longitude } = position.coords;
 
   if (locationText) {
-    locationText.textContent = "Current location detected";
+    locationText.textContent = "Location detected";
   }
 
   if (coordinates) {
@@ -124,13 +127,16 @@ function setLocation(position) {
   getAddress(latitude, longitude);
 }
 
-function showLocationError() {
+function showLocationError(error) {
+  console.warn("Geolocation Warning:", error?.message || error);
+
   if (locationText) {
-    locationText.textContent = "Location unavailable";
+    locationText.textContent = "Location not available";
   }
 
   if (locationAddress) {
-    locationAddress.textContent = "Please allow location permission.";
+    locationAddress.textContent =
+      "Please enable location permissions in your browser.";
   }
 
   if (coordinates) {
@@ -140,22 +146,35 @@ function showLocationError() {
 
 function requestLocation() {
   if (!navigator.geolocation) {
-    showLocationError();
+    showLocationError("Geolocation is not supported by this browser.");
     return;
+  }
+
+  if (locationText) {
+    locationText.textContent = "Searching for location...";
   }
 
   navigator.geolocation.getCurrentPosition(setLocation, showLocationError, {
     enableHighAccuracy: true,
     timeout: 10000,
-    maximumAge: 60000,
+    maximumAge: 0, // Memaksa browser mengambil lokasi terbaru
   });
 }
 
+refreshLocation?.addEventListener("click", requestLocation);
+requestLocation();
+
+// ==========================================
+// 4. CAMERA MEDIA STREAM
+// ==========================================
+const cameraPreview = document.getElementById("cameraPreview");
+const cameraOverlay = document.getElementById("cameraOverlay");
+const toggleCameraBtn = document.getElementById("toggleCameraBtn");
+let stream = null;
+
 async function startCamera() {
-  if (!cameraPreview || !navigator.mediaDevices?.getUserMedia) {
-    if (locationText) {
-      locationText.textContent = "Camera unavailable";
-    }
+  if (!navigator.mediaDevices?.getUserMedia) {
+    alert("Camera is not supported in this browser");
     return;
   }
 
@@ -170,18 +189,11 @@ async function startCamera() {
       cameraPreview.classList.remove("hidden");
     }
 
-    if (cameraOverlay) {
-      cameraOverlay.classList.add("hidden");
-    }
-
-    if (toggleCameraBtn) {
-      toggleCameraBtn.textContent = "Turn Camera Off";
-    }
+    cameraOverlay?.classList.add("hidden");
+    if (toggleCameraBtn) toggleCameraBtn.textContent = "Turn Off Camera";
   } catch (error) {
-    console.error(error);
-    if (locationText) {
-      locationText.textContent = "Unable to access the camera";
-    }
+    console.error("Camera Error:", error);
+    alert("Cannot access camera. Please ensure permissions are granted.");
   }
 }
 
@@ -196,14 +208,24 @@ function stopCamera() {
     cameraPreview.classList.add("hidden");
   }
 
-  if (cameraOverlay) {
-    cameraOverlay.classList.remove("hidden");
-  }
-
-  if (toggleCameraBtn) {
-    toggleCameraBtn.textContent = "Turn Camera On";
-  }
+  cameraOverlay?.classList.remove("hidden");
+  if (toggleCameraBtn) toggleCameraBtn.textContent = "Turn On Camera";
 }
+
+toggleCameraBtn?.addEventListener("click", () => {
+  stream ? stopCamera() : startCamera();
+});
+
+// ==========================================
+// 5. ATTENDANCE ACTIONS (CHECK-IN / CHECK-OUT)
+// ==========================================
+const checkInBtn = document.getElementById("checkInBtn");
+const checkOutBtn = document.getElementById("checkOutBtn");
+const checkInStatus = document.getElementById("checkInStatus");
+const checkOutStatus = document.getElementById("checkOutStatus");
+
+let checkedIn = false;
+let checkedOut = false;
 
 checkInBtn?.addEventListener("click", () => {
   if (checkedIn) return;
@@ -247,16 +269,39 @@ checkOutBtn?.addEventListener("click", () => {
   }
 });
 
-toggleCameraBtn?.addEventListener("click", () => {
-  if (stream) {
-    stopCamera();
-  } else {
-    startCamera();
-  }
-});
+// ==========================================
+// 6. TOAST NOTIFICATION SYSTEM
+// ==========================================
+const toast = document.getElementById("toast");
+const triggerBtn = document.getElementById("triggerBtn");
+const closeToastBtn = document.getElementById("closeToastBtn");
+let toastTimer;
 
-refreshLocation?.addEventListener("click", requestLocation);
+function showToast() {
+  if (!toast) return;
 
-updateClock();
-setInterval(updateClock, 1000);
-requestLocation();
+  clearTimeout(toastTimer);
+  toast.classList.remove("hidden");
+
+  setTimeout(() => {
+    toast.classList.remove("-translate-y-10", "opacity-0");
+    toast.classList.add("translate-y-0", "opacity-100");
+  }, 10);
+
+  toastTimer = setTimeout(hideToast, 3000);
+}
+
+function hideToast() {
+  if (!toast) return;
+
+  clearTimeout(toastTimer);
+  toast.classList.remove("translate-y-0", "opacity-100");
+  toast.classList.add("-translate-y-10", "opacity-0");
+
+  setTimeout(() => {
+    toast.classList.add("hidden");
+  }, 300);
+}
+
+triggerBtn?.addEventListener("click", showToast);
+closeToastBtn?.addEventListener("click", hideToast);

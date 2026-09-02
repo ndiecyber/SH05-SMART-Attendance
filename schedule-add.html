@@ -1,0 +1,186 @@
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Form Pengajuan Schedule</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+  </head>
+  <body
+    class="bg-slate-100 min-h-screen py-8 px-4 flex justify-center items-start text-slate-800 font-sans"
+  >
+    <!-- Popup Notifikasi (Toast Notification) -->
+    <div
+      id="toast"
+      class="fixed top-5 left-1/2 -translate-x-1/2 bg-black border border-emerald-200 text-white px-5 py-2.5 rounded-full shadow-lg flex items-center space-x-2 transition-all duration-300 opacity-0 pointer-events-none -translate-y-4 z-50"
+    >
+      <svg
+        class="w-5 h-5 text-emerald-500"
+        fill="none"
+        stroke="currentColor"
+        viewBox="0 0 24 24"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <path
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="2"
+          d="M5 13l4 4L19 7"
+        ></path>
+      </svg>
+      <span class="text-sm font-medium">Data berhasil disimpan</span>
+    </div>
+
+    <!-- Container Utama -->
+    <div
+      class="w-full max-w-md bg-white rounded-2xl shadow-sm border border-slate-200 p-6 relative"
+    >
+      <!-- Tombol Back Kiri Atas -->
+      <div class="mb-4">
+        <button
+          type="button"
+          id="backBtn"
+          class="inline-flex items-center text-sm font-medium text-slate-500 hover:text-slate-800 transition-colors"
+        >
+          <svg
+            class="w-4 h-4 mr-1"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M15 19l-7-7 7-7"
+            ></path>
+          </svg>
+          Kembali
+        </button>
+      </div>
+
+      <!-- Header Form -->
+      <div class="border-b border-slate-100 pb-4 mb-5">
+        <h1 class="text-xl font-bold text-slate-900">Pengajuan Schedule</h1>
+        <p class="text-xs text-slate-500 mt-1">
+          Isi formulir di bawah ini untuk mengajukan jadwal baru.
+        </p>
+      </div>
+
+      <!-- Form -->
+      <form id="scheduleForm" class="space-y-4">
+        <!-- Date -->
+        <div>
+          <label
+            for="date"
+            class="block text-xs font-semibold text-slate-600 uppercase tracking-wider mb-1"
+            >Date</label
+          >
+          <input
+            type="date"
+            id="date"
+            required
+            class="w-full px-3 py-2 text-sm bg-slate-50 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:bg-white transition-all"
+          />
+        </div>
+
+        <!-- Type -->
+        <div>
+          <label
+            for="type"
+            class="block text-xs font-semibold text-slate-600 uppercase tracking-wider mb-1"
+            >Type</label
+          >
+          <select
+            id="type"
+            required
+            class="w-full px-3 py-2 text-sm bg-slate-50 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:bg-white transition-all"
+          >
+            <option value="" disabled selected>Pilih tipe jadwal</option>
+            <option value="Workshift">Workshift</option>
+            <option value="Training">Training</option>
+            <option value="Meeting">Meeting</option>
+            <option value="Break">Break</option>
+          </select>
+        </div>
+
+        <!-- Time Range (Dari jam berapa ke berapa) -->
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label
+              for="startTime"
+              class="block text-xs font-semibold text-slate-600 uppercase tracking-wider mb-1"
+              >Start Time</label
+            >
+            <input
+              type="time"
+              id="startTime"
+              required
+              class="w-full px-3 py-2 text-sm bg-slate-50 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:bg-white transition-all"
+            />
+          </div>
+          <div>
+            <label
+              for="endTime"
+              class="block text-xs font-semibold text-slate-600 uppercase tracking-wider mb-1"
+              >End Time</label
+            >
+            <input
+              type="time"
+              id="endTime"
+              required
+              class="w-full px-3 py-2 text-sm bg-slate-50 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:bg-white transition-all"
+            />
+          </div>
+        </div>
+
+        <!-- Duration (Otomatis terhitung) -->
+        <div>
+          <label
+            for="duration"
+            class="block text-xs font-semibold text-slate-600 uppercase tracking-wider mb-1"
+            >Duration</label
+          >
+          <input
+            type="text"
+            id="duration"
+            readonly
+            placeholder="Otomatis terhitung"
+            class="w-full px-3 py-2 text-sm bg-slate-100 border border-slate-200 text-slate-500 rounded-lg focus:outline-none cursor-not-allowed"
+          />
+        </div>
+
+        <!-- Location -->
+        <div>
+          <label
+            for="location"
+            class="block text-xs font-semibold text-slate-600 uppercase tracking-wider mb-1"
+            >Location</label
+          >
+          <input
+            type="text"
+            id="location"
+            placeholder="Masukkan lokasi/ruangan"
+            required
+            class="w-full px-3 py-2 text-sm bg-slate-50 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:bg-white transition-all"
+          />
+        </div>
+
+        <!-- Submit Button -->
+        <div class="pt-2">
+          <button
+            type="submit"
+            class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-medium py-2.5 px-4 rounded-lg shadow-sm hover:shadow transition-all duration-200 text-sm"
+          >
+            Submit
+          </button>
+        </div>
+      </form>
+    </div>
+
+    <!-- Menghubungkan File JS External -->
+    <script src="js/schedule-add.js"></script>
+  </body>
+</html>

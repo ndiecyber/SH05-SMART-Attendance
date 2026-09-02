@@ -702,6 +702,7 @@
                 <div class="mt-6 space-y-3">
                   <button
                     id="checkInBtn"
+                    onclick="showToast()"
                     class="w-full rounded-2xl bg-emerald-600 py-4 font-semibold text-white hover:bg-emerald-700"
                   >
                     Check In
@@ -716,6 +717,7 @@
 
                   <button
                     id="checkOutBtn"
+                    onclick="showToast()"
                     disabled
                     class="w-full cursor-not-allowed rounded-2xl bg-slate-300 py-4 font-semibold text-white"
                   >
@@ -728,6 +730,60 @@
                   >
                     Status: Not Available
                   </p>
+
+                  <!-- Container Toast Notification (Atas Tengah) -->
+                  <div
+                    class="fixed top-5 left-1/2 -translate-x-1/2 z-50 pointer-events-none"
+                  >
+                    <div
+                      id="toast"
+                      class="pointer-events-auto flex items-center gap-3 bg-gray-900 text-white px-4 py-3 rounded-xl shadow-xl border border-gray-800 transition-all duration-300 -translate-y-10 opacity-0 hidden"
+                    >
+                      <!-- Icon Status (Success Checkmark) -->
+                      <span
+                        class="flex h-6 w-6 items-center justify-center rounded-full bg-emerald-500/20 text-emerald-400"
+                      >
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          class="h-4 w-4"
+                          fill="none"
+                          viewBox="0 0 24 24"
+                          stroke="currentColor"
+                        >
+                          <path
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            stroke-width="2.5"
+                            d="M5 13l4 4L19 7"
+                          />
+                        </svg>
+                      </span>
+
+                      <!-- Teks Pesan -->
+                      <p class="text-sm font-medium">Data berhasil disimpan!</p>
+
+                      <!-- Tombol Tutup (X) -->
+                      <button
+                        id="closeToastBtn"
+                        class="ml-2 text-gray-400 hover:text-white transition"
+                      >
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          class="h-4 w-4"
+                          fill="none"
+                          viewBox="0 0 24 24"
+                          stroke="currentColor"
+                        >
+                          <path
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            stroke-width="2"
+                            d="M6 18L18 6M6 6l12 12"
+                          />
+                        </svg>
+                      </button>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>

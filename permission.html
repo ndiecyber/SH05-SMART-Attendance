@@ -35,7 +35,7 @@
     />
   </head>
 
-  <body class="bg-slate-100 font-sans text-slate-800">
+  <body class="bg-slate-100 font-sans text-slate-800 overflow-x-hidden">
     <div class="min-h-screen bg-[#f5f7fb]">
       <div class="flex min-h-screen">
         <!-- Overlay mobile -->
@@ -52,21 +52,22 @@
           <!-- Brand -->
           <div class="flex items-center justify-between px-6 py-5">
             <div class="flex items-center gap-3">
+              <!-- PERBAIKAN: Mengganti w-15 / h-15 yang invalid menjadi w-12 / h-12 -->
               <div
-                class="flex h-15 w-20 items-center justify-center text-white shadow-lg"
+                class="flex h-12 w-12 shrink-0 items-center justify-center text-white shadow-lg"
               >
                 <img
                   src="assets/LEXA-logo.png"
                   alt="LEXA Logo"
-                  class="h-15 w-15 rounded-full object-cover shadow-lg"
+                  class="h-12 w-12 rounded-full object-cover shadow-lg"
                 />
               </div>
-              <div>
+              <div class="min-w-0 flex-1">
                 <p class="text-xs uppercase tracking-[0.35em] text-slate-300">
                   LEXA
                 </p>
                 <h2
-                  class="text-sm font-semibold uppercase tracking-[0.35em] text-white"
+                  class="text-sm font-semibold uppercase tracking-[0.35em] text-white truncate"
                 >
                   SMART ATTENDANCE
                 </h2>
@@ -368,7 +369,7 @@
         </aside>
 
         <!-- Main -->
-        <main class="flex-1 md:ml-72">
+        <main class="flex-1 min-w-0 md:ml-72">
           <!-- Header -->
           <header
             class="sticky top-0 z-20 border-b border-slate-200 bg-white/90 px-4 py-4 backdrop-blur sm:px-6"
@@ -445,7 +446,6 @@
               class="flex flex-col gap-3 rounded-2xl bg-white p-2 shadow-sm md:flex-row md:items-center md:justify-between"
             >
               <!-- Left : Legend -->
-
               <div class="pl-4 flex flex-wrap gap-5">
                 <h1 class="text-2xl font-semibold text-slate-800">
                   Permission
@@ -453,11 +453,12 @@
               </div>
 
               <!-- Right : Add Button -->
-              <button
+              <a
+                href="permission-add.html"
                 class="flex items-center justify-center gap-2 rounded-xl bg-indigo-600 px-4 py-2 text-sm font-medium text-white transition hover:bg-indigo-700"
               >
                 + Request Permission
-              </button>
+              </a>
             </div>
 
             <!-- Main grid -->
@@ -467,7 +468,7 @@
                 class="flex items-center gap-4 rounded-3xl bg-white p-5 shadow-sm"
               >
                 <div
-                  class="flex h-14 w-14 items-center justify-center rounded-2xl bg-amber-100 text-amber-500"
+                  class="flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl bg-amber-100 text-amber-500"
                 >
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
@@ -502,7 +503,7 @@
                 class="flex items-center gap-4 rounded-3xl bg-white p-5 shadow-sm"
               >
                 <div
-                  class="flex h-14 w-14 items-center justify-center rounded-2xl bg-emerald-100 text-emerald-600"
+                  class="flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl bg-emerald-100 text-emerald-600"
                 >
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
@@ -537,7 +538,7 @@
                 class="flex items-center gap-4 rounded-3xl bg-white p-5 shadow-sm"
               >
                 <div
-                  class="flex h-14 w-14 items-center justify-center rounded-2xl bg-red-100 text-red-600"
+                  class="flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl bg-red-100 text-red-600"
                 >
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
@@ -581,7 +582,7 @@
                 class="flex items-center gap-4 rounded-3xl bg-white p-5 shadow-sm"
               >
                 <div
-                  class="flex h-14 w-14 items-center justify-center rounded-2xl bg-blue-100 text-blue-600"
+                  class="flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl bg-blue-100 text-blue-600"
                 >
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
@@ -707,9 +708,22 @@
                       Permission Timeline for today
                     </p>
                   </div>
+
+                  <!-- Tambahan opsional: Penanda jumlah permission hari ini -->
+                  <span
+                    class="rounded-full bg-indigo-100 px-3 py-1 text-xs font-medium text-indigo-700"
+                  >
+                    3 Today
+                  </span>
                 </div>
 
-                <div id="upcomingPermissionList" class="mt-6 space-y-4"></div>
+                <!-- Container tempat data JS di-render -->
+                <div
+                  id="upcomingPermissionList"
+                  class="mt-6 space-y-3 max-h-[420px] overflow-y-auto pr-1"
+                >
+                  <!-- Data dari JS akan muncul di sini secara otomatis -->
+                </div>
               </div>
 
               <!-- ================= RIGHT : team permission ================= -->
@@ -847,89 +861,109 @@
                 <span
                   class="inline-flex items-center rounded-full bg-slate-100 px-3 py-1 text-sm font-medium text-slate-600"
                 >
-                  5 Requests
+                  Requests
                 </span>
               </div>
 
-              <!-- Table -->
-              <div class="overflow-x-auto">
-                <table class="min-w-full">
-                  <thead class="border-b border-slate-200">
-                    <tr class="text-left text-sm font-semibold text-slate-600">
-                      <th class="px-4 py-3">Request ID</th>
-                      <th class="px-4 py-3">Type</th>
-                      <th class="px-4 py-3">Date</th>
-                      <th class="px-4 py-3">Time</th>
-                      <th class="px-4 py-3">Duration</th>
-                      <th class="px-4 py-3">Reason</th>
-                      <th class="px-4 py-3">Status</th>
-                      <th class="px-4 py-3">Submitted</th>
-                      <th class="px-4 py-3 text-center">Action</th>
+              <!-- Table Container -->
+              <!-- Table Wrapper (Tanpa Scroll Bar) -->
+              <div class="w-full">
+                <table class="w-full text-left text-sm">
+                  <thead
+                    class="border-b border-slate-200 text-xs font-semibold uppercase text-slate-500"
+                  >
+                    <tr>
+                      <th class="py-3 px-2">ID</th>
+                      <th class="py-3 px-2">Type</th>
+                      <th class="py-3 px-2">Date</th>
+                      <th class="py-3 px-2 hidden sm:table-cell">Time</th>
+                      <th class="py-3 px-2 hidden lg:table-cell">Duration</th>
+                      <th class="py-3 px-2 hidden md:table-cell">Reason</th>
+                      <th class="py-3 px-2">Status</th>
+                      <th class="py-3 px-2 hidden xl:table-cell">Submitted</th>
+                      <th class="py-3 px-2 text-center">Action</th>
                     </tr>
                   </thead>
 
-                  <tbody class="divide-y divide-slate-100 text-sm">
+                  <tbody class="divide-y divide-slate-100">
+                    <!-- Row 1 -->
                     <tr class="hover:bg-slate-50">
-                      <td class="px-4 py-4 font-medium text-slate-800">
-                        PM-2026-001
+                      <td class="py-3 px-2 font-medium text-slate-800">
+                        PM-001
                       </td>
-                      <td class="px-4 py-4">
+                      <td class="py-3 px-2">
                         <span
-                          class="rounded-full bg-sky-100 px-3 py-1 text-xs font-semibold text-sky-700"
+                          class="rounded-full bg-sky-100 px-2 py-0.5 text-xs font-semibold text-sky-700"
                           >WFH</span
                         >
                       </td>
-                      <td class="px-4 py-4">18 Jul 2026</td>
-                      <td class="px-4 py-4">08:00 - 17:00</td>
-                      <td class="px-4 py-4">9 Hours</td>
-                      <td class="px-4 py-4">Internet maintenance at home</td>
-                      <td class="px-4 py-4">
+                      <td class="py-3 px-2 text-xs sm:text-sm">18 Jul 2026</td>
+                      <td class="py-3 px-2 hidden sm:table-cell text-xs">
+                        08:00-17:00
+                      </td>
+                      <td class="py-3 px-2 hidden lg:table-cell">9 Hours</td>
+                      <td
+                        class="py-3 px-2 hidden md:table-cell truncate max-w-[150px]"
+                      >
+                        Internet maintenance
+                      </td>
+                      <td class="py-3 px-2">
                         <span
-                          class="rounded-full bg-green-100 px-3 py-1 text-xs font-semibold text-green-700"
+                          class="rounded-full bg-green-100 px-2 py-0.5 text-xs font-semibold text-green-700"
                           >Approved</span
                         >
                       </td>
-                      <td class="px-4 py-4">17 Jul 2026 16:35</td>
-                      <td class="px-4 py-4 text-center">
+                      <td class="py-3 px-2 hidden xl:table-cell text-xs">
+                        17 Jul 16:35
+                      </td>
+                      <td class="py-3 px-2 text-center">
                         <button
-                          class="rounded-lg bg-indigo-600 px-3 py-1.5 text-xs font-medium text-white hover:bg-indigo-700"
+                          class="rounded-lg bg-indigo-600 px-2.5 py-1 text-xs font-medium text-white hover:bg-indigo-700"
                         >
                           View
                         </button>
                       </td>
                     </tr>
 
+                    <!-- Row 2 -->
                     <tr class="hover:bg-slate-50">
-                      <td class="px-4 py-4 font-medium text-slate-800">
-                        PM-2026-002
+                      <td class="py-3 px-2 font-medium text-slate-800">
+                        PM-002
                       </td>
-                      <td class="px-4 py-4">
+                      <td class="py-3 px-2">
                         <span
-                          class="rounded-full bg-amber-100 px-3 py-1 text-xs font-semibold text-amber-700"
-                          >Arrive Late</span
+                          class="rounded-full bg-amber-100 px-2 py-0.5 text-xs font-semibold text-amber-700"
+                          >Late</span
                         >
                       </td>
-                      <td class="px-4 py-4">19 Jul 2026</td>
-                      <td class="px-4 py-4">09:30 - 10:30</td>
-                      <td class="px-4 py-4">1 Hour</td>
-                      <td class="px-4 py-4">Hospital appointment</td>
-                      <td class="px-4 py-4">
+                      <td class="py-3 px-2 text-xs sm:text-sm">19 Jul 2026</td>
+                      <td class="py-3 px-2 hidden sm:table-cell text-xs">
+                        09:30-10:30
+                      </td>
+                      <td class="py-3 px-2 hidden lg:table-cell">1 Hour</td>
+                      <td
+                        class="py-3 px-2 hidden md:table-cell truncate max-w-[150px]"
+                      >
+                        Hospital appointment
+                      </td>
+                      <td class="py-3 px-2">
                         <span
-                          class="rounded-full bg-yellow-100 px-3 py-1 text-xs font-semibold text-yellow-700"
+                          class="rounded-full bg-yellow-100 px-2 py-0.5 text-xs font-semibold text-yellow-700"
                           >Pending</span
                         >
                       </td>
-                      <td class="px-4 py-4">18 Jul 2026 19:10</td>
-                      <td class="px-4 py-4 text-center">
-                        <div class="flex justify-center gap-2">
+                      <td class="py-3 px-2 hidden xl:table-cell text-xs">
+                        18 Jul 19:10
+                      </td>
+                      <td class="py-3 px-2 text-center">
+                        <div class="flex justify-center gap-1">
                           <button
-                            class="rounded-lg bg-indigo-600 px-3 py-1.5 text-xs font-medium text-white transition hover:bg-indigo-700"
+                            class="rounded-lg bg-indigo-600 px-2 py-1 text-xs font-medium text-white hover:bg-indigo-700"
                           >
                             View
                           </button>
-
                           <button
-                            class="rounded-lg bg-red-600 px-3 py-1.5 text-xs font-medium text-white transition hover:bg-red-700"
+                            class="rounded-lg bg-red-600 px-2 py-1 text-xs font-medium text-white hover:bg-red-700"
                           >
                             Cancel
                           </button>
@@ -937,248 +971,39 @@
                       </td>
                     </tr>
 
+                    <!-- Row 3 -->
                     <tr class="hover:bg-slate-50">
-                      <td class="px-4 py-4 font-medium text-slate-800">
-                        PM-2026-003
+                      <td class="py-3 px-2 font-medium text-slate-800">
+                        PM-003
                       </td>
-                      <td class="px-4 py-4">
+                      <td class="py-3 px-2">
                         <span
-                          class="rounded-full bg-indigo-100 px-3 py-1 text-xs font-semibold text-indigo-700"
-                          >Business Trip</span
+                          class="rounded-full bg-indigo-100 px-2 py-0.5 text-xs font-semibold text-indigo-700"
+                          >Trip</span
                         >
                       </td>
-                      <td class="px-4 py-4">20 Jul 2026</td>
-                      <td class="px-4 py-4">09:00 - 16:00</td>
-                      <td class="px-4 py-4">7 Hours</td>
-                      <td class="px-4 py-4">Client meeting</td>
-                      <td class="px-4 py-4">
+                      <td class="py-3 px-2 text-xs sm:text-sm">20 Jul 2026</td>
+                      <td class="py-3 px-2 hidden sm:table-cell text-xs">
+                        09:00-16:00
+                      </td>
+                      <td class="py-3 px-2 hidden lg:table-cell">7 Hours</td>
+                      <td
+                        class="py-3 px-2 hidden md:table-cell truncate max-w-[150px]"
+                      >
+                        Client meeting
+                      </td>
+                      <td class="py-3 px-2">
                         <span
-                          class="rounded-full bg-green-100 px-3 py-1 text-xs font-semibold text-green-700"
+                          class="rounded-full bg-green-100 px-2 py-0.5 text-xs font-semibold text-green-700"
                           >Approved</span
                         >
                       </td>
-                      <td class="px-4 py-4">18 Jul 2026 14:25</td>
-                      <td class="px-4 py-4 text-center">
+                      <td class="py-3 px-2 hidden xl:table-cell text-xs">
+                        18 Jul 14:25
+                      </td>
+                      <td class="py-3 px-2 text-center">
                         <button
-                          class="rounded-lg bg-indigo-600 px-3 py-1.5 text-xs font-medium text-white hover:bg-indigo-700"
-                        >
-                          View
-                        </button>
-                      </td>
-                    </tr>
-
-                    <tr class="hover:bg-slate-50">
-                      <td class="px-4 py-4 font-medium text-slate-800">
-                        PM-2026-004
-                      </td>
-                      <td class="px-4 py-4">
-                        <span
-                          class="rounded-full bg-orange-100 px-3 py-1 text-xs font-semibold text-orange-700"
-                          >Leave Early</span
-                        >
-                      </td>
-                      <td class="px-4 py-4">21 Jul 2026</td>
-                      <td class="px-4 py-4">15:00 - 17:00</td>
-                      <td class="px-4 py-4">2 Hours</td>
-                      <td class="px-4 py-4">Family event</td>
-                      <td class="px-4 py-4">
-                        <span
-                          class="rounded-full bg-red-100 px-3 py-1 text-xs font-semibold text-red-700"
-                          >Rejected</span
-                        >
-                      </td>
-                      <td class="px-4 py-4">20 Jul 2026 08:42</td>
-                      <td class="px-4 py-4 text-center">
-                        <button
-                          class="rounded-lg bg-indigo-600 px-3 py-1.5 text-xs font-medium text-white hover:bg-indigo-700"
-                        >
-                          View
-                        </button>
-                      </td>
-                    </tr>
-
-                    <tr class="hover:bg-slate-50">
-                      <td class="px-4 py-4 font-medium text-slate-800">
-                        PM-2026-005
-                      </td>
-                      <td class="px-4 py-4">
-                        <span
-                          class="rounded-full bg-violet-100 px-3 py-1 text-xs font-semibold text-violet-700"
-                          >Pop Out</span
-                        >
-                      </td>
-                      <td class="px-4 py-4">22 Jul 2026</td>
-                      <td class="px-4 py-4">13:00 - 14:00</td>
-                      <td class="px-4 py-4">1 Hour</td>
-                      <td class="px-4 py-4">Bank administration</td>
-                      <td class="px-4 py-4">
-                        <span
-                          class="rounded-full bg-green-100 px-3 py-1 text-xs font-semibold text-green-700"
-                          >Approved</span
-                        >
-                      </td>
-                      <td class="px-4 py-4">21 Jul 2026 17:18</td>
-                      <td class="px-4 py-4 text-center">
-                        <button
-                          class="rounded-lg bg-indigo-600 px-3 py-1.5 text-xs font-medium text-white hover:bg-indigo-700"
-                        >
-                          View
-                        </button>
-                      </td>
-                    </tr>
-
-                    <tr class="hover:bg-slate-50">
-                      <td class="px-4 py-4 font-medium text-slate-800">
-                        PM-2026-006
-                      </td>
-                      <td class="px-4 py-4">
-                        <span
-                          class="rounded-full bg-sky-100 px-3 py-1 text-xs font-semibold text-sky-700"
-                          >WFH</span
-                        >
-                      </td>
-                      <td class="px-4 py-4">23 Jul 2026</td>
-                      <td class="px-4 py-4">08:00 - 17:00</td>
-                      <td class="px-4 py-4">9 Hours</td>
-                      <td class="px-4 py-4">Home renovation</td>
-                      <td class="px-4 py-4">
-                        <span
-                          class="rounded-full bg-yellow-100 px-3 py-1 text-xs font-semibold text-yellow-700"
-                          >Pending</span
-                        >
-                      </td>
-                      <td class="px-4 py-4">22 Jul 2026 15:40</td>
-                      <td class="px-4 py-4 text-center">
-                        <div class="flex justify-center gap-2">
-                          <button
-                            class="rounded-lg bg-indigo-600 px-3 py-1.5 text-xs font-medium text-white transition hover:bg-indigo-700"
-                          >
-                            View
-                          </button>
-
-                          <button
-                            class="rounded-lg bg-red-600 px-3 py-1.5 text-xs font-medium text-white transition hover:bg-red-700"
-                          >
-                            Cancel
-                          </button>
-                        </div>
-                      </td>
-                    </tr>
-
-                    <tr class="hover:bg-slate-50">
-                      <td class="px-4 py-4 font-medium text-slate-800">
-                        PM-2026-007
-                      </td>
-                      <td class="px-4 py-4">
-                        <span
-                          class="rounded-full bg-indigo-100 px-3 py-1 text-xs font-semibold text-indigo-700"
-                          >Business Trip</span
-                        >
-                      </td>
-                      <td class="px-4 py-4">24 Jul 2026</td>
-                      <td class="px-4 py-4">08:30 - 15:30</td>
-                      <td class="px-4 py-4">7 Hours</td>
-                      <td class="px-4 py-4">Site inspection</td>
-                      <td class="px-4 py-4">
-                        <span
-                          class="rounded-full bg-green-100 px-3 py-1 text-xs font-semibold text-green-700"
-                          >Approved</span
-                        >
-                      </td>
-                      <td class="px-4 py-4">22 Jul 2026 10:12</td>
-                      <td class="px-4 py-4 text-center">
-                        <button
-                          class="rounded-lg bg-indigo-600 px-3 py-1.5 text-xs font-medium text-white hover:bg-indigo-700"
-                        >
-                          View
-                        </button>
-                      </td>
-                    </tr>
-
-                    <tr class="hover:bg-slate-50">
-                      <td class="px-4 py-4 font-medium text-slate-800">
-                        PM-2026-008
-                      </td>
-                      <td class="px-4 py-4">
-                        <span
-                          class="rounded-full bg-orange-100 px-3 py-1 text-xs font-semibold text-orange-700"
-                          >Leave Early</span
-                        >
-                      </td>
-                      <td class="px-4 py-4">25 Jul 2026</td>
-                      <td class="px-4 py-4">16:00 - 17:00</td>
-                      <td class="px-4 py-4">1 Hour</td>
-                      <td class="px-4 py-4">Pick up child</td>
-                      <td class="px-4 py-4">
-                        <span
-                          class="rounded-full bg-green-100 px-3 py-1 text-xs font-semibold text-green-700"
-                          >Approved</span
-                        >
-                      </td>
-                      <td class="px-4 py-4">24 Jul 2026 18:03</td>
-                      <td class="px-4 py-4 text-center">
-                        <button
-                          class="rounded-lg bg-indigo-600 px-3 py-1.5 text-xs font-medium text-white hover:bg-indigo-700"
-                        >
-                          View
-                        </button>
-                      </td>
-                    </tr>
-
-                    <tr class="hover:bg-slate-50">
-                      <td class="px-4 py-4 font-medium text-slate-800">
-                        PM-2026-009
-                      </td>
-                      <td class="px-4 py-4">
-                        <span
-                          class="rounded-full bg-violet-100 px-3 py-1 text-xs font-semibold text-violet-700"
-                          >Pop Out</span
-                        >
-                      </td>
-                      <td class="px-4 py-4">26 Jul 2026</td>
-                      <td class="px-4 py-4">10:00 - 11:30</td>
-                      <td class="px-4 py-4">1.5 Hours</td>
-                      <td class="px-4 py-4">Government office</td>
-                      <td class="px-4 py-4">
-                        <span
-                          class="rounded-full bg-red-100 px-3 py-1 text-xs font-semibold text-red-700"
-                          >Rejected</span
-                        >
-                      </td>
-                      <td class="px-4 py-4">25 Jul 2026 20:01</td>
-                      <td class="px-4 py-4 text-center">
-                        <button
-                          class="rounded-lg bg-indigo-600 px-3 py-1.5 text-xs font-medium text-white hover:bg-indigo-700"
-                        >
-                          View
-                        </button>
-                      </td>
-                    </tr>
-
-                    <tr class="hover:bg-slate-50">
-                      <td class="px-4 py-4 font-medium text-slate-800">
-                        PM-2026-010
-                      </td>
-                      <td class="px-4 py-4">
-                        <span
-                          class="rounded-full bg-amber-100 px-3 py-1 text-xs font-semibold text-amber-700"
-                          >Arrive Late</span
-                        >
-                      </td>
-                      <td class="px-4 py-4">27 Jul 2026</td>
-                      <td class="px-4 py-4">09:00 - 10:00</td>
-                      <td class="px-4 py-4">1 Hour</td>
-                      <td class="px-4 py-4">Vehicle breakdown</td>
-                      <td class="px-4 py-4">
-                        <span
-                          class="rounded-full bg-green-100 px-3 py-1 text-xs font-semibold text-green-700"
-                          >Approved</span
-                        >
-                      </td>
-                      <td class="px-4 py-4">26 Jul 2026 22:14</td>
-                      <td class="px-4 py-4 text-center">
-                        <button
-                          class="rounded-lg bg-indigo-600 px-3 py-1.5 text-xs font-medium text-white hover:bg-indigo-700"
+                          class="rounded-lg bg-indigo-600 px-2.5 py-1 text-xs font-medium text-white hover:bg-indigo-700"
                         >
                           View
                         </button>
@@ -1186,41 +1011,42 @@
                     </tr>
                   </tbody>
                 </table>
-                <!-- Pagination -->
-                <div
-                  class="mt-6 flex flex-col gap-3 border-t border-slate-200 pt-4 sm:flex-row sm:items-center sm:justify-between"
-                >
-                  <!-- Info -->
-                  <p class="text-sm text-slate-500">
-                    Showing <span id="startItem">1</span> -
-                    <span id="endItem">8</span> of
-                    <span id="totalItems">15</span> requests
-                  </p>
+              </div>
 
-                  <!-- Controls -->
-                  <div class="flex items-center justify-end gap-2">
-                    <button
-                      id="prevPage"
-                      class="rounded-xl border border-slate-200 px-4 py-2 text-sm font-medium text-slate-600 transition hover:bg-slate-100 disabled:cursor-not-allowed disabled:opacity-50"
-                      disabled
-                    >
-                      ← Previous
-                    </button>
+              <!-- Pagination -->
+              <div
+                class="mt-6 flex flex-col gap-3 border-t border-slate-200 pt-4 sm:flex-row sm:items-center sm:justify-between"
+              >
+                <!-- Info -->
+                <p class="text-sm text-slate-500">
+                  Showing <span id="startItem">1</span> -
+                  <span id="endItem">8</span> of
+                  <span id="totalItems">15</span> requests
+                </p>
 
-                    <span
-                      id="pageIndicator"
-                      class="rounded-xl bg-slate-100 px-4 py-2 text-sm font-medium text-slate-700"
-                    >
-                      Page 1 of 2
-                    </span>
+                <!-- Controls -->
+                <div class="flex items-center justify-end gap-2">
+                  <button
+                    id="prevPage"
+                    class="rounded-xl border border-slate-200 px-4 py-2 text-sm font-medium text-slate-600 transition hover:bg-slate-100 disabled:cursor-not-allowed disabled:opacity-50"
+                    disabled
+                  >
+                    ← Previous
+                  </button>
 
-                    <button
-                      id="nextPage"
-                      class="rounded-xl border border-slate-200 px-4 py-2 text-sm font-medium text-slate-600 transition hover:bg-slate-100"
-                    >
-                      Next →
-                    </button>
-                  </div>
+                  <span
+                    id="pageIndicator"
+                    class="rounded-xl bg-slate-100 px-4 py-2 text-sm font-medium text-slate-700"
+                  >
+                    Page 1 of 2
+                  </span>
+
+                  <button
+                    id="nextPage"
+                    class="rounded-xl border border-slate-200 px-4 py-2 text-sm font-medium text-slate-600 transition hover:bg-slate-100"
+                  >
+                    Next →
+                  </button>
                 </div>
               </div>
             </div>

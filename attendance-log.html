@@ -456,6 +456,8 @@
               <div class="flex flex-wrap items-center gap-3">
                 <!-- Export PDF -->
                 <button
+                  id="triggerBtn"
+                  onclick="ubahTekspdf()"
                   class="flex items-center justify-center gap-2 rounded-xl border bg-slate-50 px-4 py-2 text-sm font-medium text-slate-700 shadow-sm transition hover:bg-slate-200"
                 >
                   <svg
@@ -478,6 +480,8 @@
 
                 <!-- Export CSV -->
                 <button
+                  id="csvBtn"
+                  onclick="ubahTekscsv()"
                   class="flex items-center justify-center gap-2 rounded-xl bg-indigo-600 px-4 py-2 text-sm font-medium text-white transition hover:bg-indigo-700"
                 >
                   <svg
@@ -497,6 +501,62 @@
 
                   Export CSV
                 </button>
+
+                <!-- Container Toast Notification (Atas Tengah) -->
+                <div
+                  class="fixed top-5 left-1/2 -translate-x-1/2 z-50 pointer-events-none"
+                >
+                  <div
+                    id="toast"
+                    class="pointer-events-auto flex items-center gap-3 bg-gray-900 text-white px-4 py-3 rounded-xl shadow-xl border border-gray-800 transition-all duration-300 -translate-y-10 opacity-0 hidden"
+                  >
+                    <!-- Icon Status (Success Checkmark) -->
+                    <span
+                      class="flex h-6 w-6 items-center justify-center rounded-full bg-emerald-500/20 text-emerald-400"
+                    >
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        class="h-4 w-4"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke="currentColor"
+                      >
+                        <path
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                          stroke-width="2.5"
+                          d="M5 13l4 4L19 7"
+                        />
+                      </svg>
+                    </span>
+
+                    <!-- Teks Pesan -->
+                    <p class="text-sm font-medium">
+                      Mengexport file:<span id="teksPopup">...</span>
+                    </p>
+
+                    <!-- Tombol Tutup (X) -->
+                    <button
+                      id="closeToastBtn"
+                      class="ml-2 text-gray-400 hover:text-white transition"
+                    >
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        class="h-4 w-4"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke="currentColor"
+                      >
+                        <path
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                          stroke-width="2"
+                          d="M6 18L18 6M6 6l12 12"
+                        />
+                      </svg>
+                    </button>
+                  </div>
+                </div>
               </div>
             </div>
 

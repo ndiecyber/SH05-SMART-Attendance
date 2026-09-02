@@ -449,7 +449,7 @@ reportsContainer.innerHTML = savedReports
         <!-- KANAN: Tombol Generate dengan Ikon -->
         <div class="shrink-0">
           <button 
-            onclick="generateReport('${report.id}', '${report.title}')"
+            onclick="showToast('${report.id}', '${report.title}')"
             class="inline-flex items-center gap-2 rounded-xl bg-blue-600 px-4 py-2.5 text-sm font-medium text-white transition-all hover:bg-blue-700 active:scale-95 shadow-sm shadow-blue-200"
           >
             <!-- Lucide Icon: FileText/Download -->
@@ -463,6 +463,56 @@ reportsContainer.innerHTML = savedReports
     `,
   )
   .join("");
+
+const toast = document.getElementById("toast");
+const closeToastBtn = document.getElementById("closeToastBtn");
+let toastTimer;
+
+function showToast(id, title, message = "Meng-generate laporan:") {
+  // 1. Ambil nilai title (gunakan fallback jika dipanggil tanpa parameter)
+  const reportTitle = title || "Default Report";
+  document.getElementById("file-name").textContent = reportTitle;
+
+  const toastMessageEl = document.getElementById("toast-message");
+  if (toastMessageEl) {
+    toastMessageEl.textContent = message;
+  }
+
+  // 2. Batalkan timer penutupan sebelumnya jika ada
+  clearTimeout(toastTimer);
+
+  // 3. Hapus 'hidden' terlebih dahulu agar elemen masuk ke DOM
+  toast.classList.remove("hidden");
+
+  // 4. Gunakan requestAnimationFrame / setTimeout tipis
+  // agar browser sempat me-render elemen sebelum memicu animasi transisi
+  setTimeout(() => {
+    toast.classList.remove("-translate-y-10", "opacity-0");
+    toast.classList.add("translate-y-0", "opacity-100");
+  }, 20);
+
+  // 5. Atur penutupan otomatis setelah 3 detik
+  toastTimer = setTimeout(hideToast, 3000);
+}
+
+function hideToast() {
+  // 1. Stop timer otomatis agar tidak memicu hideToast dua kali
+  clearTimeout(toastTimer);
+
+  // 2. Jalankan animasi keluar (slide up & fade out)
+  toast.classList.remove("translate-y-0", "opacity-100");
+  toast.classList.add("-translate-y-10", "opacity-0");
+
+  // 3. Tunggu hingga animasi CSS selesai (300ms sesuai duration-300), baru pasang class 'hidden'
+  setTimeout(() => {
+    toast.classList.add("hidden");
+  }, 300);
+}
+
+// Event Listener tombol close (X)
+if (closeToastBtn) {
+  closeToastBtn.addEventListener("click", hideToast);
+}
 
 // Action Handler
 function generateReport(id, title) {

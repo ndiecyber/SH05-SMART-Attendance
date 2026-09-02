@@ -57,6 +57,53 @@ function updateClock() {
 updateClock();
 setInterval(updateClock, 1000);
 
+const toast = document.getElementById("toast");
+const triggerBtn = document.getElementById("triggerBtn");
+const csvBtn = document.getElementById("csvBtn");
+const closeToastBtn = document.getElementById("closeToastBtn");
+let toastTimer;
+
+function ubahTekspdf() {
+  document.getElementById("teksPopup").textContent = "PDF File";
+}
+
+function ubahTekscsv() {
+  document.getElementById("teksPopup").textContent = "CSV File";
+}
+
+function showToast() {
+  // Reset timer jika tombol diklik ulang sebelum toast hilang
+  clearTimeout(toastTimer);
+
+  // Tampilkan elemen
+  toast.classList.remove("hidden");
+
+  // Trigger animasi slide-down dan fade-in
+  setTimeout(() => {
+    toast.classList.remove("-translate-y-10", "opacity-0");
+    toast.classList.add("translate-y-0", "opacity-100");
+  }, 10);
+
+  // Otomatis sembunyikan setelah 3 detik
+  toastTimer = setTimeout(hideToast, 3000);
+}
+
+function hideToast() {
+  // Animasi slide-up dan fade-out
+  toast.classList.remove("translate-y-0", "opacity-100");
+  toast.classList.add("-translate-y-10", "opacity-0");
+
+  // Sembunyikan penuh setelah animasi CSS selesai (300ms)
+  setTimeout(() => {
+    toast.classList.add("hidden");
+  }, 300);
+}
+
+// Event Listeners
+triggerBtn.addEventListener("click", showToast);
+csvBtn.addEventListener("click", showToast);
+closeToastBtn.addEventListener("click", hideToast);
+
 // Activity chart (canvas, no external library required)
 const activityChart = document.getElementById("activityTrendChart");
 const activityLabels = [
