@@ -1,0 +1,1206 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Smart Attendance Dashboard</title>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            fontFamily: {
+              sans: ["Inter", "sans-serif"],
+            },
+            colors: {
+              primary: {
+                50: "#eef2ff",
+                100: "#e0e7ff",
+                500: "#6366f1",
+                600: "#4f46e5",
+                700: "#4338ca",
+              },
+            },
+          },
+        },
+      };
+    </script>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+
+  <body class="bg-slate-100 font-sans text-slate-800">
+    <div class="min-h-screen bg-[#f5f7fb]">
+      <div class="flex min-h-screen">
+        <!-- Overlay mobile -->
+        <div
+          id="sidebarOverlay"
+          class="fixed inset-0 z-30 hidden bg-black/40 md:hidden"
+        ></div>
+
+        <!-- Sidebar -->
+        <aside
+          id="sidebar"
+          class="fixed inset-y-0 left-0 z-40 flex w-72 -translate-x-full flex-col border-r border-slate-200 bg-[#000033] shadow-xl transition-transform duration-300 md:translate-x-0"
+        >
+          <!-- Brand -->
+          <div class="flex items-center justify-between px-6 py-5">
+            <div class="flex items-center gap-3">
+              <div
+                class="flex h-15 w-20 items-center justify-center text-white shadow-lg"
+              >
+                <img
+                  src="assets/LEXA-logo.png"
+                  alt="LEXA Logo"
+                  class="h-15 w-15 rounded-full object-cover shadow-lg"
+                />
+              </div>
+              <div>
+                <p class="text-xs uppercase tracking-[0.35em] text-slate-300">
+                  LEXA
+                </p>
+                <h2
+                  class="text-sm font-semibold uppercase tracking-[0.35em] text-white"
+                >
+                  SMART ATTENDANCE
+                </h2>
+              </div>
+            </div>
+
+            <!-- Close mobile -->
+            <button
+              id="closeSidebar"
+              class="rounded-xl p-2 text-white hover:bg-white/10 md:hidden"
+              aria-label="Close menu"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                class="h-6 w-6"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M6 18L18 6M6 6l12 12"
+                />
+              </svg>
+            </button>
+          </div>
+
+          <!-- Navigation -->
+          <nav class="mt-4 flex-1 space-y-1 px-3">
+            <a
+              href="index.html"
+              class="flex items-center gap-3 rounded-2xl px-3 py-1 text-sm font-medium text-slate-200 transition hover:bg-white/10"
+            >
+              <span
+                class="flex h-8 w-8 items-center justify-center rounded-xl bg-white/10"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  class="h-4 w-4"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001 1h6a1 1 0 001-1m-7 0h8"
+                  />
+                </svg>
+              </span>
+              Dashboard
+            </a>
+
+            <a
+              href="Check-in-out.html"
+              class="flex items-center gap-3 rounded-2xl px-3 py-1 text-sm font-medium text-slate-200 transition hover:bg-white/10"
+            >
+              <span
+                class="flex h-8 w-8 items-center justify-center rounded-xl bg-white/10"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  class="h-4 w-4"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M12 6v6l4 2m6-2a10 10 0 11-20 0 10 10 0 0120 0z"
+                  />
+                </svg>
+              </span>
+              Check-in / out
+            </a>
+
+            <a
+              href="attendance.html"
+              class="flex items-center gap-3 rounded-2xl px-3 py-1 text-sm font-medium text-slate-200 transition hover:bg-white/10"
+            >
+              <span
+                class="flex h-8 w-8 items-center justify-center rounded-xl bg-white/10"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  class="h-4 w-4"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M9 3h6a2 2 0 012 2h1a2 2 0 012 2v12a2 2 0 01-2 2H6a2 2 0 01-2-2V7a2 2 0 012-2h1a2 2 0 012-2zm0 0a2 2 0 002 2h2a2 2 0 002-2M8 11h8M8 15h5"
+                  />
+                </svg>
+              </span>
+              Attendance
+            </a>
+
+            <a
+              href="schedule.html"
+              class="flex items-center gap-3 rounded-2xl px-3 py-1 text-sm font-medium text-slate-200 transition hover:bg-white/10"
+            >
+              <span
+                class="flex h-8 w-8 items-center justify-center rounded-xl bg-white/10"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  class="h-4 w-4"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
+                  />
+                </svg>
+              </span>
+              Schedule
+            </a>
+
+            <a
+              href="leave.html"
+              class="flex items-center gap-3 rounded-2xl px-3 py-1 text-sm font-medium text-slate-200 transition hover:bg-white/10"
+            >
+              <span
+                class="flex h-8 w-8 items-center justify-center rounded-xl bg-white/10"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  class="h-4 w-4"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M3 11L21 3L13 21L11 13L3 11Z"
+                  />
+                </svg>
+              </span>
+              Leave Request
+            </a>
+
+            <a
+              href="permission.html"
+              class="flex items-center gap-3 rounded-2xl px-3 py-1 text-sm font-medium text-slate-200 transition hover:bg-white/10"
+            >
+              <span
+                class="flex h-8 w-8 items-center justify-center rounded-xl bg-white/10"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  class="h-4 w-4"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M9 2h6l5 5v13a2 2 0 01-2 2H6a2 2 0 01-2-2V4a2 2 0 012-2h3zm6 0v5h5M8 11h8M8 15h8M8 19h5"
+                  />
+                </svg>
+              </span>
+              Permission
+            </a>
+
+            <a
+              href="attendance-log.html"
+              class="flex items-center gap-3 rounded-2xl px-3 py-1 text-sm font-medium text-slate-200 transition hover:bg-white/10"
+            >
+              <span
+                class="flex h-8 w-8 items-center justify-center rounded-xl bg-white/10"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  class="h-4 w-4"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M8 7h8M8 11h8M8 15h5M6 3h12a2 2 0 012 2v14l-4-2-4 2-4-2-4 2V5a2 2 0 012-2z"
+                  />
+                </svg>
+              </span>
+              Attendance Log
+            </a>
+
+            <a
+              href="report.html"
+              class="flex items-center gap-3 rounded-2xl px-3 py-1 text-sm font-medium text-slate-200 transition hover:bg-white/10"
+            >
+              <span
+                class="flex h-8 w-8 items-center justify-center rounded-xl bg-white/10"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  class="h-4 w-4"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M9 17v-2m3 2V7m3 10v-6M5 21h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v14a2 2 0 002 2z"
+                  />
+                </svg>
+              </span>
+              Report
+            </a>
+
+            <a
+              href="#"
+              class="flex items-center gap-3 rounded-2xl bg-indigo-50 px-3 py-1 text-sm font-semibold text-indigo-700"
+            >
+              <span
+                class="flex h-8 w-8 items-center justify-center rounded-xl bg-indigo-100"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  class="h-4 w-4"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0a3 3 0 11-6 0"
+                  />
+                </svg>
+              </span>
+              Notification
+            </a>
+
+            <a
+              href="profile.html"
+              class="flex items-center gap-3 rounded-2xl px-3 py-1 text-sm font-medium text-slate-200 transition hover:bg-white/10"
+            >
+              <span
+                class="flex h-8 w-8 items-center justify-center rounded-xl bg-white/10"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  class="h-4 w-4"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M5.121 17.804A9 9 0 1118.879 6.196 9 9 0 015.121 17.804z"
+                  />
+                </svg>
+              </span>
+              Profile
+            </a>
+          </nav>
+
+          <!-- Profile card -->
+          <div class="px-3 pb-6 pt-4">
+            <div class="rounded-3xl bg-white/10 p-2 backdrop-blur">
+              <div class="flex items-center gap-3">
+                <img
+                  src="https://i.pinimg.com/736x/94/58/07/9458078dc3202295d428d801333edf99.jpg?auto=format&fit=crop&w=200&q=80"
+                  alt="Profile"
+                  class="h-10 w-10 rounded-2xl object-cover"
+                />
+                <div>
+                  <p class="font-semibold text-white">Farrel Zaidan</p>
+                  <p class="text-sm text-slate-300">Frontend Developer</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </aside>
+
+        <!-- Main -->
+        <main class="flex-1 md:ml-72">
+          <!-- Header -->
+          <header
+            class="sticky top-0 z-20 border-b border-slate-200 bg-white/90 px-4 py-4 backdrop-blur sm:px-6"
+          >
+            <div class="flex items-center justify-between gap-3">
+              <div class="flex items-center gap-3">
+                <!-- Burger mobile -->
+                <button
+                  id="openSidebar"
+                  class="flex h-11 w-11 items-center justify-center rounded-2xl border border-slate-200 text-slate-700 hover:bg-slate-50 md:hidden"
+                  aria-label="Open menu"
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    class="h-6 w-6"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M4 6h16M4 12h16M4 18h16"
+                    />
+                  </svg>
+                </button>
+
+                <div>
+                  <p class="text-xl text-slate-500">Welcome</p>
+                </div>
+              </div>
+
+              <div class="flex items-center gap-3">
+                <div
+                  class="hidden rounded-2xl bg-slate-100 px-4 py-2 text-sm text-slate-600 md:block"
+                >
+                  <span id="currentTime">--:--</span>
+                </div>
+                <div
+                  class="hidden rounded-2xl bg-slate-100 px-4 py-2 text-sm text-slate-600 md:block"
+                >
+                  <span id="currentDate">--</span>
+                </div>
+
+                <button
+                  class="relative flex h-11 w-11 items-center justify-center rounded-2xl bg-indigo-600 text-white shadow-lg"
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    class="h-5 w-5"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"
+                    />
+                  </svg>
+                </button>
+              </div>
+            </div>
+          </header>
+
+          <!-- Notification Dashboard Section -->
+          <section class="space-y-6 p-4 sm:p-6">
+            <!-- Top Title & Global Actions -->
+            <div
+              class="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between"
+            >
+              <div>
+                <h1 class="text-2xl font-bold tracking-tight text-slate-800">
+                  Notifications
+                </h1>
+                <p class="mt-1 text-xs sm:text-sm text-slate-500">
+                  Manage notifications, activity, preferences, and status
+                  follow-ups.
+                </p>
+              </div>
+              <div class="flex items-center gap-2.5">
+                <button
+                  id="markAllReadBtn"
+                  class="inline-flex items-center justify-center gap-2 rounded-xl bg-blue-600 px-4 py-2.5 text-xs font-semibold text-white shadow-sm hover:bg-blue-700 transition"
+                >
+                  <svg
+                    class="h-4 w-4"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M5 13l4 4L19 7"
+                    />
+                  </svg>
+                  Mark all as read
+                </button>
+                <button
+                  id="scrollToSettingsBtn"
+                  class="inline-flex items-center justify-center gap-2 rounded-xl border border-slate-200 bg-white px-4 py-2.5 text-xs font-semibold text-slate-700 shadow-sm hover:bg-slate-50 transition"
+                >
+                  <svg
+                    class="h-4 w-4"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"
+                    />
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
+                    />
+                  </svg>
+                  Settings
+                </button>
+              </div>
+            </div>
+
+            <!-- Dynamic Metric Summary Cards -->
+            <div class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
+              <!-- Card 1 -->
+              <div
+                class="flex items-center gap-4 rounded-2xl border border-slate-200/80 bg-white p-4 shadow-sm"
+              >
+                <div
+                  class="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-blue-50 text-blue-600"
+                >
+                  <svg
+                    class="h-6 w-6"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0a3 3 0 11-6 0"
+                    />
+                  </svg>
+                </div>
+                <div>
+                  <p class="text-xs font-medium text-slate-500">
+                    Total Notifications
+                  </p>
+                  <p
+                    id="statTotalNotif"
+                    class="text-2xl font-bold text-slate-800"
+                  >
+                    0
+                  </p>
+                  <p id="statUnreadSub" class="text-[11px] text-slate-400">
+                    0 unread
+                  </p>
+                </div>
+              </div>
+
+              <!-- Card 2 -->
+              <div
+                class="flex items-center gap-4 rounded-2xl border border-slate-200/80 bg-white p-4 shadow-sm"
+              >
+                <div
+                  class="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-rose-50 text-rose-600"
+                >
+                  <svg
+                    class="h-6 w-6"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"
+                    />
+                  </svg>
+                </div>
+                <div>
+                  <p class="text-xs font-medium text-slate-500">
+                    Action Required
+                  </p>
+                  <p
+                    id="statActionNeeded"
+                    class="text-2xl font-bold text-slate-800"
+                  >
+                    0
+                  </p>
+                  <p class="text-[11px] text-slate-400">
+                    Requires response/action
+                  </p>
+                </div>
+              </div>
+
+              <!-- Card 3 -->
+              <div
+                class="flex items-center gap-4 rounded-2xl border border-slate-200/80 bg-white p-4 shadow-sm"
+              >
+                <div
+                  class="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-purple-50 text-purple-600"
+                >
+                  <svg
+                    class="h-6 w-6"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M13 10V3L4 14h7v7l9-11h-7z"
+                    />
+                  </svg>
+                </div>
+                <div>
+                  <p class="text-xs font-medium text-slate-500">Important</p>
+                  <p
+                    id="statHighPriority"
+                    class="text-2xl font-bold text-slate-800"
+                  >
+                    0
+                  </p>
+                  <p class="text-[11px] text-slate-400">High priority</p>
+                </div>
+              </div>
+
+              <!-- Card 4 -->
+              <div
+                class="flex items-center gap-4 rounded-2xl border border-slate-200/80 bg-white p-4 shadow-sm"
+              >
+                <div
+                  class="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-emerald-50 text-emerald-600"
+                >
+                  <svg
+                    class="h-6 w-6"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
+                    />
+                  </svg>
+                </div>
+                <div>
+                  <p class="text-xs font-medium text-slate-500">
+                    Sent in 7 Days
+                  </p>
+                  <p
+                    id="statSent7Days"
+                    class="text-2xl font-bold text-slate-800"
+                  >
+                    23
+                  </p>
+                  <p class="text-[11px] text-slate-400">This week</p>
+                </div>
+              </div>
+            </div>
+
+            <!-- Search and Dynamic Category Filters -->
+            <div
+              class="space-y-4 rounded-2xl border border-slate-200/80 bg-white p-4 shadow-sm"
+            >
+              <div
+                class="flex flex-col gap-3 md:flex-row md:items-center md:justify-between"
+              >
+                <div class="relative flex-1">
+                  <svg
+                    class="absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+                    />
+                  </svg>
+                  <input
+                    id="searchInput"
+                    type="text"
+                    placeholder="Search notifications, categories, or descriptions..."
+                    class="w-full rounded-xl border border-slate-200 bg-slate-50/50 pl-10 pr-4 py-2 text-xs text-slate-700 focus:border-blue-500 focus:bg-white focus:outline-none focus:ring-1 focus:ring-blue-500 transition"
+                  />
+                </div>
+                <div class="flex items-center gap-2">
+                  <button
+                    id="clearSearchBtn"
+                    class="hidden rounded-xl border border-slate-200 bg-slate-50 px-3 py-2 text-xs font-medium text-slate-600 hover:bg-slate-100"
+                  >
+                    Reset Filter
+                  </button>
+                </div>
+              </div>
+
+              <!-- Filter Pills (Connected State) -->
+              <div
+                id="filterPillsContainer"
+                class="flex items-center gap-2 overflow-x-auto pb-1 text-xs no-scrollbar"
+              >
+                <!-- Injected dynamically via JS -->
+              </div>
+            </div>
+
+            <!-- Main Content Grid -->
+            <div class="grid grid-cols-1 gap-6 lg:grid-cols-3">
+              <!-- Left Column: Notification Feed & Actions -->
+              <div class="space-y-6 lg:col-span-2">
+                <!-- Feed Container -->
+                <div id="notificationFeed" class="space-y-6">
+                  <!-- Rendered dynamically -->
+                </div>
+
+                <!-- Section: Perlu Tindakan (Action Cards Widget) -->
+                <div
+                  class="rounded-2xl border border-slate-200/80 bg-slate-50/50 p-5 space-y-4"
+                >
+                  <div class="flex items-center justify-between">
+                    <div class="flex items-center gap-2">
+                      <div
+                        class="flex h-7 w-7 items-center justify-center rounded-lg bg-rose-100 text-rose-600"
+                      >
+                        <svg
+                          class="h-4 w-4"
+                          fill="none"
+                          stroke="currentColor"
+                          viewBox="0 0 24 24"
+                        >
+                          <path
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            stroke-width="2"
+                            d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"
+                          />
+                        </svg>
+                      </div>
+                      <div>
+                        <h4 class="text-xs font-bold text-slate-800">
+                          Action Required
+                        </h4>
+                        <p
+                          id="actionSectionCountText"
+                          class="text-[11px] text-slate-500"
+                        >
+                          0 notifications awaiting response
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div id="actionCardsContainer" class="space-y-3">
+                    <!-- Rendered dynamically -->
+                  </div>
+                </div>
+              </div>
+
+              <!-- Right Column: Analytics & Settings Widgets -->
+              <div class="space-y-6 lg:col-span-1">
+                <!-- Widget 1: Aktivitas 7 Hari (Interactive Chart) -->
+                <div
+                  class="rounded-2xl border border-slate-200/80 bg-white p-5 shadow-sm space-y-4"
+                >
+                  <div class="flex items-center justify-between">
+                    <div class="flex items-center gap-3">
+                      <div
+                        class="flex h-9 w-9 items-center justify-center rounded-xl bg-purple-50 text-purple-600"
+                      >
+                        <svg
+                          class="h-5 w-5"
+                          fill="none"
+                          stroke="currentColor"
+                          viewBox="0 0 24 24"
+                        >
+                          <path
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            stroke-width="2"
+                            d="M13 10V3L4 14h7v7l9-11h-7z"
+                          />
+                        </svg>
+                      </div>
+                      <div>
+                        <h3 class="text-sm font-bold text-slate-800">
+                          7-Day Activity
+                        </h3>
+                        <p id="chartSubtext" class="text-[11px] text-slate-500">
+                          23 notifications this week
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- Canvas Chart Container -->
+                  <div class="h-36 w-full relative">
+                    <canvas id="notifActivityChart"></canvas>
+                  </div>
+
+                  <!-- Dynamic Progress Bars per Category -->
+                  <div class="space-y-3 pt-2 border-t border-slate-100">
+                    <p
+                      class="text-[10px] font-bold uppercase tracking-wider text-slate-400"
+                    >
+                      By Category (Active)
+                    </p>
+                    <div id="categoryBarsContainer" class="space-y-2.5">
+                      <!-- Rendered dynamically -->
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Widget 2: Pengumuman -->
+                <div
+                  class="rounded-2xl border border-slate-200/80 bg-white p-5 shadow-sm space-y-4"
+                >
+                  <div class="flex items-center gap-3">
+                    <div
+                      class="flex h-9 w-9 items-center justify-center rounded-xl bg-amber-50 text-amber-600"
+                    >
+                      <svg
+                        class="h-5 w-5"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                          stroke-width="2"
+                          d="M11 5.882V19.24a1.76 1.76 0 01-3.417.592l-2.147-6.15M18 13a3 3 0 100-6M5.436 13.683A4.001 4.001 0 017 6h1.832c4.1 0 7.625-1.234 9.168-3v14c-1.543-1.766-5.067-3-9.168-3H7a3.988 3.988 0 01-1.564-.317z"
+                        />
+                      </svg>
+                    </div>
+                    <div>
+                      <h3 class="text-sm font-bold text-slate-800">
+                        Announcements
+                      </h3>
+                      <p class="text-[11px] text-slate-500">
+                        LEXA Software House
+                      </p>
+                    </div>
+                  </div>
+
+                  <div class="space-y-3">
+                    <div
+                      class="rounded-xl border border-slate-100 bg-slate-50/50 p-3 space-y-1.5"
+                    >
+                      <div
+                        class="flex items-center justify-between text-[10px]"
+                      >
+                        <span
+                          class="rounded bg-amber-100 px-1.5 py-0.5 font-semibold text-amber-800"
+                          >Program</span
+                        >
+                        <span class="text-slate-400">2 days ago</span>
+                      </div>
+                      <h4 class="text-xs font-bold text-slate-800">
+                        Mid-Program Internship Evaluation
+                      </h4>
+                      <p class="text-[11px] text-slate-500 leading-relaxed">
+                        The mid-program evaluation session will be scheduled
+                        next week with respective mentors.
+                      </p>
+                    </div>
+
+                    <div
+                      class="rounded-xl border border-slate-100 bg-slate-50/50 p-3 space-y-1.5"
+                    >
+                      <div
+                        class="flex items-center justify-between text-[10px]"
+                      >
+                        <span
+                          class="rounded bg-blue-100 px-1.5 py-0.5 font-semibold text-blue-800"
+                          >Policy</span
+                        >
+                        <span class="text-slate-400">1 week ago</span>
+                      </div>
+                      <h4 class="text-xs font-bold text-slate-800">
+                        WFH Policy Update
+                      </h4>
+                      <p class="text-[11px] text-slate-500 leading-relaxed">
+                        Starting this month, WFH is allowed a maximum of 2 days
+                        per week and must be submitted 1 day in advance via the
+                        Permission page.
+                      </p>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Widget 3: Preferensi Notifikasi (Settings Widget) -->
+                <div
+                  id="settingsWidget"
+                  class="rounded-2xl border border-slate-200/80 bg-white p-5 shadow-sm space-y-4"
+                >
+                  <div class="flex items-center gap-3">
+                    <div
+                      class="flex h-9 w-9 items-center justify-center rounded-xl bg-blue-50 text-blue-600"
+                    >
+                      <svg
+                        class="h-5 w-5"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                          stroke-width="2"
+                          d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"
+                        />
+                        <path
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                          stroke-width="2"
+                          d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
+                        />
+                      </svg>
+                    </div>
+                    <div>
+                      <h3 class="text-sm font-bold text-slate-800">
+                        Notification Preferences
+                      </h3>
+                      <p class="text-[11px] text-slate-500">
+                        Active category filters in feed
+                      </p>
+                    </div>
+                  </div>
+
+                  <form
+                    id="preferencesForm"
+                    class="space-y-4"
+                    onsubmit="event.preventDefault()"
+                  >
+                    <div class="space-y-3">
+                      <div class="flex items-center justify-between">
+                        <div>
+                          <p class="text-xs font-semibold text-slate-800">
+                            In-app
+                          </p>
+                          <p class="text-[10px] text-slate-400">
+                            Dashboard notification
+                          </p>
+                        </div>
+                        <label
+                          class="relative inline-flex cursor-pointer items-center"
+                        >
+                          <input
+                            type="checkbox"
+                            id="channelInApp"
+                            checked
+                            class="peer sr-only"
+                          />
+                          <div
+                            class="peer h-5 w-9 rounded-full bg-slate-200 after:absolute after:left-[2px] after:top-[2px] after:h-4 after:w-4 after:rounded-full after:bg-white after:transition-all after:content-[''] peer-checked:bg-blue-600 peer-checked:after:translate-x-full"
+                          ></div>
+                        </label>
+                      </div>
+
+                      <div class="flex items-center justify-between">
+                        <div>
+                          <p class="text-xs font-semibold text-slate-800">
+                            Email
+                          </p>
+                          <p class="text-[10px] text-slate-400">
+                            Sent to email
+                          </p>
+                        </div>
+                        <label
+                          class="relative inline-flex cursor-pointer items-center"
+                        >
+                          <input
+                            type="checkbox"
+                            id="channelEmail"
+                            checked
+                            class="peer sr-only"
+                          />
+                          <div
+                            class="peer h-5 w-9 rounded-full bg-slate-200 after:absolute after:left-[2px] after:top-[2px] after:h-4 after:w-4 after:rounded-full after:bg-white after:transition-all after:content-[''] peer-checked:bg-blue-600 peer-checked:after:translate-x-full"
+                          ></div>
+                        </label>
+                      </div>
+                    </div>
+
+                    <hr class="border-slate-100" />
+
+                    <div class="space-y-3">
+                      <p
+                        class="text-[10px] font-bold uppercase tracking-wider text-slate-400"
+                      >
+                        Displayed Categories
+                      </p>
+
+                      <div class="flex items-center justify-between">
+                        <span class="text-xs text-slate-700">Attendance</span>
+                        <label
+                          class="relative inline-flex cursor-pointer items-center"
+                        >
+                          <input
+                            type="checkbox"
+                            data-category="Attendance"
+                            checked
+                            class="category-toggle peer sr-only"
+                          />
+                          <div
+                            class="peer h-5 w-9 rounded-full bg-slate-200 after:absolute after:left-[2px] after:top-[2px] after:h-4 after:w-4 after:rounded-full after:bg-white after:transition-all after:content-[''] peer-checked:bg-blue-600 peer-checked:after:translate-x-full"
+                          ></div>
+                        </label>
+                      </div>
+
+                      <div class="flex items-center justify-between">
+                        <span class="text-xs text-slate-700">Approval</span>
+                        <label
+                          class="relative inline-flex cursor-pointer items-center"
+                        >
+                          <input
+                            type="checkbox"
+                            data-category="Approval"
+                            checked
+                            class="category-toggle peer sr-only"
+                          />
+                          <div
+                            class="peer h-5 w-9 rounded-full bg-slate-200 after:absolute after:left-[2px] after:top-[2px] after:h-4 after:w-4 after:rounded-full after:bg-white after:transition-all after:content-[''] peer-checked:bg-blue-600 peer-checked:after:translate-x-full"
+                          ></div>
+                        </label>
+                      </div>
+
+                      <div class="flex items-center justify-between">
+                        <span class="text-xs text-slate-700">Schedule</span>
+                        <label
+                          class="relative inline-flex cursor-pointer items-center"
+                        >
+                          <input
+                            type="checkbox"
+                            data-category="Schedule"
+                            checked
+                            class="category-toggle peer sr-only"
+                          />
+                          <div
+                            class="peer h-5 w-9 rounded-full bg-slate-200 after:absolute after:left-[2px] after:top-[2px] after:h-4 after:w-4 after:rounded-full after:bg-white after:transition-all after:content-[''] peer-checked:bg-blue-600 peer-checked:after:translate-x-full"
+                          ></div>
+                        </label>
+                      </div>
+
+                      <div class="flex items-center justify-between">
+                        <span class="text-xs text-slate-700">System</span>
+                        <label
+                          class="relative inline-flex cursor-pointer items-center"
+                        >
+                          <input
+                            type="checkbox"
+                            data-category="System"
+                            checked
+                            class="category-toggle peer sr-only"
+                          />
+                          <div
+                            class="peer h-5 w-9 rounded-full bg-slate-200 after:absolute after:left-[2px] after:top-[2px] after:h-4 after:w-4 after:rounded-full after:bg-white after:transition-all after:content-[''] peer-checked:bg-blue-600 peer-checked:after:translate-x-full"
+                          ></div>
+                        </label>
+                      </div>
+
+                      <div class="flex items-center justify-between">
+                        <span class="text-xs text-slate-700">Announcement</span>
+                        <label
+                          class="relative inline-flex cursor-pointer items-center"
+                        >
+                          <input
+                            type="checkbox"
+                            data-category="Announcement"
+                            checked
+                            class="category-toggle peer sr-only"
+                          />
+                          <div
+                            class="peer h-5 w-9 rounded-full bg-slate-200 after:absolute after:left-[2px] after:top-[2px] after:h-4 after:w-4 after:rounded-full after:bg-white after:transition-all after:content-[''] peer-checked:bg-blue-600 peer-checked:after:translate-x-full"
+                          ></div>
+                        </label>
+                      </div>
+                    </div>
+
+                    <button
+                      id="savePreferencesBtn"
+                      onclick="showToast()"
+                      type="button"
+                      class="w-full rounded-xl bg-blue-600 py-2 text-xs font-semibold text-white shadow-sm hover:bg-blue-700 transition"
+                    >
+                      Save & Apply
+                    </button>
+                  </form>
+                </div>
+
+                <!-- Widget 4: Arsip Notifikasi -->
+                <div
+                  class="rounded-2xl border border-slate-200/80 bg-white p-5 shadow-sm space-y-3"
+                >
+                  <div class="flex items-center justify-between">
+                    <div class="flex items-center gap-3">
+                      <div
+                        class="flex h-9 w-9 items-center justify-center rounded-xl bg-slate-100 text-slate-600"
+                      >
+                        <svg
+                          class="h-5 w-5"
+                          fill="none"
+                          stroke="currentColor"
+                          viewBox="0 0 24 24"
+                        >
+                          <path
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            stroke-width="2"
+                            d="M5 8h14M5 8a2 2 0 01-2-2V5a2 2 0 012-2h14a2 2 0 012 2v1a2 2 0 01-2 2M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8m-9 4h4"
+                          />
+                        </svg>
+                      </div>
+                      <div>
+                        <h3 class="text-sm font-bold text-slate-800">
+                          Notification Archive
+                        </h3>
+                        <p
+                          id="archivedCountText"
+                          class="text-[11px] text-slate-500"
+                        >
+                          0 notifications archived
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div
+                    id="archivedListContainer"
+                    class="rounded-xl border border-dashed border-slate-200 p-4 text-center"
+                  >
+                    <p class="text-xs text-slate-400">
+                      No notifications archived yet.
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Footer info -->
+            <div
+              class="flex items-center gap-3 rounded-2xl border border-blue-100 bg-blue-50/50 p-4 text-xs text-blue-700"
+            >
+              <svg
+                class="h-5 w-5 shrink-0 text-blue-500"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                />
+              </svg>
+              <p>Notifications are stored for the last 30 days.</p>
+            </div>
+            <!-- Toast Notification Container -->
+            <div
+              class="fixed top-5 left-1/2 -translate-x-1/2 z-50 pointer-events-none"
+            >
+              <div
+                id="toast"
+                class="pointer-events-auto flex items-center gap-3 bg-gray-900 text-white px-4 py-3 rounded-xl shadow-xl border border-gray-800 transition-all duration-300 -translate-y-10 opacity-0 hidden"
+              >
+                <span
+                  class="flex h-6 w-6 items-center justify-center rounded-full bg-emerald-500/20 text-emerald-400"
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    class="h-4 w-4"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2.5"
+                      d="M5 13l4 4L19 7"
+                    />
+                  </svg>
+                </span>
+                <p class="text-sm font-medium">
+                  <span id="toast-message"
+                    >Data has been successfully saved and applied</span
+                  >
+                </p>
+                <button
+                  id="closeToastBtn"
+                  class="ml-2 text-gray-400 hover:text-white transition"
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    class="h-4 w-4"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M6 18L18 6M6 6l12 12"
+                    />
+                  </svg>
+                </button>
+              </div>
+            </div>
+          </section>
+        </main>
+      </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="js/notification.js"></script>
+  </body>
+</html>

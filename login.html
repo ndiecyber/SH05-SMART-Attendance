@@ -1,0 +1,365 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>LEXA - Intern Portal Login</title>
+    <!-- Memuat Tailwind CSS melalui CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Konfigurasi warna khusus Tailwind -->
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              "lexa-dark": "#091527",
+              "lexa-card": "#101e33",
+              "lexa-blue": "#1c64f2",
+              "lexa-light": "#f8fafc",
+            },
+          },
+        },
+      };
+    </script>
+  </head>
+  <!-- h-screen mengatur tinggi persis 100% viewport, overflow-hidden mencegah munculnya scrollbar -->
+  <body
+    class="flex h-screen overflow-hidden font-sans bg-lexa-light antialiased text-gray-800"
+  >
+    <!-- BAGIAN KIRI: Panel Informasi & Branding -->
+    <div
+      class="hidden lg:flex lg:w-1/2 bg-lexa-dark text-white p-8 flex-col justify-between h-full"
+    >
+      <!-- Konten Bagian Atas -->
+      <div>
+        <!-- BAGIAN LOGO & TEKS (Diperbarui) -->
+        <div class="flex items-center gap-3 mb-8">
+          <!-- Tempat untuk memasukkan gambar logo (ikon) Anda -->
+          <img src="assets/LEXA-logo.png" alt="LEXA Logo" class="h-10" />
+          <!-- Teks di samping logo -->
+          <div class="flex flex-col justify-center">
+            <span class="text-2xl font-extrabold tracking-wide leading-none"
+              >LEXA</span
+            >
+            <span
+              class="text-[10px] text-gray-400 font-semibold tracking-widest mt-1"
+              >SOFTWARE HOUSE</span
+            >
+          </div>
+        </div>
+
+        <!-- Badge Smart Internship Attendance -->
+        <div
+          class="inline-flex items-center gap-2 bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 px-3 py-1 rounded-full text-xs font-medium mb-5"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            class="h-4 w-4"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+            stroke-width="2"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"
+            />
+          </svg>
+          Smart Internship Attendance
+        </div>
+
+        <!-- Headline Utama -->
+        <h1 class="text-3xl lg:text-4xl font-bold leading-tight mb-3">
+          Manage your internship attendance <br />
+          <span class="text-blue-500">without the hassle.</span>
+        </h1>
+        <p class="text-gray-400 text-sm max-w-md mb-6 leading-relaxed">
+          One dashboard to check in, schedule, leave, and attendance reports
+          during your internship program at LEXA.
+        </p>
+
+        <!-- Daftar Fitur -->
+        <div class="space-y-3 max-w-lg">
+          <!-- Fitur 1 -->
+          <div
+            class="bg-white/5 border border-white/10 rounded-xl p-3 flex gap-4 items-start"
+          >
+            <div class="mt-0.5">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                class="h-5 w-5 text-emerald-400"
+                viewBox="0 0 20 20"
+                fill="currentColor"
+              >
+                <path
+                  fill-rule="evenodd"
+                  d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+                  clip-rule="evenodd"
+                />
+              </svg>
+            </div>
+            <div>
+              <h3 class="font-semibold text-sm">
+                Facial Verification Attendance
+              </h3>
+              <p class="text-xs text-gray-400 mt-0.5">
+                Check in / out with selfie & office geofence, anti-buddy
+                punching.
+              </p>
+            </div>
+          </div>
+          <!-- Fitur 2 -->
+          <div
+            class="bg-white/5 border border-white/10 rounded-xl p-3 flex gap-4 items-start"
+          >
+            <div class="mt-0.5">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                class="h-5 w-5 text-emerald-400"
+                viewBox="0 0 20 20"
+                fill="currentColor"
+              >
+                <path
+                  fill-rule="evenodd"
+                  d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+                  clip-rule="evenodd"
+                />
+              </svg>
+            </div>
+            <div>
+              <h3 class="font-semibold text-sm">
+                Centralized Schedule & Leave
+              </h3>
+              <p class="text-xs text-gray-400 mt-0.5">
+                Shift, meeting, leave, and short permission in one approval
+                flow.
+              </p>
+            </div>
+          </div>
+          <!-- Fitur 3 -->
+          <div
+            class="bg-white/5 border border-white/10 rounded-xl p-3 flex gap-4 items-start"
+          >
+            <div class="mt-0.5">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                class="h-5 w-5 text-emerald-400"
+                viewBox="0 0 20 20"
+                fill="currentColor"
+              >
+                <path
+                  fill-rule="evenodd"
+                  d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+                  clip-rule="evenodd"
+                />
+              </svg>
+            </div>
+            <div>
+              <h3 class="font-semibold text-sm">Automated Reports</h3>
+              <p class="text-xs text-gray-400 mt-0.5">
+                Work hours recap, punctuality, and CSV export ready to be sent.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Konten Bagian Bawah: Statistik & Copyright -->
+      <div class="mt-auto pt-6 border-t border-white/10">
+        <div class="grid grid-cols-3 gap-4 mb-4">
+          <div>
+            <div class="text-xl font-bold">128</div>
+            <div class="text-xs text-gray-400">Active interns</div>
+          </div>
+          <div>
+            <div class="text-xl font-bold">99.2%</div>
+            <div class="text-xs text-gray-400">Valid attendance</div>
+          </div>
+          <div>
+            <div class="text-xl font-bold">24/7</div>
+            <div class="text-xs text-gray-400">Dashboard access</div>
+          </div>
+        </div>
+        <p class="text-[11px] text-gray-500">
+          © 2026 LEXA Software House. Internal use only.
+        </p>
+      </div>
+    </div>
+
+    <!-- BAGIAN KANAN: Form Login -->
+    <div
+      class="w-full lg:w-1/2 flex items-center justify-center p-6 relative h-full"
+    >
+      <div class="w-full max-w-sm xl:max-w-md">
+        <!-- Judul Form -->
+        <h2 class="text-2xl font-bold text-gray-900 mb-2">Welcome back</h2>
+        <p class="text-sm text-gray-500 mb-6">
+          Sign in with your intern account to start today's attendance.
+        </p>
+
+        <!-- Form -->
+        <form action="#" method="POST" class="space-y-4">
+          <!-- Input Email / NIM -->
+          <div>
+            <label
+              for="email"
+              class="block text-sm font-medium text-gray-700 mb-1"
+              >Campus Email or Student ID</label
+            >
+            <div class="relative">
+              <div
+                class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  class="h-5 w-5 text-gray-400"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                  stroke-width="2"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    d="M10 6H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V8a2 2 0 00-2-2h-5m-4 0V5a2 2 0 114 0v1m-4 0a2 2 0 104 0m-5 8a2 2 0 100-4 2 2 0 000 4zm0 0c1.306 0 2.417.835 2.83 2M9 14a3.001 3.001 0 00-2.83 2M15 11h3m-3 4h2"
+                  />
+                </svg>
+              </div>
+              <input
+                type="text"
+                id="email"
+                name="email"
+                placeholder="name@campus.ac.id"
+                class="block w-full pl-10 pr-3 py-2.5 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500 text-sm shadow-sm placeholder-gray-400 outline-none transition-colors"
+                required
+              />
+            </div>
+          </div>
+
+          <!-- Input Password -->
+          <div>
+            <div class="flex justify-between items-center mb-1">
+              <label
+                for="password"
+                class="block text-sm font-medium text-gray-700"
+                >Password</label
+              >
+              <a
+                href="#"
+                class="text-xs font-medium text-blue-600 hover:text-blue-500"
+                >Forgot password?</a
+              >
+            </div>
+            <div class="relative">
+              <div
+                class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  class="h-5 w-5 text-gray-400"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                  stroke-width="2"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"
+                  />
+                </svg>
+              </div>
+              <input
+                type="password"
+                id="password"
+                name="password"
+                placeholder="Enter password"
+                class="block w-full pl-10 pr-10 py-2.5 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500 text-sm shadow-sm placeholder-gray-400 outline-none transition-colors"
+                required
+              />
+              <!-- Tombol Toggle Password (Mata) -->
+              <button
+                type="button"
+                id="togglePassword"
+                class="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-400 hover:text-gray-600"
+              >
+                <svg
+                  id="eyeIcon"
+                  xmlns="http://www.w3.org/2000/svg"
+                  class="h-5 w-5"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                  stroke-width="2"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
+                  />
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"
+                  />
+                </svg>
+              </button>
+            </div>
+          </div>
+
+          <!-- Checkbox Ingat Saya -->
+          <div class="flex items-center pt-1">
+            <input
+              id="remember-me"
+              name="remember-me"
+              type="checkbox"
+              class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded cursor-pointer"
+              checked
+            />
+            <label
+              for="remember-me"
+              class="ml-2 block text-sm text-gray-600 cursor-pointer"
+            >
+              Remember me on this device
+            </label>
+          </div>
+
+          <!-- Tombol Submit -->
+          <button
+            type="submit"
+            class="w-full flex justify-center items-center gap-2 py-2.5 px-4 border border-transparent rounded-lg shadow-sm text-sm font-medium text-white bg-lexa-blue hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors mt-2"
+          >
+            Sign In
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              class="h-4 w-4"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+              stroke-width="2"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                d="M14 5l7 7m0 0l-7 7m7-7H3"
+              />
+            </svg>
+          </button>
+        </form>
+
+        <!-- Teks Footer Bawah -->
+        <p class="mt-8 text-center text-xs text-gray-500">
+          Don't have an account?
+          <span class="font-semibold text-gray-700"
+            >Contact your campus admin</span
+          >
+          or LEXA mentor.
+        </p>
+      </div>
+    </div>
+
+    <!-- Panggil file eksternal JavaScript -->
+    <script src="js/login.js"></script>
+  </body>
+</html>

@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Smart Attendance Dashboard</title>
+    <title>Smart Attendance Dashboard - Leave Request</title>
 
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
@@ -413,8 +413,8 @@
                 >
                   <span id="headerDate">--</span>
                 </div>
-
-                <button
+                <a
+                  href="notification.html"
                   class="relative flex h-11 w-11 items-center justify-center rounded-2xl bg-indigo-600 text-white shadow-lg"
                 >
                   <svg
@@ -431,10 +431,7 @@
                       d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"
                     />
                   </svg>
-                  <span
-                    class="absolute right-2 top-2 h-2.5 w-2.5 rounded-full bg-rose-500 ring-2 ring-white"
-                  ></span>
-                </button>
+                </a>
               </div>
             </div>
           </header>
@@ -444,8 +441,6 @@
             <div
               class="flex flex-col gap-3 rounded-2xl bg-white p-2 shadow-sm md:flex-row md:items-center md:justify-between"
             >
-              <!-- Left : Legend -->
-
               <div class="pl-4 flex flex-wrap gap-5">
                 <h1 class="text-2xl font-semibold text-slate-800">
                   Leave Request
@@ -461,124 +456,33 @@
               </a>
             </div>
 
+            <!-- 4 Cards Kuota Cuti -->
             <div class="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
-              <!-- Annual Leave -->
-              <div class="rounded-3xl bg-white p-5 shadow-sm">
-                <p class="text-sm text-slate-500">Annual Leave</p>
-
-                <h2 class="mt-2 text-3xl font-bold text-slate-800">
-                  11<span class="text-lg font-medium text-slate-400"
-                    >/14 Days</span
-                  >
-                </h2>
-
-                <div class="mt-5">
-                  <div class="mb-2 flex items-center justify-between text-sm">
-                    <span class="text-slate-500">Used</span>
-                    <span class="font-semibold text-slate-700">3 Days</span>
-                  </div>
-
-                  <div class="h-2 overflow-hidden rounded-full bg-slate-200">
-                    <div
-                      class="h-full w-[21%] rounded-full bg-indigo-500"
-                    ></div>
-                  </div>
-                </div>
-
-                <p class="mt-4 text-sm text-slate-500">
-                  <span class="font-medium text-indigo-600"
-                    >11 days remaining</span
-                  >
-                  this year
-                </p>
+              <!-- Annual Leave Card -->
+              <div id="cardAnnual" class="rounded-3xl bg-white p-5 shadow-sm">
+                <!-- Dynamic Content via JS -->
               </div>
 
-              <!-- Sick Leave -->
-              <div class="rounded-3xl bg-white p-5 shadow-sm">
-                <p class="text-sm text-slate-500">Sick Leave</p>
-
-                <h2 class="mt-2 text-3xl font-bold text-slate-800">
-                  9<span class="text-lg font-medium text-slate-400"
-                    >/12 Days</span
-                  >
-                </h2>
-
-                <div class="mt-5">
-                  <div class="mb-2 flex items-center justify-between text-sm">
-                    <span class="text-slate-500">Used</span>
-                    <span class="font-semibold text-slate-700">3 Days</span>
-                  </div>
-
-                  <div class="h-2 overflow-hidden rounded-full bg-slate-200">
-                    <div
-                      class="h-full w-[25%] rounded-full bg-yellow-500"
-                    ></div>
-                  </div>
-                </div>
-
-                <p class="mt-4 text-sm text-slate-500">
-                  <span class="font-medium text-yellow-600"
-                    >9 days remaining</span
-                  >
-                  this year
-                </p>
+              <!-- Sick Leave Card -->
+              <div id="cardSick" class="rounded-3xl bg-white p-5 shadow-sm">
+                <!-- Dynamic Content via JS -->
               </div>
 
-              <!-- Personal Leave -->
-              <div class="rounded-3xl bg-white p-5 shadow-sm">
-                <p class="text-sm text-slate-500">Personal Leave</p>
-
-                <h2 class="mt-2 text-3xl font-bold text-slate-800">
-                  2<span class="text-lg font-medium text-slate-400"
-                    >/5 Days</span
-                  >
-                </h2>
-
-                <div class="mt-5">
-                  <div class="mb-2 flex items-center justify-between text-sm">
-                    <span class="text-slate-500">Used</span>
-                    <span class="font-semibold text-slate-700">3 Days</span>
-                  </div>
-
-                  <div class="h-2 overflow-hidden rounded-full bg-slate-200">
-                    <div class="h-full w-[60%] rounded-full bg-blue-500"></div>
-                  </div>
-                </div>
-
-                <p class="mt-4 text-sm text-slate-500">
-                  <span class="font-medium text-blue-600"
-                    >2 days remaining</span
-                  >
-                  this year
-                </p>
+              <!-- Personal Leave Card -->
+              <div id="cardPersonal" class="rounded-3xl bg-white p-5 shadow-sm">
+                <!-- Dynamic Content via JS -->
               </div>
 
-              <!-- Unpaid Leave -->
+              <!-- Unpaid Leave Card -->
               <div
+                id="cardUnpaid"
                 class="rounded-3xl bg-gradient-to-br from-slate-50 to-slate-200 p-5 text-white shadow-sm"
               >
-                <p class="text-sm text-slate-500">Unpaid Leave</p>
-
-                <h2 class="mt-2 text-3xl font-bold text-black">Unlimited</h2>
-
-                <div class="mt-5">
-                  <div class="mb-2 flex items-center justify-between text-sm">
-                    <span class="text-slate-500">Used</span>
-                    <span class="font-semibold text-slate-700">5 Days</span>
-                  </div>
-
-                  <div class="h-2 overflow-hidden rounded-full bg-white/15">
-                    <div class="h-full w-full rounded-full bg-white/40"></div>
-                  </div>
-                </div>
-
-                <p class="mt-4 text-sm text-slate-500">
-                  No limit - Approval required per submission.
-                </p>
+                <!-- Dynamic Content via JS -->
               </div>
             </div>
 
-            <!-- Main grid -->
+            <!-- 4 Cards Stat Status Cuti -->
             <div class="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
               <!-- Pending -->
               <div
@@ -602,14 +506,13 @@
                     />
                   </svg>
                 </div>
-
                 <div>
                   <p class="text-sm text-slate-500">Pending</p>
                   <h2
-                    id="upcomingShifts"
+                    id="statPending"
                     class="text-3xl font-bold text-amber-500"
                   >
-                    3
+                    0
                   </h2>
                   <p class="text-sm text-slate-500">Waiting Approval</p>
                 </div>
@@ -637,20 +540,19 @@
                     />
                   </svg>
                 </div>
-
                 <div>
                   <p class="text-sm text-slate-500">Approved (YTD)</p>
                   <h2
-                    id="weeklyShifts"
+                    id="statApproved"
                     class="text-3xl font-bold text-emerald-600"
                   >
-                    8
+                    0
                   </h2>
                   <p class="text-sm text-slate-500">Approved this year</p>
                 </div>
               </div>
 
-              <!-- reject -->
+              <!-- Rejected -->
               <div
                 class="flex items-center gap-4 rounded-3xl bg-white p-5 shadow-sm"
               >
@@ -684,17 +586,16 @@
                     />
                   </svg>
                 </div>
-
                 <div>
                   <p class="text-sm text-slate-500">Rejected (YTD)</p>
-                  <h2 id="weeklyHours" class="text-3xl font-bold text-red-600">
-                    1
+                  <h2 id="statRejected" class="text-3xl font-bold text-red-600">
+                    0
                   </h2>
                   <p class="text-sm text-slate-500">Rejected this year</p>
                 </div>
               </div>
 
-              <!-- day taken -->
+              <!-- Days Taken -->
               <div
                 class="flex items-center gap-4 rounded-3xl bg-white p-5 shadow-sm"
               >
@@ -716,21 +617,22 @@
                     />
                   </svg>
                 </div>
-
                 <div>
-                  <p class="text-sm text-slate-500">Day's Taken</p>
-                  <h2 id="todayShift" class="text-3xl font-bold text-blue-600">
-                    13
+                  <p class="text-sm text-slate-500">Days Taken</p>
+                  <h2
+                    id="statDaysTaken"
+                    class="text-3xl font-bold text-blue-600"
+                  >
+                    0
                   </h2>
-                  <p class="text-sm text-slate-500">
-                    Total days of leave this year
-                  </p>
+                  <p class="text-sm text-slate-500">Total days of leave</p>
                 </div>
               </div>
             </div>
 
+            <!-- Main grid -->
             <div class="grid gap-6 lg:grid-cols-7">
-              <!-- ================= LEFT : annual leave ================= -->
+              <!-- ================= LEFT : upcoming leave ================= -->
               <div class="rounded-3xl bg-white p-6 shadow-sm lg:col-span-4">
                 <div class="flex items-center justify-between">
                   <div>
@@ -773,7 +675,7 @@
               </div>
             </div>
 
-            <!-- bottom content -->
+            <!-- bottom content Filter -->
             <div class="rounded-3xl bg-white p-5 shadow-sm">
               <div class="flex flex-col gap-4 xl:flex-row xl:items-end">
                 <!-- Search -->
@@ -788,7 +690,7 @@
                   <input
                     id="searchLeave"
                     type="text"
-                    placeholder="Search by leave type, reason..."
+                    placeholder="Search by ID, leave type, reason..."
                     class="w-full rounded-xl border border-slate-200 px-4 py-2.5 text-sm outline-none transition focus:border-indigo-500 focus:ring-4 focus:ring-indigo-100"
                   />
                 </div>
@@ -830,6 +732,8 @@
                     <option value="">All Status</option>
                     <option value="approved">Approved</option>
                     <option value="pending">Pending</option>
+                    <option value="rejected">Rejected</option>
+                    <option value="canceled">Canceled</option>
                   </select>
                 </div>
 
@@ -850,7 +754,6 @@
                     <option>2026</option>
                     <option>2025</option>
                     <option>2024</option>
-                    <option>2023</option>
                   </select>
                 </div>
 
@@ -878,9 +781,10 @@
                 </div>
 
                 <span
+                  id="historyTotalBadge"
                   class="inline-flex items-center rounded-full bg-slate-100 px-3 py-1 text-sm font-medium text-slate-600"
                 >
-                  5 Requests
+                  0 Requests
                 </span>
               </div>
 
@@ -900,352 +804,24 @@
                     </tr>
                   </thead>
 
-                  <tbody class="divide-y divide-slate-100 text-sm">
-                    <!-- Row 1 -->
-                    <tr class="hover:bg-slate-50">
-                      <td class="px-4 py-4 font-medium text-slate-800">
-                        LR-2026-001
-                      </td>
-                      <td class="px-4 py-4">Annual Leave</td>
-                      <td class="px-4 py-4">15 Jul - 17 Jul 2026</td>
-                      <td class="px-4 py-4">3 Days</td>
-                      <td class="px-4 py-4">Family Vacation</td>
-                      <td class="px-4 py-4">
-                        <span
-                          class="rounded-full bg-green-100 px-3 py-1 text-xs font-semibold text-green-700"
-                        >
-                          Approved
-                        </span>
-                      </td>
-                      <td class="px-4 py-4">10 Jul 2026</td>
-                      <td class="px-4 py-4">
-                        <div class="flex justify-center gap-2">
-                          <button
-                            class="rounded-lg bg-indigo-600 px-3 py-1.5 text-xs font-medium text-white transition hover:bg-indigo-700"
-                          >
-                            View
-                          </button>
-                        </div>
-                      </td>
-                    </tr>
-
-                    <!-- Row 2 -->
-                    <tr class="hover:bg-slate-50">
-                      <td class="px-4 py-4 font-medium text-slate-800">
-                        LR-2026-002
-                      </td>
-                      <td class="px-4 py-4">Sick Leave</td>
-                      <td class="px-4 py-4">08 Jul 2026</td>
-                      <td class="px-4 py-4">1 Day</td>
-                      <td class="px-4 py-4">Fever</td>
-                      <td class="px-4 py-4">
-                        <span
-                          class="rounded-full bg-yellow-100 px-3 py-1 text-xs font-semibold text-yellow-700"
-                        >
-                          Pending
-                        </span>
-                      </td>
-                      <td class="px-4 py-4">07 Jul 2026</td>
-                      <td class="px-4 py-4">
-                        <div class="flex justify-center gap-2">
-                          <button
-                            class="rounded-lg bg-indigo-600 px-3 py-1.5 text-xs font-medium text-white transition hover:bg-indigo-700"
-                          >
-                            View
-                          </button>
-
-                          <button
-                            class="rounded-lg bg-red-600 px-3 py-1.5 text-xs font-medium text-white transition hover:bg-red-700"
-                          >
-                            Cancel
-                          </button>
-                        </div>
-                      </td>
-                    </tr>
-
-                    <!-- Row 3 -->
-                    <tr class="hover:bg-slate-50">
-                      <td class="px-4 py-4 font-medium text-slate-800">
-                        LR-2026-003
-                      </td>
-                      <td class="px-4 py-4">Personal Leave</td>
-                      <td class="px-4 py-4">20 Jun 2026</td>
-                      <td class="px-4 py-4">1 Day</td>
-                      <td class="px-4 py-4">Personal Matters</td>
-                      <td class="px-4 py-4">
-                        <span
-                          class="rounded-full bg-red-100 px-3 py-1 text-xs font-semibold text-red-700"
-                        >
-                          Rejected
-                        </span>
-                      </td>
-                      <td class="px-4 py-4">18 Jun 2026</td>
-                      <td class="px-4 py-4">
-                        <div class="flex justify-center gap-2">
-                          <button
-                            class="rounded-lg bg-indigo-600 px-3 py-1.5 text-xs font-medium text-white transition hover:bg-indigo-700"
-                          >
-                            View
-                          </button>
-                        </div>
-                      </td>
-                    </tr>
-
-                    <!-- Row 4 -->
-                    <tr class="hover:bg-slate-50">
-                      <td class="px-4 py-4 font-medium text-slate-800">
-                        LR-2026-004
-                      </td>
-                      <td class="px-4 py-4">Unpaid Leave</td>
-                      <td class="px-4 py-4">25 May - 29 May 2026</td>
-                      <td class="px-4 py-4">5 Days</td>
-                      <td class="px-4 py-4">Family Emergency</td>
-                      <td class="px-4 py-4">
-                        <span
-                          class="rounded-full bg-green-100 px-3 py-1 text-xs font-semibold text-green-700"
-                        >
-                          Approved
-                        </span>
-                      </td>
-                      <td class="px-4 py-4">18 May 2026</td>
-                      <td class="px-4 py-4">
-                        <div class="flex justify-center gap-2">
-                          <button
-                            class="rounded-lg bg-indigo-600 px-3 py-1.5 text-xs font-medium text-white transition hover:bg-indigo-700"
-                          >
-                            View
-                          </button>
-                        </div>
-                      </td>
-                    </tr>
-
-                    <!-- Row 5 -->
-                    <tr class="hover:bg-slate-50">
-                      <td class="px-4 py-4 font-medium text-slate-800">
-                        LR-2026-005
-                      </td>
-                      <td class="px-4 py-4">Annual Leave</td>
-                      <td class="px-4 py-4">30 Jul - 01 Aug 2026</td>
-                      <td class="px-4 py-4">3 Days</td>
-                      <td class="px-4 py-4">Vacation</td>
-                      <td class="px-4 py-4">
-                        <span
-                          class="rounded-full bg-yellow-100 px-3 py-1 text-xs font-semibold text-yellow-700"
-                        >
-                          Pending
-                        </span>
-                      </td>
-                      <td class="px-4 py-4">14 Jul 2026</td>
-                      <td class="px-4 py-4">
-                        <div class="flex justify-center gap-2">
-                          <button
-                            class="rounded-lg bg-indigo-600 px-3 py-1.5 text-xs font-medium text-white transition hover:bg-indigo-700"
-                          >
-                            View
-                          </button>
-
-                          <button
-                            class="rounded-lg bg-red-600 px-3 py-1.5 text-xs font-medium text-white transition hover:bg-red-700"
-                          >
-                            Cancel
-                          </button>
-                        </div>
-                      </td>
-                    </tr>
-
-                    <tr class="hover:bg-slate-50">
-                      <td class="px-4 py-4 font-medium text-slate-800">
-                        LR-2026-005
-                      </td>
-                      <td class="px-4 py-4">Annual Leave</td>
-                      <td class="px-4 py-4">30 Jul - 01 Aug 2026</td>
-                      <td class="px-4 py-4">3 Days</td>
-                      <td class="px-4 py-4">Vacation</td>
-                      <td class="px-4 py-4">
-                        <span
-                          class="rounded-full bg-yellow-100 px-3 py-1 text-xs font-semibold text-yellow-700"
-                        >
-                          Pending
-                        </span>
-                      </td>
-                      <td class="px-4 py-4">14 Jul 2026</td>
-                      <td class="px-4 py-4">
-                        <div class="flex justify-center gap-2">
-                          <button
-                            class="rounded-lg bg-indigo-600 px-3 py-1.5 text-xs font-medium text-white transition hover:bg-indigo-700"
-                          >
-                            View
-                          </button>
-
-                          <button
-                            class="rounded-lg bg-red-600 px-3 py-1.5 text-xs font-medium text-white transition hover:bg-red-700"
-                          >
-                            Cancel
-                          </button>
-                        </div>
-                      </td>
-                    </tr>
-
-                    <tr class="hover:bg-slate-50">
-                      <td class="px-4 py-4 font-medium text-slate-800">
-                        LR-2026-004
-                      </td>
-                      <td class="px-4 py-4">Unpaid Leave</td>
-                      <td class="px-4 py-4">25 May - 29 May 2026</td>
-                      <td class="px-4 py-4">5 Days</td>
-                      <td class="px-4 py-4">Family Emergency</td>
-                      <td class="px-4 py-4">
-                        <span
-                          class="rounded-full bg-green-100 px-3 py-1 text-xs font-semibold text-green-700"
-                        >
-                          Approved
-                        </span>
-                      </td>
-                      <td class="px-4 py-4">18 May 2026</td>
-                      <td class="px-4 py-4">
-                        <div class="flex justify-center gap-2">
-                          <button
-                            class="rounded-lg bg-indigo-600 px-3 py-1.5 text-xs font-medium text-white transition hover:bg-indigo-700"
-                          >
-                            View
-                          </button>
-                        </div>
-                      </td>
-                    </tr>
-
-                    <tr class="hover:bg-slate-50">
-                      <td class="px-4 py-4 font-medium text-slate-800">
-                        LR-2026-005
-                      </td>
-                      <td class="px-4 py-4">Annual Leave</td>
-                      <td class="px-4 py-4">30 Jul - 01 Aug 2026</td>
-                      <td class="px-4 py-4">3 Days</td>
-                      <td class="px-4 py-4">Vacation</td>
-                      <td class="px-4 py-4">
-                        <span
-                          class="rounded-full bg-yellow-100 px-3 py-1 text-xs font-semibold text-yellow-700"
-                        >
-                          Pending
-                        </span>
-                      </td>
-                      <td class="px-4 py-4">14 Jul 2026</td>
-                      <td class="px-4 py-4">
-                        <div class="flex justify-center gap-2">
-                          <button
-                            class="rounded-lg bg-indigo-600 px-3 py-1.5 text-xs font-medium text-white transition hover:bg-indigo-700"
-                          >
-                            View
-                          </button>
-
-                          <button
-                            class="rounded-lg bg-red-600 px-3 py-1.5 text-xs font-medium text-white transition hover:bg-red-700"
-                          >
-                            Cancel
-                          </button>
-                        </div>
-                      </td>
-                    </tr>
-
-                    <tr class="hover:bg-slate-50">
-                      <td class="px-4 py-4 font-medium text-slate-800">
-                        LR-2026-005
-                      </td>
-                      <td class="px-4 py-4">Annual Leave</td>
-                      <td class="px-4 py-4">30 Jul - 01 Aug 2026</td>
-                      <td class="px-4 py-4">3 Days</td>
-                      <td class="px-4 py-4">Vacation</td>
-                      <td class="px-4 py-4">
-                        <span
-                          class="rounded-full bg-yellow-100 px-3 py-1 text-xs font-semibold text-yellow-700"
-                        >
-                          Pending
-                        </span>
-                      </td>
-                      <td class="px-4 py-4">14 Jul 2026</td>
-                      <td class="px-4 py-4">
-                        <div class="flex justify-center gap-2">
-                          <button
-                            class="rounded-lg bg-indigo-600 px-3 py-1.5 text-xs font-medium text-white transition hover:bg-indigo-700"
-                          >
-                            View
-                          </button>
-
-                          <button
-                            class="rounded-lg bg-red-600 px-3 py-1.5 text-xs font-medium text-white transition hover:bg-red-700"
-                          >
-                            Cancel
-                          </button>
-                        </div>
-                      </td>
-                    </tr>
-
-                    <tr class="hover:bg-slate-50">
-                      <td class="px-4 py-4 font-medium text-slate-800">
-                        LR-2026-003
-                      </td>
-                      <td class="px-4 py-4">Personal Leave</td>
-                      <td class="px-4 py-4">20 Jun 2026</td>
-                      <td class="px-4 py-4">1 Day</td>
-                      <td class="px-4 py-4">Personal Matters</td>
-                      <td class="px-4 py-4">
-                        <span
-                          class="rounded-full bg-red-100 px-3 py-1 text-xs font-semibold text-red-700"
-                        >
-                          Rejected
-                        </span>
-                      </td>
-                      <td class="px-4 py-4">18 Jun 2026</td>
-                      <td class="px-4 py-4">
-                        <div class="flex justify-center gap-2">
-                          <button
-                            class="rounded-lg bg-indigo-600 px-3 py-1.5 text-xs font-medium text-white transition hover:bg-indigo-700"
-                          >
-                            View
-                          </button>
-                        </div>
-                      </td>
-                    </tr>
-
-                    <tr class="hover:bg-slate-50">
-                      <td class="px-4 py-4 font-medium text-slate-800">
-                        LR-2026-004
-                      </td>
-                      <td class="px-4 py-4">Unpaid Leave</td>
-                      <td class="px-4 py-4">25 May - 29 May 2026</td>
-                      <td class="px-4 py-4">5 Days</td>
-                      <td class="px-4 py-4">Family Emergency</td>
-                      <td class="px-4 py-4">
-                        <span
-                          class="rounded-full bg-green-100 px-3 py-1 text-xs font-semibold text-green-700"
-                        >
-                          Approved
-                        </span>
-                      </td>
-                      <td class="px-4 py-4">18 May 2026</td>
-                      <td class="px-4 py-4">
-                        <div class="flex justify-center gap-2">
-                          <button
-                            class="rounded-lg bg-indigo-600 px-3 py-1.5 text-xs font-medium text-white transition hover:bg-indigo-700"
-                          >
-                            View
-                          </button>
-                        </div>
-                      </td>
-                    </tr>
+                  <tbody
+                    id="historyTableBody"
+                    class="divide-y divide-slate-100 text-sm"
+                  >
+                    <!-- Dynamic Rows Rendered by JS -->
                   </tbody>
                 </table>
+
                 <!-- Pagination -->
                 <div
                   class="mt-6 flex flex-col gap-3 border-t border-slate-200 pt-4 sm:flex-row sm:items-center sm:justify-between"
                 >
-                  <!-- Info -->
                   <p class="text-sm text-slate-500">
-                    Showing <span id="startItem">1</span> -
-                    <span id="endItem">8</span> of
-                    <span id="totalItems">15</span> requests
+                    Showing <span id="startItem">0</span> -
+                    <span id="endItem">0</span> of
+                    <span id="totalItems">0</span> requests
                   </p>
 
-                  <!-- Controls -->
                   <div class="flex items-center justify-end gap-2">
                     <button
                       id="prevPage"
@@ -1259,7 +835,7 @@
                       id="pageIndicator"
                       class="rounded-xl bg-slate-100 px-4 py-2 text-sm font-medium text-slate-700"
                     >
-                      Page 1 of 2
+                      Page 1 of 1
                     </span>
 
                     <button
@@ -1285,7 +861,6 @@
               </div>
 
               <div class="grid gap-4 md:grid-cols-2">
-                <!-- Policy 1 -->
                 <div
                   class="flex items-start gap-4 rounded-2xl border border-slate-300 p-4"
                 >
@@ -1294,20 +869,18 @@
                   >
                     1
                   </div>
-
                   <div>
                     <h3 class="font-semibold text-slate-800">
                       Submit Leave in Advance
                     </h3>
                     <p class="mt-1 text-sm leading-6 text-slate-500">
                       Submit annual or personal leave at least
-                      <strong>3 working days</strong>
-                      before the leave date unless it is an emergency.
+                      <strong>3 working days</strong> before the leave date
+                      unless it is an emergency.
                     </p>
                   </div>
                 </div>
 
-                <!-- Policy 2 -->
                 <div
                   class="flex items-start gap-4 rounded-2xl border border-slate-300 p-4"
                 >
@@ -1316,7 +889,6 @@
                   >
                     2
                   </div>
-
                   <div>
                     <h3 class="font-semibold text-slate-800">
                       Medical Certificate
@@ -1329,7 +901,6 @@
                   </div>
                 </div>
 
-                <!-- Policy 3 -->
                 <div
                   class="flex items-start gap-4 rounded-2xl border border-slate-300 p-4"
                 >
@@ -1338,7 +909,6 @@
                   >
                     3
                   </div>
-
                   <div>
                     <h3 class="font-semibold text-slate-800">
                       Approval Required
@@ -1350,7 +920,6 @@
                   </div>
                 </div>
 
-                <!-- Policy 4 -->
                 <div
                   class="flex items-start gap-4 rounded-2xl border border-slate-300 p-4"
                 >
@@ -1359,7 +928,6 @@
                   >
                     4
                   </div>
-
                   <div>
                     <h3 class="font-semibold text-slate-800">Unpaid Leave</h3>
                     <p class="mt-1 text-sm leading-6 text-slate-500">
@@ -1372,6 +940,56 @@
             </div>
           </section>
         </main>
+      </div>
+    </div>
+
+    <!-- Modal Popup Detail Rincian Acara -->
+    <div
+      id="detailModal"
+      class="fixed inset-0 z-50 flex hidden items-center justify-center bg-black/50 p-4 backdrop-blur-sm"
+    >
+      <div
+        class="w-full max-w-lg rounded-3xl bg-white p-6 shadow-2xl transition-all"
+      >
+        <div
+          class="flex items-center justify-between border-b border-slate-100 pb-4"
+        >
+          <h3 class="text-xl font-bold text-slate-800" id="modalTitle">
+            Leave Details
+          </h3>
+          <button
+            id="closeModal"
+            class="rounded-xl p-2 text-slate-400 hover:bg-slate-100 hover:text-slate-600"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              class="h-5 w-5"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M6 18L18 6M6 6l12 12"
+              />
+            </svg>
+          </button>
+        </div>
+
+        <div class="mt-4 space-y-4" id="modalBody">
+          <!-- Populated by JavaScript -->
+        </div>
+
+        <div class="mt-6 flex justify-end">
+          <button
+            id="closeModalBtn"
+            class="rounded-xl bg-slate-800 px-5 py-2.5 text-sm font-medium text-white transition hover:bg-slate-700"
+          >
+            Close
+          </button>
+        </div>
       </div>
     </div>
 
