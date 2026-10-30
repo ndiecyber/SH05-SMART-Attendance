@@ -1,0 +1,1101 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="csrf-token" content="{{ csrf_token() }}" />
+    <meta name="attendance-endpoint" content="{{ route('attendance.record') }}" />
+    <title>Smart Attendance Dashboard</title>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            fontFamily: {
+              sans: ["Inter", "sans-serif"],
+            },
+            colors: {
+              primary: {
+                50: "#eef2ff",
+                100: "#e0e7ff",
+                500: "#6366f1",
+                600: "#4f46e5",
+                700: "#4338ca",
+              },
+            },
+          },
+        },
+      };
+    </script>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+
+  <body class="bg-slate-100 font-sans text-slate-800">
+    <div class="min-h-screen bg-[#f5f7fb]">
+      <div class="flex min-h-screen">
+        <!-- Overlay mobile -->
+        <div
+          id="sidebarOverlay"
+          class="fixed inset-0 z-30 hidden bg-black/40 md:hidden"
+        ></div>
+
+        <!-- Sidebar -->
+        <aside
+          id="sidebar"
+          class="fixed inset-y-0 left-0 z-40 flex w-72 -translate-x-full flex-col border-r border-slate-200 bg-[#000033] shadow-xl transition-transform duration-300 md:translate-x-0"
+        >
+          <!-- Brand -->
+          <div class="flex items-center justify-between px-6 py-5">
+            <div class="flex items-center gap-3">
+              <div
+                class="flex h-15 w-20 items-center justify-center text-white shadow-lg"
+              >
+                <img
+                  src="assets/LEXA-logo.png"
+                  alt="LEXA Logo"
+                  class="h-15 w-15 rounded-full object-cover shadow-lg"
+                />
+              </div>
+              <div>
+                <p class="text-xs uppercase tracking-[0.35em] text-slate-300">
+                  LEXA
+                </p>
+                <h2
+                  class="text-sm font-semibold uppercase tracking-[0.35em] text-white"
+                >
+                  SMART ATTENDANCE
+                </h2>
+              </div>
+            </div>
+
+            <!-- Close mobile -->
+            <button
+              id="closeSidebar"
+              class="rounded-xl p-2 text-white hover:bg-white/10 md:hidden"
+              aria-label="Close menu"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                class="h-6 w-6"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M6 18L18 6M6 6l12 12"
+                />
+              </svg>
+            </button>
+          </div>
+
+          <!-- Navigation -->
+          <nav class="mt-4 flex-1 space-y-1 px-3">
+            <a
+              href="{{ route('dashboard.index') }}"
+              class="flex items-center gap-3 rounded-2xl px-3 py-1 text-sm font-medium text-slate-200 transition hover:bg-white/10"
+            >
+              <span
+                class="flex h-8 w-8 items-center justify-center rounded-xl bg-white/10"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  class="h-4 w-4"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001 1h6a1 1 0 001-1m-7 0h8"
+                  />
+                </svg>
+              </span>
+              Dashboard
+            </a>
+
+            <a
+              href="#"
+              class="flex items-center gap-3 rounded-2xl bg-indigo-50 px-3 py-1 text-sm font-semibold text-indigo-700"
+            >
+              <span
+                class="flex h-8 w-8 items-center justify-center rounded-xl bg-indigo-100"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  class="h-4 w-4"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M12 6v6l4 2m6-2a10 10 0 11-20 0 10 10 0 0120 0z"
+                  />
+                </svg>
+              </span>
+              Check-in / out
+            </a>
+
+            <a
+              href="{{ route('attendance.index') }}"
+              class="flex items-center gap-3 rounded-2xl px-3 py-1 text-sm font-medium text-slate-200 transition hover:bg-white/10"
+            >
+              <span
+                class="flex h-8 w-8 items-center justify-center rounded-xl bg-white/10"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  class="h-4 w-4"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M9 3h6a2 2 0 012 2h1a2 2 0 012 2v12a2 2 0 01-2 2H6a2 2 0 01-2-2V7a2 2 0 012-2h1a2 2 0 012-2zm0 0a2 2 0 002 2h2a2 2 0 002-2M8 11h8M8 15h5"
+                  />
+                </svg>
+              </span>
+              Attendance
+            </a>
+
+            <a
+              href="{{ route('schedules.index') }}"
+              class="flex items-center gap-3 rounded-2xl px-3 py-1 text-sm font-medium text-slate-200 transition hover:bg-white/10"
+            >
+              <span
+                class="flex h-8 w-8 items-center justify-center rounded-xl bg-white/10"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  class="h-4 w-4"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
+                  />
+                </svg>
+              </span>
+              Schedule
+            </a>
+
+            <a
+              href="{{ route('leave.index') }}"
+              class="flex items-center gap-3 rounded-2xl px-3 py-1 text-sm font-medium text-slate-200 transition hover:bg-white/10"
+            >
+              <span
+                class="flex h-8 w-8 items-center justify-center rounded-xl bg-white/10"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  class="h-4 w-4"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M3 11L21 3L13 21L11 13L3 11Z"
+                  />
+                </svg>
+              </span>
+              Leave Request
+            </a>
+
+            <a
+              href="{{ route('permissions.index') }}"
+              class="flex items-center gap-3 rounded-2xl px-3 py-1 text-sm font-medium text-slate-200 transition hover:bg-white/10"
+            >
+              <span
+                class="flex h-8 w-8 items-center justify-center rounded-xl bg-white/10"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  class="h-4 w-4"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M9 2h6l5 5v13a2 2 0 01-2 2H6a2 2 0 01-2-2V4a2 2 0 012-2h3zm6 0v5h5M8 11h8M8 15h8M8 19h5"
+                  />
+                </svg>
+              </span>
+              Permission
+            </a>
+
+            <a
+              href="{{ route('attendance.logs') }}"
+              class="flex items-center gap-3 rounded-2xl px-3 py-1 text-sm font-medium text-slate-200 transition hover:bg-white/10"
+            >
+              <span
+                class="flex h-8 w-8 items-center justify-center rounded-xl bg-white/10"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  class="h-4 w-4"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M8 7h8M8 11h8M8 15h5M6 3h12a2 2 0 012 2v14l-4-2-4 2-4-2-4 2V5a2 2 0 012-2z"
+                  />
+                </svg>
+              </span>
+              Attendance Log
+            </a>
+
+            <a
+              href="{{ route('reports.index') }}"
+              class="flex items-center gap-3 rounded-2xl px-3 py-1 text-sm font-medium text-slate-200 transition hover:bg-white/10"
+            >
+              <span
+                class="flex h-8 w-8 items-center justify-center rounded-xl bg-white/10"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  class="h-4 w-4"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M9 17v-2m3 2V7m3 10v-6M5 21h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v14a2 2 0 002 2z"
+                  />
+                </svg>
+              </span>
+              Report
+            </a>
+
+            <a
+              href="{{ route('dashboard.index') }}"
+              class="flex items-center gap-3 rounded-2xl px-3 py-1 text-sm font-medium text-slate-200 transition hover:bg-white/10"
+            >
+              <span
+                class="flex h-8 w-8 items-center justify-center rounded-xl bg-white/10"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  class="h-4 w-4"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0a3 3 0 11-6 0"
+                  />
+                </svg>
+              </span>
+              Notification
+            </a>
+
+            <a
+              href="{{ route('profile.edit') }}"
+              class="flex items-center gap-3 rounded-2xl px-3 py-1 text-sm font-medium text-slate-200 transition hover:bg-white/10"
+            >
+              <span
+                class="flex h-8 w-8 items-center justify-center rounded-xl bg-white/10"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  class="h-4 w-4"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M5.121 17.804A9 9 0 1118.879 6.196 9 9 0 015.121 17.804z"
+                  />
+                </svg>
+              </span>
+              Profile
+            </a>
+          </nav>
+
+          <!-- Profile card -->
+          <div class="px-3 pb-6 pt-4">
+            <div class="rounded-3xl bg-white/10 p-2 backdrop-blur">
+              <div class="flex items-center gap-3">
+                <img
+                  src="{{ route('profile.avatar', ['v' => auth()->user()->updated_at?->timestamp ?? 0]) }}"
+                  alt="Profile"
+                  class="h-10 w-10 rounded-2xl object-cover"
+                />
+                <div>
+                  <p class="font-semibold text-white">{{ auth()->user()->name }}</p>
+                  <p class="text-sm text-slate-300">{{ auth()->user()->job_title ?: '—' }}</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </aside>
+
+        <!-- Main -->
+        <main class="flex-1 md:ml-72">
+          <!-- Header -->
+          <header
+            class="sticky top-0 z-20 border-b border-slate-200 bg-white/90 px-4 py-4 backdrop-blur sm:px-6"
+          >
+            <div class="flex items-center justify-between gap-3">
+              <div class="flex items-center gap-3">
+                <!-- Burger mobile -->
+                <button
+                  id="openSidebar"
+                  class="flex h-11 w-11 items-center justify-center rounded-2xl border border-slate-200 text-slate-700 hover:bg-slate-50 md:hidden"
+                  aria-label="Open menu"
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    class="h-6 w-6"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M4 6h16M4 12h16M4 18h16"
+                    />
+                  </svg>
+                </button>
+
+                <div>
+                  <p class="text-xl text-slate-500">Welcome, {{ auth()->user()->nickname ?: auth()->user()->name }}</p>
+                </div>
+              </div>
+
+              <div class="flex items-center gap-3">
+                <div
+                  class="hidden rounded-2xl bg-slate-100 px-4 py-2 text-sm text-slate-600 md:block"
+                >
+                  <span id="headerTime">--:--</span>
+                </div>
+                <div
+                  class="hidden rounded-2xl bg-slate-100 px-4 py-2 text-sm text-slate-600 md:block"
+                >
+                  <span id="headerDate">--</span>
+                </div>
+
+                <button
+                  class="relative flex h-11 w-11 items-center justify-center rounded-2xl bg-indigo-600 text-white shadow-lg"
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    class="h-5 w-5"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"
+                    />
+                  </svg>
+                  <span
+                    class="absolute right-2 top-2 h-2.5 w-2.5 rounded-full bg-rose-500 ring-2 ring-white"
+                  ></span>
+                </button>
+              </div>
+            </div>
+          </header>
+
+          <!-- Content -->
+          <section class="space-y-6 p-4 sm:p-6">
+            <div class="grid gap-6 lg:grid-cols-[minmax(0,2fr)_minmax(0,1fr)]">
+              <!-- Clock Card -->
+              <div
+                class="flex items-center justify-between rounded-3xl bg-gradient-to-br from-white to-indigo-100 p-6 text-blue-500 shadow-sm lg:col-span-2"
+              >
+                  <!-- Left : Current Time -->
+                  <div>
+                    <p class="text-sm text-slate-500">Current Time</p>
+
+                    <h2
+                      id="heroTime"
+                      class="mt-1 text-5xl font-bold tracking-wide"
+                    >
+                      09:45
+                    </h2>
+
+                    <p
+                      id="heroDay"
+                      class="mt-4 text-lg font-medium text-slate-700"
+                    >
+                      Wednesday
+                    </p>
+
+                    <p id="heroDate" class="text-sm text-slate-500">
+                      July 8, 2026
+                    </p>
+                  </div>
+
+                  <!-- Right : Today's Shift -->
+                  <div
+                    class="text-right rounded-3xl p-3 bg-slate-100 shadow-sm"
+                  >
+                    <p class="text-sm text-slate-500">Today's Shift</p>
+
+                    <h3
+                      id="todayShiftName"
+                      class="mt-1 text-2xl font-bold text-slate-800"
+                    >
+                      Standard Intern
+                    </h3>
+
+                    <p
+                      id="todayShiftTime"
+                      class="mt-2 text-lg font-medium text-blue-600"
+                    >
+                      08:00 - 17:00
+                    </p>
+
+                    <p class="text-sm text-slate-500">
+                      Scheduled Working Hours
+                    </p>
+                  </div>
+              </div>
+
+              <!-- Current Location -->
+              <div class="rounded-3xl bg-white p-6 shadow-sm">
+                  <!-- Header -->
+                  <div class="flex items-center justify-between">
+                    <div>
+                      <p class="text-sm text-slate-500">Current Location</p>
+                      <h3 class="mt-1 text-xl font-semibold text-slate-800">
+                        Attendance Location
+                      </h3>
+                    </div>
+
+                    <button
+                      id="refreshLocation"
+                      class="rounded-xl border border-slate-200 px-4 py-2 text-sm hover:bg-slate-100"
+                    >
+                      Refresh
+                    </button>
+                  </div>
+
+                  <!-- Map -->
+                  <div
+                    class="mt-5 overflow-hidden rounded-2xl border border-slate-200"
+                  >
+                    <iframe
+                      id="attendanceMap"
+                      src="https://maps.google.com/maps?q=-6.9175,107.6191&z=16&output=embed"
+                      class="h-[350px] w-full"
+                      loading="lazy"
+                    ></iframe>
+                  </div>
+
+                  <!-- Information -->
+                  <div class="mt-5 rounded-2xl bg-slate-50 p-4">
+                    <h4 class="font-semibold text-slate-700">
+                      Current Position
+                    </h4>
+
+                    <p id="locationText" class="mt-2 text-slate-700">
+                      Searching location...
+                    </p>
+
+                    <p
+                      id="locationAddress"
+                      class="mt-2 text-sm leading-6 text-slate-600"
+                    >
+                      Detecting address...
+                    </p>
+
+                    <p id="coordinates" class="mt-2 text-sm text-slate-500">
+                      Latitude, Longitude
+                    </p>
+                    <p id="locationDistance" class="mt-2 text-sm font-medium text-slate-700">
+                      Jarak dari kantor: menunggu GPS
+                    </p>
+                    <p id="networkStatus" class="mt-2 text-sm font-medium text-slate-700">
+                      {{ $networkLocalEnvironment ? 'Memeriksa public IP dari browser...' : 'Memeriksa IP request...' }}
+                    </p>
+                    <p id="attendanceEligibility" class="mt-2 text-sm font-semibold text-slate-700">
+                      Menunggu validasi GPS dan network.
+                    </p>
+                  </div>
+                </div>
+
+              <!-- ================= RIGHT ================= -->
+              <div class="h-fit rounded-3xl bg-white p-6 shadow-sm">
+                <div>
+                  <p class="text-sm text-slate-500">Camera Verification</p>
+                  <h3 class="mt-1 text-xl font-semibold text-slate-800">
+                    Selfie Verification
+                  </h3>
+                </div>
+
+                <!-- Camera Container -->
+                <div
+                  class="relative mt-5 overflow-hidden rounded-2xl border border-slate-200 bg-slate-100"
+                >
+                  <!-- Video -->
+                  <video
+                    id="cameraPreview"
+                    autoplay
+                    playsinline
+                    class="h-[420px] w-full object-cover hidden"
+                  ></video>
+
+                  <!-- Camera Off Overlay -->
+                  <div
+                    id="cameraOverlay"
+                    class="flex h-[420px] flex-col items-center justify-center text-slate-400"
+                  >
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      class="h-20 w-20"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                    >
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="1.5"
+                        d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14m-9 5h8a2 2 0 002-2V7a2 2 0 00-2-2H6a2 2 0 00-2 2v10a2 2 0 002 2z"
+                      />
+                    </svg>
+
+                    <p class="mt-4 text-lg font-medium">Camera is Off</p>
+                  </div>
+                </div>
+
+                <!-- Camera Switch -->
+                <div class="mt-4">
+                  <button
+                    id="toggleCameraBtn"
+                    class="w-full rounded-xl border border-slate-200 py-3 font-medium hover:bg-slate-100"
+                  >
+                    Turn Camera On
+                  </button>
+                </div>
+
+                <p class="mt-4 text-sm text-slate-500">
+                  Position your face clearly inside the camera frame before
+                  submitting attendance.
+                </p>
+
+                <!-- Attendance Buttons -->
+                <div class="mt-6 space-y-3">
+                  <!-- Hapus onclick="showToast()" dari tombol Check In -->
+                  <button
+                    id="checkInBtn"
+                    @disabled($todayRecord?->check_out_at && !$todayRecord?->check_in_at)
+                    class="w-full rounded-2xl bg-emerald-600 py-4 font-semibold text-white hover:bg-emerald-700"
+                  >
+                    Check In
+                  </button>
+
+                  <p
+                    id="checkInStatus"
+                    class="text-center text-xs text-slate-500"
+                  >
+                    Status: {{ $todayRecord?->check_out_at && !$todayRecord?->check_in_at ? 'Reset Check Out first' : ($todayRecord?->check_in_at ? 'Checked In' : 'Not Checked In') }}
+                  </p>
+
+                  <!-- Hapus onclick="showToast()" dari tombol Check Out -->
+                  <button
+                    id="checkOutBtn"
+                    disabled
+                    class="w-full cursor-not-allowed rounded-2xl bg-slate-300 py-4 font-semibold text-white"
+                  >
+                    Check Out
+                  </button>
+
+                  <p
+                    id="checkOutStatus"
+                    class="text-center text-xs text-slate-500"
+                  >
+                    Status: Not Available
+                  </p>
+
+                  <!-- Container Toast Notification (BENTUK TOAST TETAP ADAPUN/DIBIARKAN DI SINI) -->
+                  <div
+                    class="fixed top-5 left-1/2 -translate-x-1/2 z-50 pointer-events-none"
+                  >
+                    <div
+                      id="toast"
+                      class="pointer-events-auto flex items-center gap-3 bg-gray-900 text-white px-4 py-3 rounded-xl shadow-xl border border-gray-800 transition-all duration-300 -translate-y-10 opacity-0 hidden"
+                    >
+                      <!-- Icon Status (Success Checkmark) -->
+                      <span
+                        class="flex h-6 w-6 items-center justify-center rounded-full bg-emerald-500/20 text-emerald-400"
+                      >
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          class="h-4 w-4"
+                          fill="none"
+                          viewBox="0 0 24 24"
+                          stroke="currentColor"
+                        >
+                          <path
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            stroke-width="2.5"
+                            d="M5 13l4 4L19 7"
+                          />
+                        </svg>
+                      </span>
+
+                      <!-- Teks Pesan -->
+                      <p class="text-sm font-medium">Data berhasil disimpan!</p>
+
+                      <!-- Tombol Tutup (X) -->
+                      <button
+                        id="closeToastBtn"
+                        class="ml-2 text-gray-400 hover:text-white transition"
+                      >
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          class="h-4 w-4"
+                          fill="none"
+                          viewBox="0 0 24 24"
+                          stroke="currentColor"
+                        >
+                          <path
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            stroke-width="2"
+                            d="M6 18L18 6M6 6l12 12"
+                          />
+                        </svg>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Attendance Timeline -->
+              <div class="rounded-3xl bg-white p-6 shadow-sm lg:col-span-2">
+                <div class="mb-5">
+                  <p class="text-sm text-slate-500">Today's Activity</p>
+                  <h3 class="mt-1 text-xl font-semibold text-slate-800">
+                    Attendance Timeline
+                  </h3>
+                </div>
+
+                <div class="space-y-6">
+                  <!-- Check In -->
+                  <div class="flex gap-4">
+                    <div class="flex flex-col items-center">
+                      <span
+                        id="dot-checkin"
+                        class="h-3 w-3 rounded-full bg-slate-300 transition-colors duration-500"
+                      ></span>
+                      <span class="mt-1 h-full w-px bg-slate-200"></span>
+                    </div>
+                    <div>
+                      <p class="font-medium text-slate-800">Check In</p>
+                      <p id="time-checkin" class="text-sm text-slate-500">
+                        Pending
+                      </p>
+                    </div>
+                  </div>
+
+                  <!-- Break Start -->
+                  <div class="flex gap-4">
+                    <div class="flex flex-col items-center">
+                      <span
+                        id="dot-breakstart"
+                        class="h-3 w-3 rounded-full bg-slate-300 transition-colors duration-500"
+                      ></span>
+                      <span class="mt-1 h-full w-px bg-slate-200"></span>
+                    </div>
+                    <div>
+                      <p class="font-medium text-slate-800">Break Start</p>
+                      <p class="text-sm text-slate-500">12:00</p>
+                    </div>
+                  </div>
+
+                  <!-- Break End -->
+                  <div class="flex gap-4">
+                    <div class="flex flex-col items-center">
+                      <span
+                        id="dot-breakend"
+                        class="h-3 w-3 rounded-full bg-slate-300 transition-colors duration-500"
+                      ></span>
+                      <span class="mt-1 h-full w-px bg-slate-200"></span>
+                    </div>
+                    <div>
+                      <p class="font-medium text-slate-800">Break End</p>
+                      <p class="text-sm text-slate-500">13:00</p>
+                    </div>
+                  </div>
+
+                  <!-- Check Out -->
+                  <div class="flex gap-4">
+                    <div class="flex flex-col items-center">
+                      <span
+                        id="dot-checkout"
+                        class="h-3 w-3 rounded-full bg-slate-300 transition-colors duration-500"
+                      ></span>
+                    </div>
+                    <div>
+                      <p class="font-medium text-slate-800">Check Out</p>
+                      <p id="time-checkout" class="text-sm text-slate-500">
+                        Pending
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- bottom content -->
+            <div class="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
+              <!-- Current Streak -->
+              <div
+                class="flex items-center gap-4 rounded-3xl bg-white p-5 shadow-sm"
+              >
+                <div
+                  class="flex h-14 w-14 items-center justify-center rounded-2xl bg-orange-100 text-orange-600"
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    class="h-7 w-7"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M13 10V3L4 14h7v7l9-11h-7z"
+                    />
+                  </svg>
+                </div>
+
+                <div>
+                  <p class="text-sm text-slate-500">Current Streak</p>
+                  <h2
+                    id="currentStreak"
+                    class="text-3xl font-bold text-orange-600"
+                  >
+                    {{ $attendanceStatistics['current_streak'] }}
+                  </h2>
+                  <p class="text-sm text-slate-500">Consecutive attendance</p>
+                </div>
+              </div>
+
+              <!-- On-Time Rate -->
+              <div
+                class="flex items-center gap-4 rounded-3xl bg-white p-5 shadow-sm"
+              >
+                <div
+                  class="flex h-14 w-14 items-center justify-center rounded-2xl bg-emerald-100 text-emerald-600"
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    class="h-7 w-7"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M9 12l2 2 4-4m6 2A9 9 0 1112 3a9 9 0 019 9z"
+                    />
+                  </svg>
+                </div>
+
+                <div>
+                  <p class="text-sm text-slate-500">On-Time Rate</p>
+                  <h2
+                    id="onTimeRate"
+                    class="text-3xl font-bold text-emerald-600"
+                  >
+                    {{ $attendanceStatistics['on_time_rate'] }}
+                  </h2>
+                  <p class="text-sm text-slate-500">This month</p>
+                </div>
+              </div>
+
+              <!-- Average Check-In -->
+              <div
+                class="flex items-center gap-4 rounded-3xl bg-white p-5 shadow-sm"
+              >
+                <div
+                  class="flex h-14 w-14 items-center justify-center rounded-2xl bg-blue-100 text-blue-600"
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    class="h-7 w-7"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M12 8v4l3 3m7-3A10 10 0 1112 2a10 10 0 0110 10z"
+                    />
+                  </svg>
+                </div>
+
+                <div>
+                  <p class="text-sm text-slate-500">Avg Check-In</p>
+                  <h2 id="avgCheckIn" class="text-3xl font-bold text-blue-600">
+                    {{ $attendanceStatistics['average_check_in'] }}
+                  </h2>
+                  <p class="text-sm text-slate-500">Average arrival time</p>
+                </div>
+              </div>
+
+              <!-- This Week -->
+              <div
+                class="flex items-center gap-4 rounded-3xl bg-white p-5 shadow-sm"
+              >
+                <div
+                  class="flex h-14 w-14 items-center justify-center rounded-2xl bg-purple-100 text-purple-600"
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    class="h-7 w-7"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M9 17v-6m3 6V7m3 10v-3m3 7H6a2 2 0 01-2-2V5a2 2 0 012-2h12a2 2 0 012 2v14a2 2 0 01-2 2z"
+                    />
+                  </svg>
+                </div>
+
+                <div>
+                  <p class="text-sm text-slate-500">This Week</p>
+                  <h2
+                    id="weeklyWorkHours"
+                    class="text-3xl font-bold text-purple-600"
+                  >
+                    {{ $attendanceStatistics['weekly_work_hours'] }}
+                  </h2>
+                  <p class="text-sm text-slate-500">Total working hours</p>
+                </div>
+              </div>
+            </div>
+
+            <div class="rounded-3xl bg-white p-6 shadow-sm">
+      <div class="mb-6 flex flex-wrap items-center justify-between gap-4">
+        <div>
+          <p class="text-sm text-slate-500">Attendance History</p>
+          <h3 class="mt-1 text-xl font-semibold text-slate-800">Recent Check-ins</h3>
+          <p class="mt-1 text-sm text-slate-500">Last 5 saved attendance records</p>
+        </div>
+        @if (app()->environment(['local', 'development', 'testing']))
+          <div class="flex flex-wrap gap-2">
+            <form method="POST" action="{{ route('attendance.reset-check-in') }}" onsubmit="return confirm('Apakah Anda yakin ingin mereset Check In hari ini?')">
+              @csrf
+              @method('DELETE')
+              <button id="resetCheckInBtn" type="submit" @disabled($todayRecord?->check_in_at === null) class="rounded-xl border border-amber-200 px-4 py-2 text-sm font-medium text-amber-700 transition hover:bg-amber-50 disabled:cursor-not-allowed disabled:opacity-50">Reset Check In</button>
+            </form>
+            <form method="POST" action="{{ route('attendance.reset-check-out') }}" onsubmit="return confirm('Apakah Anda yakin ingin mereset Check Out hari ini?')">
+              @csrf
+              @method('DELETE')
+              <button id="resetCheckOutBtn" type="submit" @disabled($todayRecord?->check_in_at === null || $todayRecord?->check_out_at === null) class="rounded-xl border border-rose-200 px-4 py-2 text-sm font-medium text-rose-700 transition hover:bg-rose-50 disabled:cursor-not-allowed disabled:opacity-50">Reset Check Out</button>
+            </form>
+          </div>
+        @endif
+      </div>
+      @if (session('status'))
+        <p role="status" class="mb-4 rounded-xl bg-emerald-50 px-4 py-3 text-sm text-emerald-700">{{ session('status') }}</p>
+      @endif
+      <div id="recentAttendanceRecords" class="space-y-4">
+        @forelse ($recentRecords as $record)
+          @php
+            $recordStatus = $record->check_in_at && $record->check_out_at
+                ? 'Completed'
+                : ($record->check_in_at ? 'Checked In' : ($record->check_out_at ? 'Check Out only' : 'No Check In'));
+            $statusClass = $record->check_in_at && $record->check_out_at
+                ? 'bg-emerald-100 text-emerald-700'
+                : ($record->check_in_at ? 'bg-indigo-100 text-indigo-700' : 'bg-slate-100 text-slate-600');
+          @endphp
+          <article data-attendance-date="{{ $record->attendance_date->format('Y-m-d') }}" class="flex items-center justify-between gap-3 rounded-2xl border border-slate-200 p-4">
+            <div class="min-w-0 flex-1">
+              <p class="recent-weekday font-semibold text-slate-800">{{ $record->attendance_date->format('l') }}</p>
+              <p class="recent-date text-sm text-slate-500">{{ $record->attendance_date->format('d M Y') }}</p>
+              @if ($record->location)
+                <p class="recent-location truncate text-sm text-slate-500">{{ $record->location }}</p>
+              @endif
+            </div>
+            <div class="text-center">
+              <p class="recent-times font-medium text-slate-700">{{ $record->check_in_at?->format('H:i') ?? '—' }} – {{ $record->check_out_at?->format('H:i') ?? '—' }}</p>
+              <p class="text-xs text-slate-500">Check In / Check Out</p>
+            </div>
+            <div class="text-right">
+              <span class="recent-status rounded-full px-3 py-1 text-sm font-medium {{ $statusClass }}">{{ $recordStatus }}</span>
+            </div>
+          </article>
+        @empty
+          <p id="noRecentAttendance" class="rounded-2xl border border-dashed border-slate-300 p-6 text-center text-sm text-slate-500">No attendance records yet.</p>
+        @endforelse
+      </div>
+    </div>
+          </section>
+        </main>
+      </div>
+    </div>
+
+    <!-- Confirmation Modal Overlay -->
+    <div
+      id="attendanceModal"
+      class="fixed inset-0 z-50 hidden flex items-center justify-center bg-black/60 p-4 backdrop-blur-sm transition-opacity"
+    >
+      <div
+        class="flex w-full max-w-3xl flex-col overflow-hidden rounded-3xl bg-white shadow-2xl md:flex-row"
+      >
+        <!-- Kolom Kiri: Preview Kamera -->
+        <div
+          class="relative flex w-full flex-col items-center justify-center bg-slate-100 p-4 md:w-1/2 md:border-r border-slate-200"
+        >
+          <canvas id="snapshotCanvas" class="hidden"></canvas>
+          <img
+            id="snapshotPreview"
+            alt="Snapshot"
+            class="h-64 w-full rounded-2xl object-cover shadow-sm md:h-full border border-slate-200"
+          />
+        </div>
+
+        <!-- Kolom Kanan: Detail & Aksi -->
+        <div class="flex w-full flex-col justify-between p-6 md:w-1/2">
+          <div>
+            <h3 id="modalTitle" class="mb-5 text-xl font-bold text-slate-800">
+              Confirm Attendance
+            </h3>
+            <div class="space-y-4">
+              <div>
+                <p
+                  class="text-xs font-semibold uppercase tracking-wider text-slate-500"
+                >
+                  Current Time
+                </p>
+                <p
+                  id="modalTimeText"
+                  class="text-lg font-medium text-slate-800"
+                >
+                  --:--
+                </p>
+              </div>
+              <div>
+                <p
+                  class="text-xs font-semibold uppercase tracking-wider text-slate-500"
+                >
+                  Location
+                </p>
+                <p
+                  id="modalLocationText"
+                  class="text-sm font-medium text-slate-800 leading-snug"
+                >
+                  Detecting...
+                </p>
+              </div>
+              <div>
+                <p
+                  class="text-xs font-semibold uppercase tracking-wider text-slate-500"
+                >
+                  User Profile
+                </p>
+                <p class="text-sm font-medium text-slate-800">{{ auth()->user()->name }}</p>
+                <p class="text-sm text-slate-500">{{ auth()->user()->job_title ?: '—' }}</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Action Buttons -->
+          <div class="mt-8 flex gap-3">
+            <button
+              id="cancelModalBtn"
+              class="flex-1 rounded-xl border border-slate-200 py-3 font-semibold text-slate-600 transition hover:bg-slate-50"
+            >
+              Cancel
+            </button>
+            <button
+              id="confirmModalBtn"
+              class="flex-1 rounded-xl bg-indigo-600 py-3 font-semibold text-white shadow-md transition hover:bg-indigo-700"
+            >
+              Confirm
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    @php
+      $attendanceValidation = [
+          'officeConfigured' => $officeCoordinates !== null,
+          'officeLatitude' => $officeCoordinates['latitude'] ?? null,
+          'officeLongitude' => $officeCoordinates['longitude'] ?? null,
+          'radiusMeters' => $officeRadiusMeters,
+          'gpsWarningAccuracyMeters' => $gpsWarningAccuracyMeters,
+          'networkConfigured' => $networkConfigured,
+          'networkIpDetected' => $networkIpDetected,
+          'networkAllowed' => $networkAllowed,
+          'requestIp' => $requestIp,
+          'detectedPublicIp' => $detectedPublicIp,
+          'officeAllowedIp' => $networkDebug['office_allowed_ip'] ?? config('attendance.office_allowed_ip'),
+          'networkLocalEnvironment' => $networkLocalEnvironment,
+          'networkFailureMessage' => $networkFailureMessage,
+      ];
+      $todayAttendance = [
+          'check_in_at' => $todayRecord?->check_in_at?->format('Y-m-d H:i:s'),
+          'check_out_at' => $todayRecord?->check_out_at?->format('Y-m-d H:i:s'),
+      ];
+    @endphp
+    <script>
+      window.attendanceValidation = @json($attendanceValidation);
+      window.todayAttendance = @json($todayAttendance);
+    </script>
+    <script src="{{ asset('js/laravel/Check.js') }}?v=client-public-ip-1-attendance-endpoint-3"></script>
+  </body>
+</html>

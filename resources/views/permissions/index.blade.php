@@ -1,0 +1,1021 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="csrf-token" content="{{ csrf_token() }}" />
+    <title>Smart Attendance Dashboard</title>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            fontFamily: {
+              sans: ["Inter", "sans-serif"],
+            },
+            colors: {
+              primary: {
+                50: "#eef2ff",
+                100: "#e0e7ff",
+                500: "#6366f1",
+                600: "#4f46e5",
+                700: "#4338ca",
+              },
+            },
+          },
+        },
+      };
+    </script>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+
+  <body class="bg-slate-100 font-sans text-slate-800 overflow-x-hidden">
+    <div class="min-h-screen bg-[#f5f7fb]">
+      <div class="flex min-h-screen">
+        <!-- Overlay mobile -->
+        <div
+          id="sidebarOverlay"
+          class="fixed inset-0 z-30 hidden bg-black/40 md:hidden"
+        ></div>
+
+        <!-- Sidebar -->
+        <aside
+          id="sidebar"
+          class="fixed inset-y-0 left-0 z-40 flex w-72 -translate-x-full flex-col border-r border-slate-200 bg-[#000033] shadow-xl transition-transform duration-300 md:translate-x-0"
+        >
+          <!-- Brand -->
+          <div class="flex items-center justify-between px-6 py-5">
+            <div class="flex items-center gap-3">
+              <div
+                class="flex h-15 w-20 items-center justify-center text-white shadow-lg"
+              >
+                <img
+                  src="assets/LEXA-logo.png"
+                  alt="LEXA Logo"
+                  class="h-15 w-15 rounded-full object-cover shadow-lg"
+                />
+              </div>
+              <div>
+                <p class="text-xs uppercase tracking-[0.35em] text-slate-300">
+                  LEXA
+                </p>
+                <h2
+                  class="text-sm font-semibold uppercase tracking-[0.35em] text-white"
+                >
+                  SMART ATTENDANCE
+                </h2>
+              </div>
+            </div>
+
+            <!-- Close mobile -->
+            <button
+              id="closeSidebar"
+              class="rounded-xl p-2 text-white hover:bg-white/10 md:hidden"
+              aria-label="Close menu"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                class="h-6 w-6"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M6 18L18 6M6 6l12 12"
+                />
+              </svg>
+            </button>
+          </div>
+
+          <!-- Navigation -->
+          <nav class="mt-4 flex-1 space-y-1 px-3">
+            <a
+              href="{{ route('dashboard.index') }}"
+              class="flex items-center gap-3 rounded-2xl px-3 py-1 text-sm font-medium text-slate-200 transition hover:bg-white/10"
+            >
+              <span
+                class="flex h-8 w-8 items-center justify-center rounded-xl bg-white/10"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  class="h-4 w-4"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001 1h6a1 1 0 001-1m-7 0h8"
+                  />
+                </svg>
+              </span>
+              Dashboard
+            </a>
+
+            <a
+              href="{{ route('attendance.check-in') }}"
+              class="flex items-center gap-3 rounded-2xl px-3 py-1 text-sm font-medium text-slate-200 transition hover:bg-white/10"
+            >
+              <span
+                class="flex h-8 w-8 items-center justify-center rounded-xl bg-white/10"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  class="h-4 w-4"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M12 6v6l4 2m6-2a10 10 0 11-20 0 10 10 0 0120 0z"
+                  />
+                </svg>
+              </span>
+              Check-in / out
+            </a>
+
+            <a
+              href="{{ route('attendance.index') }}"
+              class="flex items-center gap-3 rounded-2xl px-3 py-1 text-sm font-medium text-slate-200 transition hover:bg-white/10"
+            >
+              <span
+                class="flex h-8 w-8 items-center justify-center rounded-xl bg-white/10"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  class="h-4 w-4"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M9 3h6a2 2 0 012 2h1a2 2 0 012 2v12a2 2 0 01-2 2H6a2 2 0 01-2-2V7a2 2 0 012-2h1a2 2 0 012-2zm0 0a2 2 0 002 2h2a2 2 0 002-2M8 11h8M8 15h5"
+                  />
+                </svg>
+              </span>
+              Attendance
+            </a>
+
+            <a
+              href="{{ route('schedules.index') }}"
+              class="flex items-center gap-3 rounded-2xl px-3 py-1 text-sm font-medium text-slate-200 transition hover:bg-white/10"
+            >
+              <span
+                class="flex h-8 w-8 items-center justify-center rounded-xl bg-white/10"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  class="h-4 w-4"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
+                  />
+                </svg>
+              </span>
+              Schedule
+            </a>
+
+            <a
+              href="{{ route('leave.index') }}"
+              class="flex items-center gap-3 rounded-2xl px-3 py-1 text-sm font-medium text-slate-200 transition hover:bg-white/10"
+            >
+              <span
+                class="flex h-8 w-8 items-center justify-center rounded-xl bg-white/10"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  class="h-4 w-4"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M3 11L21 3L13 21L11 13L3 11Z"
+                  />
+                </svg>
+              </span>
+              Leave Request
+            </a>
+
+            <a
+              href="#"
+              class="flex items-center gap-3 rounded-2xl bg-indigo-50 px-3 py-1 text-sm font-semibold text-indigo-700"
+            >
+              <span
+                class="flex h-8 w-8 items-center justify-center rounded-xl bg-indigo-100"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  class="h-4 w-4"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M9 2h6l5 5v13a2 2 0 01-2 2H6a2 2 0 01-2-2V4a2 2 0 012-2h3zm6 0v5h5M8 11h8M8 15h8M8 19h5"
+                  />
+                </svg>
+              </span>
+              Permission
+            </a>
+
+            <a
+              href="{{ route('attendance.logs') }}"
+              class="flex items-center gap-3 rounded-2xl px-3 py-1 text-sm font-medium text-slate-200 transition hover:bg-white/10"
+            >
+              <span
+                class="flex h-8 w-8 items-center justify-center rounded-xl bg-white/10"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  class="h-4 w-4"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M8 7h8M8 11h8M8 15h5M6 3h12a2 2 0 012 2v14l-4-2-4 2-4-2-4 2V5a2 2 0 012-2z"
+                  />
+                </svg>
+              </span>
+              Attendance Log
+            </a>
+
+            <a
+              href="{{ route('reports.index') }}"
+              class="flex items-center gap-3 rounded-2xl px-3 py-1 text-sm font-medium text-slate-200 transition hover:bg-white/10"
+            >
+              <span
+                class="flex h-8 w-8 items-center justify-center rounded-xl bg-white/10"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  class="h-4 w-4"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M9 17v-2m3 2V7m3 10v-6M5 21h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v14a2 2 0 002 2z"
+                  />
+                </svg>
+              </span>
+              Report
+            </a>
+
+            <a
+              href="{{ route('dashboard.index') }}"
+              class="flex items-center gap-3 rounded-2xl px-3 py-1 text-sm font-medium text-slate-200 transition hover:bg-white/10"
+            >
+              <span
+                class="flex h-8 w-8 items-center justify-center rounded-xl bg-white/10"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  class="h-4 w-4"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0a3 3 0 11-6 0"
+                  />
+                </svg>
+              </span>
+              Notification
+            </a>
+
+            <a
+              href="{{ route('profile.edit') }}"
+              class="flex items-center gap-3 rounded-2xl px-3 py-1 text-sm font-medium text-slate-200 transition hover:bg-white/10"
+            >
+              <span
+                class="flex h-8 w-8 items-center justify-center rounded-xl bg-white/10"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  class="h-4 w-4"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M5.121 17.804A9 9 0 1118.879 6.196 9 9 0 015.121 17.804z"
+                  />
+                </svg>
+              </span>
+              Profile
+            </a>
+          </nav>
+
+          <!-- Profile card -->
+          <div class="px-3 pb-6 pt-4">
+            <div class="rounded-3xl bg-white/10 p-2 backdrop-blur">
+              <div class="flex items-center gap-3">
+                <img
+                  src="{{ route('profile.avatar', ['v' => auth()->user()->updated_at?->timestamp ?? 0]) }}"
+                  alt="Profile"
+                  class="h-10 w-10 rounded-2xl object-cover"
+                />
+                <div>
+                  <p class="font-semibold text-white">{{ auth()->user()->name }}</p>
+                  <p class="text-sm text-slate-300">{{ auth()->user()->job_title ?: '—' }}</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </aside>
+
+        <!-- Main -->
+        <main class="flex-1 min-w-0 md:ml-72">
+          <!-- Header -->
+          <header
+            class="sticky top-0 z-20 border-b border-slate-200 bg-white/90 px-4 py-4 backdrop-blur sm:px-6"
+          >
+            <div class="flex items-center justify-between gap-3">
+              <div class="flex items-center gap-3">
+                <!-- Burger mobile -->
+                <button
+                  id="openSidebar"
+                  class="flex h-11 w-11 items-center justify-center rounded-2xl border border-slate-200 text-slate-700 hover:bg-slate-50 md:hidden"
+                  aria-label="Open menu"
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    class="h-6 w-6"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M4 6h16M4 12h16M4 18h16"
+                    />
+                  </svg>
+                </button>
+
+                <div>
+                  <p class="text-xl text-slate-500">Welcome, {{ auth()->user()->nickname ?: auth()->user()->name }}</p>
+                </div>
+              </div>
+
+              <div class="flex items-center gap-3">
+                <div
+                  class="hidden rounded-2xl bg-slate-100 px-4 py-2 text-sm text-slate-600 md:block"
+                >
+                  <span id="headerTime">--:--</span>
+                </div>
+                <div
+                  class="hidden rounded-2xl bg-slate-100 px-4 py-2 text-sm text-slate-600 md:block"
+                >
+                  <span id="headerDate">--</span>
+                </div>
+
+                <button
+                  class="relative flex h-11 w-11 items-center justify-center rounded-2xl bg-indigo-600 text-white shadow-lg"
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    class="h-5 w-5"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"
+                    />
+                  </svg>
+                  <span
+                    class="absolute right-2 top-2 h-2.5 w-2.5 rounded-full bg-rose-500 ring-2 ring-white"
+                  ></span>
+                </button>
+              </div>
+            </div>
+          </header>
+
+          <!-- Content -->
+          <section class="space-y-6 p-4 sm:p-6">
+            <div
+              class="flex flex-col gap-3 rounded-2xl bg-white p-2 shadow-sm md:flex-row md:items-center md:justify-between"
+            >
+              <!-- Left : Legend -->
+              <div class="pl-4 flex flex-wrap gap-5">
+                <h1 class="text-2xl font-semibold text-slate-800">
+                  Permission
+                </h1>
+              </div>
+
+              <!-- Right : Add Button -->
+              <a
+                href="{{ route('permissions.create') }}"
+                class="flex items-center justify-center gap-2 rounded-xl bg-indigo-600 px-4 py-2 text-sm font-medium text-white transition hover:bg-indigo-700"
+              >
+                + Request Permission
+              </a>
+            </div>
+
+            <!-- Main grid -->
+            @if (session('success'))
+              <div role="status" class="rounded-2xl border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm font-medium text-emerald-700">
+                {{ session('success') }}
+              </div>
+            @endif
+
+            <div class="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
+              <!-- Pending -->
+              <div
+                class="flex items-center gap-4 rounded-3xl bg-white p-5 shadow-sm"
+              >
+                <div
+                  class="flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl bg-amber-100 text-amber-500"
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    class="h-7 w-7"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M12 8v4l3 3m7-3A10 10 0 1112 2a10 10 0 0110 10z"
+                    />
+                  </svg>
+                </div>
+
+                <div>
+                  <p class="text-sm text-slate-500">Pending</p>
+                  <h2
+                    id="pendingCount"
+                    class="text-3xl font-bold text-amber-500"
+                  >
+                    0
+                  </h2>
+                  <p class="text-sm text-slate-500">Waiting Approval</p>
+                </div>
+              </div>
+
+              <!-- Approved -->
+              <div
+                class="flex items-center gap-4 rounded-3xl bg-white p-5 shadow-sm"
+              >
+                <div
+                  class="flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl bg-emerald-100 text-emerald-600"
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    class="h-7 w-7"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M12 21C7.03 21 3 16.97 3 12S7.03 3 12 3s9 4.03 9 9-4.03 9-9 9zm-3-9l2 2 4-4"
+                    />
+                  </svg>
+                </div>
+
+                <div>
+                  <p class="text-sm text-slate-500">Approved</p>
+                  <h2
+                    id="approvedCount"
+                    class="text-3xl font-bold text-emerald-600"
+                  >
+                    8
+                  </h2>
+                  <p class="text-sm text-slate-500">Approved this month</p>
+                </div>
+              </div>
+
+              <!-- reject -->
+              <div
+                class="flex items-center gap-4 rounded-3xl bg-white p-5 shadow-sm"
+              >
+                <div
+                  class="flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl bg-red-100 text-red-600"
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    class="h-7 w-7"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M12 21a9 9 0 100-18 9 9 0 000 18z"
+                    />
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M9 9l6 6"
+                    />
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M15 9l-6 6"
+                    />
+                  </svg>
+                </div>
+
+                <div>
+                  <p class="text-sm text-slate-500">Rejected</p>
+                  <h2
+                    id="rejectedCount"
+                    class="text-3xl font-bold text-red-600"
+                  >
+                    1
+                  </h2>
+                  <p class="text-sm text-slate-500">Rejected this month</p>
+                </div>
+              </div>
+
+              <!-- hour taken -->
+              <div
+                class="flex items-center gap-4 rounded-3xl bg-white p-5 shadow-sm"
+              >
+                <div
+                  class="flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl bg-blue-100 text-blue-600"
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    class="h-7 w-7"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M12 8v5l3 2M9 2h6M12 5v3M19.07 6.93l1.41-1.41M12 22a8 8 0 100-16 8 8 0 000 16z"
+                    />
+                  </svg>
+                </div>
+
+                <div>
+                  <p class="text-sm text-slate-500">Total Hours</p>
+                  <h2
+                    id="totalHoursCount"
+                    class="text-3xl font-bold text-blue-600"
+                  >
+                    31h 30m
+                  </h2>
+                  <p class="text-sm text-slate-500">
+                    this month's accumulation
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <div class="grid gap-6 lg:grid-cols-11">
+              <!-- ================= LEFT : permission ================= -->
+              <div class="rounded-3xl bg-white p-6 shadow-sm lg:col-span-6">
+                <div class="flex items-center justify-between">
+                  <div>
+                    <h3 class="mt-1 text-xl font-semibold text-slate-800">
+                      Permission Today's
+                    </h3>
+                    <p class="text-sm text-slate-500">
+                      Permission Timeline for today
+                    </p>
+                  </div>
+
+                  <!-- Tambahan opsional: Penanda jumlah permission hari ini -->
+                  <span
+                    id="todayPermissionCount"
+                    class="rounded-full bg-indigo-100 px-3 py-1 text-xs font-medium text-indigo-700"
+                  >
+                    0 Today
+                  </span>
+                </div>
+
+                <!-- Container tempat data JS di-render -->
+                <div
+                  id="upcomingPermissionList"
+                  class="mt-6 space-y-3 max-h-[420px] overflow-y-auto pr-1"
+                >
+                  <!-- Data dari JS akan muncul di sini secara otomatis -->
+                </div>
+              </div>
+
+              <!-- ================= RIGHT : team permission ================= -->
+              <div class="rounded-3xl bg-white p-6 shadow-sm lg:col-span-5">
+                <div class="flex items-center justify-between">
+                  <div>
+                    <h3 class="mt-1 text-xl font-semibold text-slate-800">
+                      On Permission Team
+                    </h3>
+                    <p class="text-sm text-slate-500">
+                      Team members on permission / WFH today
+                    </p>
+                  </div>
+
+                  <span
+                    id="teamPermissionCount"
+                    class="rounded-full bg-amber-100 px-3 py-1 text-xs font-medium text-amber-700"
+                  >
+                    0 Members
+                  </span>
+                </div>
+
+                <div id="teamPermissionList" class="mt-6 rounded-2xl border border-dashed border-slate-200 p-6 text-center text-sm text-slate-500">
+                  No team members assigned yet. Your team will appear here once assigned by your administrator.
+                </div>
+              </div>
+            </div>
+
+            <!-- bottom content -->
+            <div class="rounded-3xl bg-white p-5 shadow-sm">
+              <div class="flex flex-col gap-4 xl:flex-row xl:items-end">
+                <!-- Search -->
+                <div class="flex-1">
+                  <label
+                    for="searchPermission"
+                    class="mb-2 block text-sm font-medium text-slate-700"
+                  >
+                    Search
+                  </label>
+
+                  <input
+                    id="searchPermission"
+                    type="text"
+                    placeholder="Search by permission type, reason..."
+                    class="w-full rounded-xl border border-slate-200 px-4 py-2.5 text-sm outline-none transition focus:border-indigo-500 focus:ring-4 focus:ring-indigo-100"
+                  />
+                </div>
+
+                <!-- Leave Type -->
+                <div class="min-w-[200px]">
+                  <label
+                    for="filterType"
+                    class="mb-2 block text-sm font-medium text-slate-700"
+                  >
+                    Permission Type
+                  </label>
+
+                  <select
+                    id="filterType"
+                    class="w-full rounded-xl border border-slate-200 px-4 py-2.5 text-sm outline-none transition focus:border-indigo-500 focus:ring-4 focus:ring-indigo-100"
+                  >
+                    <option value="">All Types</option>
+                    <option value="Arrive Late">Arrive late</option>
+                    <option value="Leave Early">Leave early</option>
+                    <option value="WFH">WFH</option>
+                    <option value="Pop Out">Pop out</option>
+                    <option value="Business Trip">Business Trip</option>
+                  </select>
+                </div>
+
+                <!-- Status -->
+                <div class="min-w-[180px]">
+                  <label
+                    for="filterStatus"
+                    class="mb-2 block text-sm font-medium text-slate-700"
+                  >
+                    Status
+                  </label>
+
+                  <select
+                    id="filterStatus"
+                    class="w-full rounded-xl border border-slate-200 px-4 py-2.5 text-sm outline-none transition focus:border-indigo-500 focus:ring-4 focus:ring-indigo-100"
+                  >
+                    <option value="">All Status</option>
+                    <option value="approved">Approved</option>
+                    <option value="pending">Pending</option>
+                    <option value="rejected">Rejected</option>
+                    <option value="cancelled">Cancelled</option>
+                  </select>
+                </div>
+
+                <!-- month -->
+                <div class="min-w-[150px]">
+                  <label
+                    for="filterMonth"
+                    class="mb-2 block text-sm font-medium text-slate-700"
+                  >
+                    Month
+                  </label>
+
+                  <select
+                    id="filterMonth"
+                    class="w-full rounded-xl border border-slate-200 px-4 py-2.5 text-sm outline-none transition focus:border-indigo-500 focus:ring-4 focus:ring-indigo-100"
+                  >
+                    <option value="">All Months</option>
+                    @foreach (range(1, 12) as $month)
+                      <option value="{{ $month }}">{{ \Illuminate\Support\Carbon::create()->month($month)->format('F') }}</option>
+                    @endforeach
+                  </select>
+                </div>
+
+                <!-- Reset Button -->
+                <button
+                  id="resetFilter"
+                  type="button"
+                  class="inline-flex items-center justify-center rounded-xl border border-slate-200 px-5 py-2.5 text-sm font-medium text-slate-600 transition hover:border-red-200 hover:bg-red-50 hover:text-red-600"
+                >
+                  Reset
+                </button>
+              </div>
+            </div>
+
+            <div class="rounded-3xl bg-white p-6 shadow-sm">
+              <!-- Header -->
+              <div
+                class="mb-6 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between"
+              >
+                <div>
+                  <p class="text-sm text-slate-500">History</p>
+                  <h2 class="text-2xl font-semibold text-slate-800">
+                    Permission Request History
+                  </h2>
+                </div>
+
+                <span
+                  class="inline-flex items-center rounded-full bg-slate-100 px-3 py-1 text-sm font-medium text-slate-600"
+                >
+                  Requests
+                </span>
+              </div>
+
+              <!-- Table Container -->
+              <!-- Table Wrapper (Tanpa Scroll Bar) -->
+              <div class="w-full">
+                <table class="w-full text-left text-sm">
+                  <thead
+                    class="border-b border-slate-200 text-xs font-semibold uppercase text-slate-500"
+                  >
+                    <tr>
+                      <th class="py-3 px-2">ID</th>
+                      <th class="py-3 px-2">Type</th>
+                      <th class="py-3 px-2">Date</th>
+                      <th class="py-3 px-2 hidden sm:table-cell">Time</th>
+                      <th class="py-3 px-2 hidden lg:table-cell">Duration</th>
+                      <th class="py-3 px-2 hidden md:table-cell">Reason</th>
+                      <th class="py-3 px-2">Status</th>
+                      <th class="py-3 px-2 hidden xl:table-cell">Submitted</th>
+                      <th class="py-3 px-2 text-center">Action</th>
+                    </tr>
+                  </thead>
+
+                  <tbody
+                    id="historyTableBody"
+                    class="divide-y divide-slate-100"
+                  >
+                    <!-- Data akan dirender melalui JavaScript -->
+                  </tbody>
+                </table>
+              </div>
+
+              <!-- Pagination -->
+              <div
+                class="mt-6 flex flex-col gap-3 border-t border-slate-200 pt-4 sm:flex-row sm:items-center sm:justify-between"
+              >
+                <!-- Info -->
+                <p class="text-sm text-slate-500">
+                  Showing <span id="startItem">1</span> -
+                  <span id="endItem">8</span> of
+                  <span id="totalItems">15</span> requests
+                </p>
+
+                <!-- Controls -->
+                <div class="flex items-center justify-end gap-2">
+                  <button
+                    id="prevPage"
+                    class="rounded-xl border border-slate-200 px-4 py-2 text-sm font-medium text-slate-600 transition hover:bg-slate-100 disabled:cursor-not-allowed disabled:opacity-50"
+                    disabled
+                  >
+                    ← Previous
+                  </button>
+
+                  <span
+                    id="pageIndicator"
+                    class="rounded-xl bg-slate-100 px-4 py-2 text-sm font-medium text-slate-700"
+                  >
+                    Page 1 of 2
+                  </span>
+
+                  <button
+                    id="nextPage"
+                    class="rounded-xl border border-slate-200 px-4 py-2 text-sm font-medium text-slate-600 transition hover:bg-slate-100"
+                  >
+                    Next →
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <!-- kebijakan cuti -->
+            <div
+              class="rounded-3xl bg-indigo-50 p-6 shadow-xl border border-slate-300"
+            >
+              <div class="mb-5">
+                <p class="text-sm text-slate-500">Information</p>
+                <h2 class="text-2xl font-semibold text-slate-800">
+                  Permission Policy - LEXA
+                </h2>
+              </div>
+
+              <div class="grid gap-4 md:grid-cols-2">
+                <!-- Policy 1 -->
+                <div
+                  class="flex items-start gap-4 rounded-2xl border border-slate-300 p-4"
+                >
+                  <div
+                    class="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-indigo-100 font-semibold text-indigo-600"
+                  >
+                    1
+                  </div>
+
+                  <div>
+                    <h3 class="font-semibold text-slate-800">
+                      Submit Leave in Advance
+                    </h3>
+                    <p class="mt-1 text-sm leading-6 text-slate-500">
+                      Submit annual or personal leave at least
+                      <strong>3 working days</strong>
+                      before the leave date unless it is an emergency.
+                    </p>
+                  </div>
+                </div>
+
+                <!-- Policy 2 -->
+                <div
+                  class="flex items-start gap-4 rounded-2xl border border-slate-300 p-4"
+                >
+                  <div
+                    class="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-indigo-100 font-semibold text-indigo-600"
+                  >
+                    2
+                  </div>
+
+                  <div>
+                    <h3 class="font-semibold text-slate-800">
+                      Medical Certificate
+                    </h3>
+                    <p class="mt-1 text-sm leading-6 text-slate-500">
+                      Sick leave exceeding
+                      <strong>2 consecutive days</strong> must be supported by a
+                      valid medical certificate.
+                    </p>
+                  </div>
+                </div>
+
+                <!-- Policy 3 -->
+                <div
+                  class="flex items-start gap-4 rounded-2xl border border-slate-300 p-4"
+                >
+                  <div
+                    class="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-indigo-100 font-semibold text-indigo-600"
+                  >
+                    3
+                  </div>
+
+                  <div>
+                    <h3 class="font-semibold text-slate-800">
+                      Approval Required
+                    </h3>
+                    <p class="mt-1 text-sm leading-6 text-slate-500">
+                      Leave requests are valid only after receiving approval
+                      from the employee's direct supervisor.
+                    </p>
+                  </div>
+                </div>
+
+                <!-- Policy 4 -->
+                <div
+                  class="flex items-start gap-4 rounded-2xl border border-slate-300 p-4"
+                >
+                  <div
+                    class="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-indigo-100 font-semibold text-indigo-600"
+                  >
+                    4
+                  </div>
+
+                  <div>
+                    <h3 class="font-semibold text-slate-800">Unpaid Leave</h3>
+                    <p class="mt-1 text-sm leading-6 text-slate-500">
+                      Unpaid leave is subject to management approval and company
+                      operational requirements.
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+        </main>
+      </div>
+    </div>
+
+    <!-- Modal Detail Permission -->
+    <div
+      id="permissionModal"
+      class="fixed inset-0 z-50 hidden items-center justify-center bg-black/40 p-4 backdrop-blur-sm opacity-0 transition-opacity duration-300"
+    >
+      <div
+        class="w-full max-w-md scale-95 rounded-3xl bg-white p-6 shadow-xl transition-transform duration-300"
+        id="modalContent"
+      >
+        <div
+          class="flex items-center justify-between border-b border-slate-100 pb-4"
+        >
+          <h3 class="text-lg font-semibold text-slate-800">
+            Permission Details
+          </h3>
+          <button
+            onclick="closeModal()"
+            class="rounded-xl p-2 text-slate-400 hover:bg-slate-100 hover:text-slate-600"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              class="h-5 w-5"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M6 18L18 6M6 6l12 12"
+              />
+            </svg>
+          </button>
+        </div>
+        <div class="mt-4 space-y-4" id="modalBody">
+          <!-- Konten detail dimasukkan via JS -->
+        </div>
+        <div class="mt-6 flex justify-end">
+          <button
+            onclick="closeModal()"
+            class="rounded-xl bg-slate-100 px-5 py-2 text-sm font-medium text-slate-600 hover:bg-slate-200"
+          >
+            Close
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      window.smartPermissionData = @json($permissionRequests);
+      window.smartPermissionToday = @json(today()->toDateString());
+    </script>
+    <script src="{{ asset('js/permission.js') }}"></script>
+  </body>
+</html>
