@@ -3,9 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Models\AttendanceRecord;
+use App\Models\AttendanceSetting;
 use App\Models\LeaveRequest;
 use App\Models\User;
 use App\Models\WorkSchedule;
+use App\Notifications\ActivityNotification;
+use App\Services\ActivityNotificationService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -104,8 +107,8 @@ class AttendanceController extends Controller
                 ->limit(5)
                 ->get(),
             'officeCoordinates' => $officeCoordinates,
-            'officeRadiusMeters' => config('attendance.radius_meters'),
-            'gpsWarningAccuracyMeters' => config('attendance.gps_warning_accuracy_meters'),
+            'officeRadiusMeters' => AttendanceSetting::query()->value('radius_meters') ?? config('attendance.radius_meters'),
+            'gpsWarningAccuracyMeters' => AttendanceSetting::query()->value('gps_accuracy_threshold_meters') ?? config('attendance.gps_warning_accuracy_meters'),
             'networkConfigured' => $network['network_configured'],
             'networkIpDetected' => $network['network_ip_detected'],
             'networkAllowed' => $network['network_allowed'],
@@ -352,7 +355,7 @@ class AttendanceController extends Controller
             ->with('status', 'Check Out hari ini berhasil direset. Data Check In tetap dipertahankan.');
     }
 
-    public function record(Request $request): JsonResponse
+    public function record(Request $request, ActivityNotificationService $notificationService): JsonResponse
     {
         $data = $request->validate([
             'action' => ['required', 'in:checkin,checkout'],
@@ -375,11 +378,14 @@ class AttendanceController extends Controller
             'photo.required' => 'Foto absensi wajib diambil sebelum dikirim.',
         ]);
 
+        $attendanceSettings = AttendanceSetting::query()->first();
+        $gpsRequired = $attendanceSettings?->gps_verification_required ?? true;
+        $ipRequired = $attendanceSettings?->ip_verification_required ?? true;
         $officeCoordinates = $this->officeCoordinates();
         $officeIp = $this->officeAllowedIp();
-        $radius = (float) config('attendance.radius_meters');
+        $radius = (float) ($attendanceSettings?->radius_meters ?? config('attendance.radius_meters'));
 
-        if ($officeCoordinates === null || $officeIp === null || ! is_finite($radius) || $radius <= 0) {
+        if (($gpsRequired && $officeCoordinates === null) || ($ipRequired && $officeIp === null) || ! is_finite($radius) || $radius <= 0) {
             return response()->json([
                 'success' => false,
                 'allowed' => false,
@@ -387,22 +393,24 @@ class AttendanceController extends Controller
             ], 503);
         }
 
-        $distance = $this->distanceInMeters(
+        $distance = $officeCoordinates === null ? null : $this->distanceInMeters(
             (float) $data['latitude'],
             (float) $data['longitude'],
             $officeCoordinates['latitude'],
             $officeCoordinates['longitude'],
         );
-        $gpsValid = $distance <= $radius;
+        $gpsValid = ! $gpsRequired || ($distance !== null && $distance <= $radius);
         $network = $this->networkValidation($request, $data['client_public_ip'] ?? null);
-        $networkAllowed = $network['network_allowed'];
+        $networkAllowed = ! $ipRequired || $network['network_allowed'];
         $attendanceAllowed = $gpsValid && $networkAllowed;
 
         if (! $attendanceAllowed) {
             $messages = [];
 
             if (! $gpsValid) {
-                $messages[] = 'GPS tidak valid: jarak Anda '.round($distance, 1).' meter dari kantor; batasnya '.$radius.' meter.';
+                $messages[] = $distance === null
+                    ? 'GPS tidak valid: lokasi kantor belum dikonfigurasi.'
+                    : 'GPS tidak valid: jarak Anda '.round($distance, 1).' meter dari kantor; batasnya '.$radius.' meter.';
             }
 
             if (! $networkAllowed) {
@@ -417,7 +425,7 @@ class AttendanceController extends Controller
                 'network_valid' => $networkAllowed,
                 'network_ip_detected' => $network['network_ip_detected'],
                 'network_message' => $network['failure_message'],
-                'distance_from_office' => round($distance, 2),
+                'distance_from_office' => $distance === null ? null : round($distance, 2),
                 'radius_meters' => $radius,
             ];
 
@@ -426,7 +434,7 @@ class AttendanceController extends Controller
                     (float) $data['latitude'],
                     (float) $data['longitude'],
                     (float) $data['accuracy'],
-                    $distance,
+                    $distance ?? 0.0,
                     $radius,
                     $network['request_ip'],
                     $network['detected_public_ip'],
@@ -477,7 +485,7 @@ class AttendanceController extends Controller
         $record->latitude = $data['latitude'];
         $record->longitude = $data['longitude'];
         $record->location = $data['location'] ?? null;
-        $record->distance_from_office = round($distance, 2);
+        $record->distance_from_office = $distance === null ? null : round($distance, 2);
         $record->location_accuracy = round((float) $data['accuracy'], 2);
         $record->ip_address = $network['detected_public_ip'];
         $photoPath = $request->file('photo')->store('attendance', 'local');
@@ -487,6 +495,32 @@ class AttendanceController extends Controller
             $record->check_out_photo_path = $photoPath;
         }
         $record->save();
+
+        $actionLabel = $data['action'] === 'checkin' ? 'Check-in' : 'Check-out';
+        $actionTimestamp = $data['action'] === 'checkin' ? $record->check_in_at : $record->check_out_at;
+        $notificationService->send($request->user(), new ActivityNotification(
+            title: $actionLabel.' berhasil dicatat',
+            description: $actionLabel.' tanggal '.$record->attendance_date->format('d M Y').' tersimpan pada '.$actionTimestamp?->format('H:i').' WIB.',
+            category: 'Attendance',
+            priority: 'normal',
+            requiresAction: false,
+            url: route('attendance.check-in', [], false),
+            source: 'Smart Attendance',
+            metadata: ['attendance_record_id' => $record->id, 'action' => $data['action']],
+        ));
+
+        User::query()->where('role', 'admin')->where('is_active', true)->each(function (User $admin) use ($notificationService, $request, $actionLabel, $actionTimestamp): void {
+            $notificationService->send($admin, new ActivityNotification(
+                title: $request->user()->name.' '.$actionLabel.' berhasil',
+                description: 'Tercatat pada '.$actionTimestamp?->format('d M Y H:i').' WIB.',
+                category: 'Attendance',
+                priority: 'normal',
+                requiresAction: false,
+                url: route('admin.worker-attendance.index', [], false),
+                source: 'Smart Attendance',
+                metadata: ['worker_id' => $request->user()->id, 'attendance_record_id' => $record->id, 'action' => $data['action']],
+            ));
+        });
 
         return response()->json([
             'success' => true,
@@ -500,7 +534,7 @@ class AttendanceController extends Controller
             'network_valid' => true,
             'network_ip_detected' => $network['network_ip_detected'],
             'network_message' => null,
-            'distance_from_office' => round($distance, 2),
+            'distance_from_office' => $distance === null ? null : round($distance, 2),
             'location_accuracy' => round((float) $data['accuracy'], 2),
             'attendance' => [
                 'id' => $record->id,
@@ -584,8 +618,9 @@ class AttendanceController extends Controller
     /** @return array{latitude: float, longitude: float}|null */
     private function officeCoordinates(): ?array
     {
-        $latitude = config('attendance.office.latitude');
-        $longitude = config('attendance.office.longitude');
+        $settings = AttendanceSetting::query()->first();
+        $latitude = $settings?->office_latitude ?? config('attendance.office.latitude');
+        $longitude = $settings?->office_longitude ?? config('attendance.office.longitude');
 
         if (! is_numeric($latitude) || ! is_numeric($longitude)) {
             return null;
@@ -604,7 +639,9 @@ class AttendanceController extends Controller
 
     private function officeAllowedIp(): ?string
     {
-        $ip = trim((string) config('attendance.office_allowed_ip'));
+        $settings = AttendanceSetting::query()->first();
+        $allowedIps = $settings?->allowed_ips ?? [config('attendance.office_allowed_ip')];
+        $ip = trim((string) collect($allowedIps)->first(fn ($candidate): bool => $this->isPublicIp($candidate)));
 
         return $this->isPublicIp($ip) ? $ip : null;
     }
@@ -625,6 +662,9 @@ class AttendanceController extends Controller
     {
         $requestIp = $request->ip();
         $officeIp = $this->officeAllowedIp();
+        $settings = AttendanceSetting::query()->first();
+        $allowedIps = collect($settings?->allowed_ips ?? [config('attendance.office_allowed_ip')])
+            ->filter(fn ($candidate): bool => $this->isPublicIp($candidate));
         $localEnvironment = app()->environment(['local', 'development']);
         /**
          * Browser IP is used only for local development. Production validates the
@@ -634,9 +674,8 @@ class AttendanceController extends Controller
             ? ($this->isPublicIp($clientPublicIp) ? $clientPublicIp : null)
             : ($this->isPublicIp($requestIp) ? $requestIp : null);
 
-        $networkAllowed = $officeIp !== null
-            && $detectedPublicIp !== null
-            && hash_equals($officeIp, $detectedPublicIp);
+        $networkAllowed = $detectedPublicIp !== null
+            && $allowedIps->contains(fn (string $allowedIp): bool => hash_equals($allowedIp, $detectedPublicIp));
 
         return [
             'request_ip' => $requestIp,
@@ -699,8 +738,8 @@ class AttendanceController extends Controller
             'user_latitude' => $latitude,
             'user_longitude' => $longitude,
             'gps_accuracy' => $accuracy,
-            'office_latitude' => (float) config('attendance.office.latitude'),
-            'office_longitude' => (float) config('attendance.office.longitude'),
+            'office_latitude' => (float) (AttendanceSetting::query()->value('office_latitude') ?? config('attendance.office.latitude')),
+            'office_longitude' => (float) (AttendanceSetting::query()->value('office_longitude') ?? config('attendance.office.longitude')),
             'distance_from_office' => round($distance, 2),
             'radius_meters' => $radius,
             'gps_status' => $gpsAllowed ? 'VALID' : 'INVALID',
@@ -878,7 +917,9 @@ class AttendanceController extends Controller
             ->first(fn (WorkSchedule $schedule): bool => strcasecmp($schedule->type, 'Workshift') === 0);
 
         if ($workshift !== null && $record->check_in_at !== null) {
-            $scheduledStart = Carbon::parse($date.' '.$workshift->start_time, config('app.timezone'));
+            $gracePeriodMinutes = (int) (AttendanceSetting::query()->value('late_grace_period_minutes') ?? 0);
+            $scheduledStart = Carbon::parse($date.' '.$workshift->start_time, config('app.timezone'))
+                ->addMinutes($gracePeriodMinutes);
 
             return $record->check_in_at->greaterThan($scheduledStart) ? 'late' : 'present';
         }
@@ -934,10 +975,11 @@ class AttendanceController extends Controller
             }
 
             $scheduledCheckInCount++;
+            $gracePeriodMinutes = (int) (AttendanceSetting::query()->value('late_grace_period_minutes') ?? 0);
             $scheduledStart = Carbon::parse(
                 $record->attendance_date->toDateString().' '.$workshift->start_time,
                 config('app.timezone'),
-            );
+            )->addMinutes($gracePeriodMinutes);
 
             if ($record->check_in_at->lessThanOrEqualTo($scheduledStart)) {
                 $onTimeCount++;

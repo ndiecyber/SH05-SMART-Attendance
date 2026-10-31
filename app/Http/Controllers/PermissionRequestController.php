@@ -3,6 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\PermissionRequest;
+use App\Models\User;
+use App\Notifications\ActivityNotification;
+use App\Services\ActivityNotificationService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
@@ -24,6 +27,7 @@ class PermissionRequestController extends Controller
                 'endTime' => substr((string) $permissionRequest->end_time, 0, 5),
                 'durationMinutes' => $this->durationMinutes($permissionRequest),
                 'reason' => $permissionRequest->reason,
+                'reviewNote' => $permissionRequest->review_note,
                 'status' => ucfirst(strtolower($permissionRequest->status)),
                 'submitted' => $permissionRequest->created_at?->format('d M Y H:i'),
                 'cancelUrl' => route('permissions.cancel', $permissionRequest),
@@ -37,7 +41,7 @@ class PermissionRequestController extends Controller
         return view('permissions.create');
     }
 
-    public function store(Request $request): RedirectResponse
+    public function store(Request $request, ActivityNotificationService $notificationService): RedirectResponse
     {
         $data = $request->validate([
             'permission_type' => ['required', 'in:WFH,Arrive Late,Leave Early,Pop Out,Business Trip'],
@@ -46,7 +50,31 @@ class PermissionRequestController extends Controller
             'end_time' => ['required', 'date_format:H:i', 'different:start_time'],
             'reason' => ['required', 'string', 'max:2000'],
         ]);
-        $request->user()->permissionRequests()->create($data);
+        $permissionRequest = $request->user()->permissionRequests()->create($data);
+
+        $notificationService->send($request->user(), new ActivityNotification(
+            title: 'Pengajuan permission berhasil dikirim',
+            description: $permissionRequest->permission_type.' diajukan untuk '.$permissionRequest->permission_date->format('d M Y').'.',
+            category: 'Approval',
+            priority: 'normal',
+            requiresAction: false,
+            url: route('permissions.index', [], false),
+            source: 'Permission',
+            metadata: ['permission_request_id' => $permissionRequest->id, 'status' => $permissionRequest->status],
+        ));
+
+        User::query()->where('role', 'admin')->where('is_active', true)->each(function (User $admin) use ($notificationService, $permissionRequest, $request): void {
+            $notificationService->send($admin, new ActivityNotification(
+                title: 'Pengajuan permission baru',
+                description: $request->user()->name.' mengajukan '.$permissionRequest->permission_type.'.',
+                category: 'Approval',
+                priority: 'normal',
+                requiresAction: true,
+                url: route('admin.permission-requests.index', [], false),
+                source: 'Permission',
+                metadata: ['permission_request_id' => $permissionRequest->id, 'worker_id' => $request->user()->id],
+            ));
+        });
 
         return redirect()->route('permissions.index')->with('success', 'Pengajuan izin berhasil dikirim.');
     }

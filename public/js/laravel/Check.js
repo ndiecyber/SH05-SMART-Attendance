@@ -11,45 +11,7 @@ let stream = null;
 let currentCoordinates = null;
 let currentDistanceFromOffice = null;
 
-// ==========================================
-// 1. NAVIGATION & SIDEBAR MANAGEMENT
-// ==========================================
-const sidebar = document.getElementById("sidebar");
-const sidebarOverlay = document.getElementById("sidebarOverlay");
-const openSidebar = document.getElementById("openSidebar");
-const closeSidebar = document.getElementById("closeSidebar");
-
-function showSidebar() {
-  sidebar?.classList.remove("-translate-x-full");
-  sidebarOverlay?.classList.remove("hidden");
-  document.body.classList.add("overflow-hidden");
-}
-
-function hideSidebar() {
-  sidebar?.classList.add("-translate-x-full");
-  sidebarOverlay?.classList.add("hidden");
-  document.body.classList.remove("overflow-hidden");
-}
-
-function handleResize() {
-  if (window.innerWidth >= 768) {
-    sidebarOverlay?.classList.add("hidden");
-    document.body.classList.remove("overflow-hidden");
-    sidebar?.classList.remove("-translate-x-full");
-  } else {
-    sidebar?.classList.add("-translate-x-full");
-  }
-}
-
-openSidebar?.addEventListener("click", showSidebar);
-closeSidebar?.addEventListener("click", hideSidebar);
-sidebarOverlay?.addEventListener("click", hideSidebar);
-window.addEventListener("resize", handleResize);
-
-handleResize();
-
-// ==========================================
-// 2. REAL-TIME CLOCK SYSTEM & TIMELINE AUTO-UPDATE
+// ==========================================`n// 2. REAL-TIME CLOCK SYSTEM & TIMELINE AUTO-UPDATE
 // ==========================================
 const headerTime = document.getElementById("headerTime");
 const headerDate = document.getElementById("headerDate");
@@ -421,7 +383,7 @@ const toggleCameraBtn = document.getElementById("toggleCameraBtn");
 
 async function startCamera() {
   if (!navigator.mediaDevices?.getUserMedia) {
-    alert("Camera is not supported in this browser");
+    window.LexaAlerts?.warning("Browser ini tidak mendukung akses kamera.", "Kamera tidak tersedia");
     return;
   }
 
@@ -438,7 +400,7 @@ async function startCamera() {
     if (toggleCameraBtn) toggleCameraBtn.textContent = "Turn Off Camera";
   } catch (error) {
     console.error("Camera Error:", error);
-    alert("Cannot access camera. Please ensure permissions are granted.");
+    window.LexaAlerts?.error("Akses kamera ditolak. Periksa izin kamera pada browser Anda.", "Kamera tidak dapat diakses");
   }
 }
 
@@ -523,7 +485,7 @@ function updateRecentAttendance(attendance) {
     document.getElementById("noRecentAttendance")?.remove();
     row = document.createElement("article");
     row.dataset.attendanceDate = date;
-    row.className = "flex items-center justify-between gap-3 rounded-2xl border border-slate-200 p-4";
+    row.className = "grid min-w-0 gap-3 rounded-2xl border border-slate-200 p-4 sm:grid-cols-[minmax(0,1fr)_auto_auto] sm:items-center";
     row.innerHTML = `
       <div class="min-w-0 flex-1">
         <p class="recent-weekday font-semibold text-slate-800"></p>
@@ -600,17 +562,17 @@ async function initAttendanceFlow(action) {
   try {
     await getFreshLocation();
   } catch {
-    alert(attendanceEligibility?.textContent || "GPS terbaru tidak tersedia.");
+    window.LexaAlerts?.warning(attendanceEligibility?.textContent || "GPS terbaru tidak tersedia.", "Lokasi belum tersedia");
     return;
   }
 
   if (!hasValidAttendanceLocation()) {
-    alert(attendanceEligibility?.textContent || "Attendance DENIED: GPS atau network tidak valid.");
+    window.LexaAlerts?.error(attendanceEligibility?.textContent || "GPS atau jaringan tidak memenuhi persyaratan absensi.", "Verifikasi lokasi gagal");
     return;
   }
 
   if (!stream) {
-    alert("Aktifkan kamera sebelum melakukan absensi.");
+    window.LexaAlerts?.warning("Aktifkan kamera sebelum melakukan absensi.", "Kamera belum aktif");
     return;
   }
 
@@ -762,9 +724,9 @@ confirmModalBtn?.addEventListener("click", async () => {
     updateRecentAttendance(window.todayAttendance);
     updateAttendanceStatistics(result.statistics);
   } catch (error) {
-    alert(error instanceof TypeError
+    window.LexaAlerts?.error(error instanceof TypeError
       ? "Koneksi terputus. Periksa jaringan internet lalu coba kembali."
-      : error.message || "Absensi tidak dapat disimpan.");
+      : error.message || "Absensi tidak dapat disimpan.", "Absensi gagal");
     confirmModalBtn.disabled = false;
     return;
   }
@@ -823,7 +785,7 @@ confirmModalBtn?.addEventListener("click", async () => {
   }
 
   // Pemicu Toast Sukses
-  showToast();
+  window.LexaAlerts?.success(`Presensi ${pendingAction === "checkin" ? "Check In" : "Check Out"} berhasil disimpan.`);
   pendingAction = null;
   confirmModalBtn.disabled = false;
 });
@@ -831,34 +793,3 @@ confirmModalBtn?.addEventListener("click", async () => {
 // ==========================================
 // 6. TOAST NOTIFICATION SYSTEM
 // ==========================================
-const toast = document.getElementById("toast");
-const closeToastBtn = document.getElementById("closeToastBtn");
-let toastTimer;
-
-function showToast() {
-  if (!toast) return;
-
-  clearTimeout(toastTimer);
-  toast.classList.remove("hidden");
-
-  setTimeout(() => {
-    toast.classList.remove("-translate-y-10", "opacity-0");
-    toast.classList.add("translate-y-0", "opacity-100");
-  }, 10);
-
-  toastTimer = setTimeout(hideToast, 3000);
-}
-
-function hideToast() {
-  if (!toast) return;
-
-  clearTimeout(toastTimer);
-  toast.classList.remove("translate-y-0", "opacity-100");
-  toast.classList.add("-translate-y-10", "opacity-0");
-
-  setTimeout(() => {
-    toast.classList.add("hidden");
-  }, 300);
-}
-
-closeToastBtn?.addEventListener("click", hideToast);

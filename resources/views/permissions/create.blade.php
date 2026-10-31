@@ -10,28 +10,6 @@
   <body
     class="bg-slate-100 min-h-screen py-8 px-4 flex justify-center items-start text-slate-800 font-sans"
   >
-    <!-- Popup Notifikasi (Toast Notification) -->
-    <div
-      id="toast"
-      class="fixed top-5 left-1/2 -translate-x-1/2 bg-black border border-emerald-200 text-white px-5 py-2.5 rounded-full shadow-lg flex items-center space-x-2 transition-all duration-300 opacity-0 pointer-events-none -translate-y-4 z-50"
-    >
-      <svg
-        class="w-5 h-5 text-emerald-500"
-        fill="none"
-        stroke="currentColor"
-        viewBox="0 0 24 24"
-        xmlns="http://www.w3.org/2000/svg"
-      >
-        <path
-          stroke-linecap="round"
-          stroke-linejoin="round"
-          stroke-width="2"
-          d="M5 13l4 4L19 7"
-        ></path>
-      </svg>
-      <span class="text-sm font-medium">Pengajuan izin berhasil disimpan</span>
-    </div>
-
     <!-- Container Utama -->
     <div
       class="w-full max-w-md bg-white rounded-2xl shadow-sm border border-slate-200 p-6 relative"
@@ -200,6 +178,8 @@
       </form>
     </div>
 
+    @include('components.alert-system')
+    <script src="{{ asset('js/alert-system.js') }}?v=alerts-1"></script>
     <!-- Menghubungkan JavaScript External -->
     <script src="{{ asset('js/laravel/permission-add.js') }}"></script>
   </body>

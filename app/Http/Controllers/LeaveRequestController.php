@@ -3,6 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\LeaveRequest;
+use App\Models\User;
+use App\Notifications\ActivityNotification;
+use App\Services\ActivityNotificationService;
 use Carbon\CarbonImmutable;
 use Illuminate\Database\QueryException;
 use Illuminate\Http\RedirectResponse;
@@ -64,7 +67,7 @@ class LeaveRequestController extends Controller
         return view('leave.create');
     }
 
-    public function store(Request $request): RedirectResponse
+    public function store(Request $request, ActivityNotificationService $notificationService): RedirectResponse
     {
         $data = $request->validate([
             'leave_type' => ['required', 'in:'.implode(',', self::LEAVE_TYPES)],
@@ -74,12 +77,36 @@ class LeaveRequestController extends Controller
         ]);
 
         try {
-            $request->user()->leaveRequests()->create($data);
+            $leaveRequest = $request->user()->leaveRequests()->create($data);
         } catch (QueryException $exception) {
             report($exception);
 
             return back()->withInput()->with('error', 'Pengajuan cuti gagal disimpan. Silakan coba lagi.');
         }
+
+        $notificationService->send($request->user(), new ActivityNotification(
+            title: 'Pengajuan cuti berhasil dikirim',
+            description: $leaveRequest->leave_type.' diajukan untuk '.$leaveRequest->start_date->format('d M Y').' sampai '.$leaveRequest->end_date->format('d M Y').'.',
+            category: 'Approval',
+            priority: 'normal',
+            requiresAction: false,
+            url: route('leave.index', [], false),
+            source: 'Leave Request',
+            metadata: ['leave_request_id' => $leaveRequest->id, 'status' => $leaveRequest->status],
+        ));
+
+        User::query()->where('role', 'admin')->where('is_active', true)->each(function (User $admin) use ($notificationService, $leaveRequest, $request): void {
+            $notificationService->send($admin, new ActivityNotification(
+                title: 'Pengajuan cuti baru',
+                description: $request->user()->name.' mengajukan '.$leaveRequest->leave_type.'.',
+                category: 'Approval',
+                priority: 'normal',
+                requiresAction: true,
+                url: route('admin.leave-requests.index', [], false),
+                source: 'Leave Request',
+                metadata: ['leave_request_id' => $leaveRequest->id, 'worker_id' => $request->user()->id],
+            ));
+        });
 
         return redirect()->route('leave.index')->with('success', 'Pengajuan cuti berhasil dikirim.');
     }
@@ -130,6 +157,7 @@ class LeaveRequestController extends Controller
             'reason' => $leave->reason,
             'status' => ucfirst(strtolower($leave->status)),
             'request_date' => $leave->created_at->toDateString(),
+            'review_note' => $leave->review_note,
         ];
     }
 

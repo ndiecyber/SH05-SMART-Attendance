@@ -1,37 +1,3 @@
-// Sidebar
-const sidebar = document.getElementById("sidebar");
-const sidebarOverlay = document.getElementById("sidebarOverlay");
-const openSidebar = document.getElementById("openSidebar");
-const closeSidebar = document.getElementById("closeSidebar");
-
-function showSidebar() {
-  sidebar?.classList.remove("-translate-x-full");
-  sidebarOverlay?.classList.remove("hidden");
-  document.body.classList.add("overflow-hidden");
-}
-
-function hideSidebar() {
-  sidebar?.classList.add("-translate-x-full");
-  sidebarOverlay?.classList.add("hidden");
-  document.body.classList.remove("overflow-hidden");
-}
-
-function handleResize() {
-  if (window.innerWidth >= 768) {
-    sidebar?.classList.remove("-translate-x-full");
-    sidebarOverlay?.classList.add("hidden");
-    document.body.classList.remove("overflow-hidden");
-  } else {
-    sidebar?.classList.add("-translate-x-full");
-  }
-}
-
-openSidebar?.addEventListener("click", showSidebar);
-closeSidebar?.addEventListener("click", hideSidebar);
-sidebarOverlay?.addEventListener("click", hideSidebar);
-window.addEventListener("resize", handleResize);
-handleResize();
-
 const headerTime = document.getElementById("headerTime");
 const headerDate = document.getElementById("headerDate");
 
@@ -126,6 +92,7 @@ function openLeaveDetails(leave) {
     ["Duration", `${leave.duration} Day${leave.duration === 1 ? "" : "s"}`],
     ["Status", leave.status],
     ["Reason", leave.reason],
+    ...(leave.review_note ? [["Admin Note", leave.review_note]] : []),
   ].forEach(([label, value]) => {
     const field = document.createElement("div");
     const fieldLabel = document.createElement("p");
@@ -146,17 +113,23 @@ function closeLeaveDetails() {
 }
 
 function openCancelLeave(leave) {
-  const modal = document.getElementById("cancelLeaveModal");
-  const form = document.getElementById("cancelLeaveForm");
-  if (!modal || !form) return;
-
-  form.action = window.leaveCancelUrlTemplate.replace("__LEAVE_REQUEST_ID__", encodeURIComponent(String(leave.id)));
-  document.getElementById("cancelLeaveSummary").textContent = `${leave.leave_type} · ${formatDate(leave.start_date)} – ${formatDate(leave.end_date)}`;
-  modal.classList.remove("hidden");
-}
-
-function closeCancelLeave() {
-  document.getElementById("cancelLeaveModal")?.classList.add("hidden");
+  window.LexaAlerts?.confirm({
+    title: "Batalkan Pengajuan Cuti?",
+    message: `Apakah Anda yakin ingin membatalkan ${leave.leave_type}?`,
+    detail: `${formatDate(leave.start_date)} – ${formatDate(leave.end_date)}. Hanya pengajuan Pending yang dapat dibatalkan.`,
+    confirmText: "Ya, Batalkan",
+    danger: true,
+    onConfirm: () => {
+      const form = document.createElement("form");
+      form.method = "POST";
+      form.action = window.leaveCancelUrlTemplate.replace("__LEAVE_REQUEST_ID__", encodeURIComponent(String(leave.id)));
+      const csrfToken = document.querySelector('meta[name="csrf-token"]')?.content;
+      if (!csrfToken) throw new Error("Token keamanan tidak tersedia. Muat ulang halaman lalu coba lagi.");
+      form.innerHTML = `<input type="hidden" name="_token" value="${escapeHtml(csrfToken)}"><input type="hidden" name="_method" value="PATCH">`;
+      document.body.append(form);
+      form.submit();
+    },
+  });
 }
 
 document.getElementById("closeModal")?.addEventListener("click", closeLeaveDetails);
@@ -164,14 +137,8 @@ document.getElementById("closeModalBtn")?.addEventListener("click", closeLeaveDe
 document.getElementById("detailModal")?.addEventListener("click", (event) => {
   if (event.target.id === "detailModal") closeLeaveDetails();
 });
-document.getElementById("closeCancelLeaveModal")?.addEventListener("click", closeCancelLeave);
-document.getElementById("dismissCancelLeave")?.addEventListener("click", closeCancelLeave);
-document.getElementById("cancelLeaveModal")?.addEventListener("click", (event) => {
-  if (event.target.id === "cancelLeaveModal") closeCancelLeave();
-});
 document.addEventListener("keydown", (event) => {
   if (event.key === "Escape") closeLeaveDetails();
-  if (event.key === "Escape") closeCancelLeave();
 });
 
 function renderLeaveHistory() {

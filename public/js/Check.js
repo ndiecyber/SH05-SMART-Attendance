@@ -186,7 +186,7 @@ const toggleCameraBtn = document.getElementById("toggleCameraBtn");
 
 async function startCamera() {
   if (!navigator.mediaDevices?.getUserMedia) {
-    alert("Camera is not supported in this browser");
+    window.LexaAlerts?.warning("Browser ini tidak mendukung akses kamera.", "Kamera tidak tersedia");
     return;
   }
 
@@ -203,7 +203,7 @@ async function startCamera() {
     if (toggleCameraBtn) toggleCameraBtn.textContent = "Turn Off Camera";
   } catch (error) {
     console.error("Camera Error:", error);
-    alert("Cannot access camera. Please ensure permissions are granted.");
+    window.LexaAlerts?.error("Akses kamera ditolak. Periksa izin kamera pada browser Anda.", "Kamera tidak dapat diakses");
   }
 }
 
@@ -257,7 +257,7 @@ function capturePhoto() {
 function initAttendanceFlow(action) {
   // Kondisi 1: Validasi Gagal (Kamera belum aktif ATAU lokasi belum terdeteksi)
   if (!stream || !isLocationActive) {
-    alert("Camera or location not yet active.");
+    window.LexaAlerts?.warning("Aktifkan kamera dan pastikan lokasi Anda tersedia sebelum melakukan absensi.", "Presensi belum siap");
     return;
   }
 

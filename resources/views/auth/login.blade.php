@@ -20,5 +20,7 @@
     </form>
     <p class="mt-5 text-sm text-slate-500">New here? <a class="font-semibold text-indigo-600" href="{{ route('register') }}">Create an account</a></p>
   </main>
+  @include('components.alert-system')
+  <script src="{{ asset('js/alert-system.js') }}?v=alerts-1"></script>
 </body>
 </html>

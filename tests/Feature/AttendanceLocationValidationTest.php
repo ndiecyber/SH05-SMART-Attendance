@@ -221,12 +221,17 @@ class AttendanceLocationValidationTest extends TestCase
             ->assertSee('id="networkStatus"', false)
             ->assertSee('window.attendanceValidation', false)
             ->assertDontSee('attendanceDebugPanel')
-            ->assertSee('grid gap-6 lg:grid-cols-[minmax(0,2fr)_minmax(0,1fr)]', false)
+            ->assertSee('md:grid-cols-2 xl:grid-cols-3', false)
+            ->assertSee('md:col-span-2 xl:col-span-2', false)
             ->assertSee('Attendance Location')
             ->assertSee('Selfie Verification')
+            ->assertSee('Attendance Statistics')
+            ->assertSee('xl:grid-cols-4', false)
+            ->assertSee('Attendance History')
+            ->assertSee('Recent Check-ins')
             ->assertSee('Attendance Timeline')
-            ->assertSee('class="rounded-3xl bg-white p-6 shadow-sm lg:col-span-2"', false)
-            ->assertSee('class="space-y-6"', false)
+            ->assertSee('class="min-w-0 rounded-3xl bg-white p-5 shadow-sm sm:p-6"', false)
+            ->assertSee('No attendance records yet.')
             ->assertSee('Break Start')
             ->assertSee('Break End');
     }
@@ -251,7 +256,7 @@ class AttendanceLocationValidationTest extends TestCase
             ->assertDontSee('X-Real-IP (untrusted):')
             ->assertSee('id="networkStatus"', false)
             ->assertSee('id="attendanceEligibility"', false)
-            ->assertSee('client-public-ip-1')
+            ->assertSee('js/laravel/Check.js', false)
             ->assertSee('Reset Check In')
             ->assertSee('Reset Check Out');
     }

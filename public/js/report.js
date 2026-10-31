@@ -1,31 +1,5 @@
 const reportData = window.smartReportData || { summary: {}, days: [] };
 
-const sidebar = document.getElementById("sidebar");
-const sidebarOverlay = document.getElementById("sidebarOverlay");
-
-function hideSidebar() {
-  sidebar?.classList.add("-translate-x-full");
-  sidebarOverlay?.classList.add("hidden");
-  document.body.classList.remove("overflow-hidden");
-}
-
-document.getElementById("openSidebar")?.addEventListener("click", () => {
-  sidebar?.classList.remove("-translate-x-full");
-  sidebarOverlay?.classList.remove("hidden");
-  document.body.classList.add("overflow-hidden");
-});
-document.getElementById("closeSidebar")?.addEventListener("click", hideSidebar);
-sidebarOverlay?.addEventListener("click", hideSidebar);
-window.addEventListener("resize", () => {
-  if (window.innerWidth >= 768) {
-    sidebarOverlay?.classList.add("hidden");
-    document.body.classList.remove("overflow-hidden");
-    sidebar?.classList.remove("-translate-x-full");
-  } else {
-    sidebar?.classList.add("-translate-x-full");
-  }
-});
-
 function updateClock() {
   const now = new Date();
   const time = document.getElementById("headerTime");

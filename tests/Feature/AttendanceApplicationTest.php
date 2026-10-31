@@ -40,7 +40,7 @@ class AttendanceApplicationTest extends TestCase
         $this->assertAuthenticatedAs($user);
     }
 
-    public function test_employee_can_create_leave_permission_and_schedule_records(): void
+    public function test_worker_can_create_leave_and_permission_requests(): void
     {
         $user = User::factory()->create();
         $this->actingAs($user);
@@ -55,10 +55,7 @@ class AttendanceApplicationTest extends TestCase
         ])->assertRedirect(route('permissions.index'));
         $this->assertDatabaseHas('permission_requests', ['user_id' => $user->id, 'permission_type' => 'WFH']);
 
-        $this->post(route('schedules.store'), [
-            'name' => 'Weekend Shift', 'schedule_date' => '2026-10-04', 'type' => 'Workshift', 'start_time' => '07:00', 'end_time' => '15:00', 'location' => 'Office A',
-        ])->assertRedirect(route('schedules.index'));
-        $this->assertDatabaseHas('work_schedules', ['user_id' => $user->id, 'location' => 'Office A']);
+        $this->get('/schedules/create')->assertNotFound();
     }
 
     public function test_invalid_leave_date_range_is_rejected(): void
@@ -84,9 +81,8 @@ class AttendanceApplicationTest extends TestCase
         $this->get(route('permissions.create'))
             ->assertOk()
             ->assertSee('action="'.route('permissions.store').'"', false);
-        $this->get(route('schedules.create'))
-            ->assertOk()
-            ->assertSee('action="'.route('schedules.store').'"', false);
+        $this->get(route('schedules.index'))->assertOk()->assertDontSee('Add Schedule');
+        $this->get('/schedules/create')->assertNotFound();
     }
 
     public function test_check_in_saves_location_time_and_photo(): void
@@ -434,7 +430,8 @@ class AttendanceApplicationTest extends TestCase
             'password' => 'password',
         ])->assertRedirect(route('dashboard'));
         $this->get(route('dashboard'))
-            ->assertSee('Welcome, Rel')
+            ->assertSee('Halo,')
+            ->assertSee('Rel')
             ->assertSee('Updated Employee');
     }
 
@@ -515,21 +512,26 @@ class AttendanceApplicationTest extends TestCase
             'permissions.index',
             'schedules.index',
             'reports.index',
+            'notifications.index',
+            'settings.index',
             'profile.edit',
         ] as $routeName) {
-            $this->get(route($routeName))
+            $response = $this->get(route($routeName));
+            $response
                 ->assertOk()
-                ->assertSee('Welcome, Rel')
+                ->assertSee('Halo,')
+                ->assertSee('Rel')
                 ->assertSee('Muhammad Farrel')
                 ->assertSee('Product Intern')
                 ->assertSee(route('profile.avatar'), false)
                 ->assertDontSee('Farrel Zaidan')
                 ->assertDontSee('pinimg.com');
+            $this->assertSame(1, substr_count($response->getContent(), 'class="global-navbar sticky'));
         }
 
         $profileResponse = $this->get(route('profile.edit'));
-        $profileResponse->assertSee('57%');
-        $this->assertSame(57, $profileResponse->viewData('profileCompleteness'));
+        $profileResponse->assertSee('33%');
+        $this->assertSame(33, $profileResponse->viewData('profileCompleteness'));
     }
 
     public function test_welcome_uses_the_full_name_when_nickname_is_empty(): void
@@ -542,7 +544,8 @@ class AttendanceApplicationTest extends TestCase
         $this->actingAs($user)
             ->get(route('dashboard'))
             ->assertOk()
-            ->assertSee('Welcome, Full Name Fallback');
+            ->assertSee('Halo,')
+            ->assertSee('Full Name Fallback');
     }
 
     public function test_profile_avatar_is_served_from_the_authenticated_users_private_storage(): void
@@ -573,7 +576,7 @@ class AttendanceApplicationTest extends TestCase
         WorkSchedule::create(['user_id' => $user->id, 'schedule_date' => '2026-10-04', 'type' => 'Workshift', 'start_time' => '07:00', 'end_time' => '15:00', 'location' => 'Office A']);
         AttendanceRecord::create(['user_id' => $user->id, 'attendance_date' => '2026-10-05', 'check_in_at' => '2026-10-05 08:00:00', 'status' => 'present']);
 
-        foreach (['attendance.index', 'attendance.check-in', 'attendance.logs', 'leave.index', 'leave.create', 'permissions.index', 'permissions.create', 'schedules.index', 'schedules.create', 'reports.index', 'profile.edit'] as $routeName) {
+        foreach (['attendance.index', 'attendance.check-in', 'attendance.logs', 'leave.index', 'leave.create', 'permissions.index', 'permissions.create', 'schedules.index', 'reports.index', 'profile.edit'] as $routeName) {
             $this->get(route($routeName))->assertOk();
         }
     }

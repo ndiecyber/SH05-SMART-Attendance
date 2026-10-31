@@ -1,41 +1,4 @@
 document.addEventListener("DOMContentLoaded", () => {
-  // ==========================================
-  // 1. SIDEBAR MOBILE
-  // ==========================================
-  const sidebar = document.getElementById("sidebar");
-  const sidebarOverlay = document.getElementById("sidebarOverlay");
-  const openSidebar = document.getElementById("openSidebar");
-  const closeSidebar = document.getElementById("closeSidebar");
-
-  function showSidebar() {
-    sidebar?.classList.remove("-translate-x-full");
-    sidebarOverlay?.classList.remove("hidden");
-    document.body.classList.add("overflow-hidden");
-  }
-
-  function hideSidebar() {
-    sidebar?.classList.add("-translate-x-full");
-    sidebarOverlay?.classList.add("hidden");
-    document.body.classList.remove("overflow-hidden");
-  }
-
-  function handleResize() {
-    if (window.innerWidth >= 768) {
-      sidebarOverlay?.classList.add("hidden");
-      document.body.classList.remove("overflow-hidden");
-      sidebar?.classList.remove("-translate-x-full");
-    } else {
-      sidebar?.classList.add("-translate-x-full");
-    }
-  }
-
-  openSidebar?.addEventListener("click", showSidebar);
-  closeSidebar?.addEventListener("click", hideSidebar);
-  sidebarOverlay?.addEventListener("click", hideSidebar);
-  window.addEventListener("resize", handleResize);
-  handleResize();
-
-  // ==========================================
   // 2. JAM & TANGGAL REALTIME
   // ==========================================
   const headerTime = document.getElementById("headerTime");

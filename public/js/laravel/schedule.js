@@ -1,37 +1,3 @@
-// Sidebar mobile
-const sidebar = document.getElementById("sidebar");
-const sidebarOverlay = document.getElementById("sidebarOverlay");
-const openSidebar = document.getElementById("openSidebar");
-const closeSidebar = document.getElementById("closeSidebar");
-
-function showSidebar() {
-  sidebar?.classList.remove("-translate-x-full");
-  sidebarOverlay?.classList.remove("hidden");
-  document.body.classList.add("overflow-hidden");
-}
-
-function hideSidebar() {
-  sidebar?.classList.add("-translate-x-full");
-  sidebarOverlay?.classList.add("hidden");
-  document.body.classList.remove("overflow-hidden");
-}
-
-function handleResize() {
-  if (window.innerWidth >= 768) {
-    sidebarOverlay?.classList.add("hidden");
-    document.body.classList.remove("overflow-hidden");
-    sidebar?.classList.remove("-translate-x-full");
-  } else {
-    sidebar?.classList.add("-translate-x-full");
-  }
-}
-
-openSidebar?.addEventListener("click", showSidebar);
-closeSidebar?.addEventListener("click", hideSidebar);
-sidebarOverlay?.addEventListener("click", hideSidebar);
-window.addEventListener("resize", handleResize);
-handleResize();
-
 const schedules = Array.isArray(window.smartSchedules) ? window.smartSchedules : [];
 const today = window.scheduleToday;
 const upcomingSchedules = Array.isArray(window.scheduleUpcoming) ? window.scheduleUpcoming : [];
@@ -80,30 +46,14 @@ document.getElementById("eventDetailModal")?.addEventListener("click", (event) =
   if (event.target.id === "eventDetailModal") closeScheduleDetails();
 });
 
-let pendingDeleteForm = null;
-
 function openDeleteSchedule(schedule, form) {
-  pendingDeleteForm = form;
-  document.getElementById("deleteScheduleName").textContent = schedule.name;
-  document.getElementById("deleteScheduleModal")?.classList.remove("opacity-0", "pointer-events-none");
+  form.dataset.confirm = `Hapus jadwal ${schedule.name} secara permanen?`;
+  form.dataset.confirmTitle = "Hapus Jadwal?";
+  form.dataset.confirmDetail = "Jadwal ini akan dihapus dari daftar dan tidak dapat dipulihkan.";
+  form.dataset.confirmTone = "danger";
+  form.dataset.confirmText = "Ya, Hapus Jadwal";
+  form.requestSubmit();
 }
-
-function closeDeleteSchedule() {
-  pendingDeleteForm = null;
-  document.getElementById("deleteScheduleModal")?.classList.add("opacity-0", "pointer-events-none");
-}
-
-document.getElementById("cancelDeleteSchedule")?.addEventListener("click", closeDeleteSchedule);
-document.getElementById("closeDeleteScheduleModal")?.addEventListener("click", closeDeleteSchedule);
-document.getElementById("deleteScheduleModal")?.addEventListener("click", (event) => {
-  if (event.target.id === "deleteScheduleModal") closeDeleteSchedule();
-});
-document.getElementById("confirmDeleteSchedule")?.addEventListener("click", () => {
-  pendingDeleteForm?.requestSubmit();
-});
-document.addEventListener("keydown", (event) => {
-  if (event.key === "Escape") closeDeleteSchedule();
-});
 
 function renderTodayTimeline() {
   const column = document.getElementById("todayOverlapCol");
@@ -263,6 +213,7 @@ function renderScheduleTable() {
       const actions = document.createElement("div");
       actions.className = "flex items-center gap-2";
 
+      if (window.scheduleCanManage) {
       const editLink = document.createElement("a");
       editLink.href = window.scheduleEditUrlTemplate.replace("__SCHEDULE_ID__", encodeURIComponent(String(schedule.id)));
       editLink.className = "inline-flex h-8 w-8 items-center justify-center rounded-lg text-indigo-600 transition hover:bg-indigo-50";
@@ -295,6 +246,7 @@ function renderScheduleTable() {
       deleteForm.append(csrfInput, methodInput, deleteButton);
       actions.append(editLink, deleteForm);
       cells[7].appendChild(actions);
+      }
 
       row.addEventListener("click", (event) => {
         if (!event.target.closest("a, button, form")) showScheduleDetails(schedule);

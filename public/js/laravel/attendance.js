@@ -1,7 +1,3 @@
-const sidebar = document.getElementById("sidebar");
-const sidebarOverlay = document.getElementById("sidebarOverlay");
-const openSidebar = document.getElementById("openSidebar");
-const closeSidebar = document.getElementById("closeSidebar");
 const attendanceCalendar = document.getElementById("attendanceCalendar");
 const calendarTitle = document.getElementById("calendarTitle");
 const prevMonthBtn = document.getElementById("prevMonth");
@@ -41,34 +37,6 @@ function parseLocalDate(dateString) {
 function formatDateKey(date) {
   return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, "0")}-${String(date.getDate()).padStart(2, "0")}`;
 }
-
-function showSidebar() {
-  sidebar?.classList.remove("-translate-x-full");
-  sidebarOverlay?.classList.remove("hidden");
-  document.body.classList.add("overflow-hidden");
-}
-
-function hideSidebar() {
-  sidebar?.classList.add("-translate-x-full");
-  sidebarOverlay?.classList.add("hidden");
-  document.body.classList.remove("overflow-hidden");
-}
-
-function handleResize() {
-  if (window.innerWidth >= 768) {
-    sidebarOverlay?.classList.add("hidden");
-    document.body.classList.remove("overflow-hidden");
-    sidebar?.classList.remove("-translate-x-full");
-  } else {
-    sidebar?.classList.add("-translate-x-full");
-  }
-}
-
-openSidebar?.addEventListener("click", showSidebar);
-closeSidebar?.addEventListener("click", hideSidebar);
-sidebarOverlay?.addEventListener("click", hideSidebar);
-window.addEventListener("resize", handleResize);
-handleResize();
 
 function updateClock() {
   const now = new Date();

@@ -27,9 +27,9 @@ class LeaveRequestControllerTest extends TestCase
 
         $this->get(route('leave.index'))
             ->assertOk()
-            ->assertSee('Cancel Leave Request?')
-            ->assertSee('Keep Request')
-            ->assertSee('Cancel Request');
+            ->assertSee('id="lexaConfirmDialog"', false)
+            ->assertSee('id="lexaToastRegion"', false)
+            ->assertDontSee('id="cancelLeaveModal"', false);
 
         $this->patch(route('leave.cancel', $leaveRequest))
             ->assertRedirect(route('leave.index'))

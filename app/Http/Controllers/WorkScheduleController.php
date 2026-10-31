@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\WorkSchedule;
+use App\Notifications\ActivityNotification;
+use App\Services\ActivityNotificationService;
 use Carbon\CarbonImmutable;
 use Illuminate\Database\QueryException;
 use Illuminate\Http\RedirectResponse;
@@ -72,22 +74,33 @@ class WorkScheduleController extends Controller
         ]);
     }
 
-    public function store(Request $request): RedirectResponse
+    public function store(Request $request, ActivityNotificationService $notificationService): RedirectResponse
     {
         $data = $this->validatedScheduleData($request);
 
         try {
-            $request->user()->schedules()->create($data);
+            $schedule = $request->user()->schedules()->create($data);
         } catch (QueryException $exception) {
             report($exception);
 
             return back()->withInput()->with('error', 'Jadwal gagal ditambahkan. Silakan coba lagi.');
         }
 
+        $notificationService->send($request->user(), new ActivityNotification(
+            title: 'Jadwal baru ditambahkan',
+            description: $schedule->name.' dijadwalkan pada '.$schedule->schedule_date->format('d M Y').' pukul '.substr($schedule->start_time, 0, 5).'.',
+            category: 'Schedule',
+            priority: 'normal',
+            requiresAction: false,
+            url: route('schedules.index', [], false),
+            source: 'Schedule',
+            metadata: ['schedule_id' => $schedule->id],
+        ));
+
         return redirect()->route('schedules.index')->with('success', 'Jadwal berhasil ditambahkan.');
     }
 
-    public function update(Request $request, WorkSchedule $schedule): RedirectResponse
+    public function update(Request $request, WorkSchedule $schedule, ActivityNotificationService $notificationService): RedirectResponse
     {
         $schedule = $this->resolveOwnedSchedule($request, $schedule);
         $data = $this->validatedScheduleData($request);
@@ -100,10 +113,21 @@ class WorkScheduleController extends Controller
             return back()->withInput()->with('error', 'Jadwal gagal diperbarui. Silakan coba lagi.');
         }
 
+        $notificationService->send($request->user(), new ActivityNotification(
+            title: 'Jadwal diperbarui',
+            description: $schedule->name.' diperbarui untuk '.$schedule->schedule_date->format('d M Y').'.',
+            category: 'Schedule',
+            priority: 'normal',
+            requiresAction: false,
+            url: route('schedules.index', [], false),
+            source: 'Schedule',
+            metadata: ['schedule_id' => $schedule->id],
+        ));
+
         return redirect()->route('schedules.index')->with('success', 'Jadwal berhasil diperbarui.');
     }
 
-    public function destroy(Request $request, WorkSchedule $schedule): RedirectResponse
+    public function destroy(Request $request, WorkSchedule $schedule, ActivityNotificationService $notificationService): RedirectResponse
     {
         $schedule = $this->resolveOwnedSchedule($request, $schedule);
 
@@ -114,6 +138,17 @@ class WorkScheduleController extends Controller
 
             return redirect()->route('schedules.index')->with('error', 'Jadwal gagal dihapus. Silakan coba lagi.');
         }
+
+        $notificationService->send($request->user(), new ActivityNotification(
+            title: 'Jadwal dihapus',
+            description: $schedule->name.' pada '.$schedule->schedule_date->format('d M Y').' telah dihapus.',
+            category: 'Schedule',
+            priority: 'normal',
+            requiresAction: false,
+            url: route('schedules.index', [], false),
+            source: 'Schedule',
+            metadata: ['schedule_id' => $schedule->id],
+        ));
 
         return redirect()->route('schedules.index')->with('success', 'Jadwal berhasil dihapus.');
     }

@@ -201,6 +201,7 @@ function openModal(id) {
       <div><p class="mb-1 text-slate-500">Type</p><span class="inline-flex rounded-full px-2.5 py-0.5 text-xs font-semibold ${badgeStyles[request.type] || "bg-slate-100 text-slate-700"}">${escapeHtml(request.type)}</span></div>
       <div><p class="mb-1 text-slate-500">Date & Time</p><p class="font-medium text-slate-800">${formatDate(request.date)}</p><p class="text-xs text-slate-500">${escapeHtml(request.startTime)} - ${escapeHtml(request.endTime)} (${durationMinutesToText(request.durationMinutes)})</p></div>
       <div class="col-span-2 rounded-xl bg-slate-50 p-3"><p class="mb-1 text-slate-500">Reason</p><p class="font-medium text-slate-800">${escapeHtml(request.reason)}</p></div>
+      ${request.reviewNote ? `<div class="col-span-2 rounded-xl bg-indigo-50 p-3"><p class="mb-1 text-indigo-600">Admin Note</p><p class="font-medium text-slate-800">${escapeHtml(request.reviewNote)}</p></div>` : ""}
       <div class="col-span-2 border-t border-slate-100 pt-3"><p class="text-xs text-slate-400">Submitted on: ${escapeHtml(request.submitted || "-")}</p></div>
     </div>
   `;
@@ -222,17 +223,29 @@ function closeModal() {
 }
 
 function submitCancellation(url, permissionType) {
-  if (!window.confirm(`Cancel your ${permissionType} permission request?`)) return;
-
-  const form = document.createElement("form");
-  form.method = "POST";
-  form.action = url;
-  form.innerHTML = `
-    <input type="hidden" name="_token" value="${escapeHtml(document.querySelector('meta[name="csrf-token"]').content)}">
-    <input type="hidden" name="_method" value="PATCH">
-  `;
-  document.body.append(form);
-  form.submit();
+  window.LexaAlerts?.confirm({
+    title: "Batalkan Pengajuan Izin?",
+    message: `Apakah Anda yakin ingin membatalkan pengajuan ${permissionType}?`,
+    detail: "Pengajuan berstatus Pending akan ditandai sebagai dibatalkan.",
+    confirmText: "Ya, Batalkan",
+    danger: true,
+  }).then((accepted) => {
+    if (!accepted) return;
+    const form = document.createElement("form");
+    form.method = "POST";
+    form.action = url;
+    const csrfToken = document.querySelector('meta[name="csrf-token"]')?.content;
+    if (!csrfToken) {
+      window.LexaAlerts?.error("Token keamanan tidak tersedia. Muat ulang halaman lalu coba lagi.");
+      return;
+    }
+    form.innerHTML = `
+      <input type="hidden" name="_token" value="${escapeHtml(csrfToken)}">
+      <input type="hidden" name="_method" value="PATCH">
+    `;
+    document.body.append(form);
+    form.submit();
+  });
 }
 
 function applyFilters() {
@@ -255,33 +268,6 @@ function applyFilters() {
 }
 
 function initializePermissionPage() {
-  const sidebar = document.getElementById("sidebar");
-  const sidebarOverlay = document.getElementById("sidebarOverlay");
-
-  function hideSidebar() {
-    sidebar?.classList.add("-translate-x-full");
-    sidebarOverlay?.classList.add("hidden");
-    document.body.classList.remove("overflow-hidden");
-  }
-
-  document.getElementById("openSidebar")?.addEventListener("click", () => {
-    sidebar?.classList.remove("-translate-x-full");
-    sidebarOverlay?.classList.remove("hidden");
-    document.body.classList.add("overflow-hidden");
-  });
-  document.getElementById("closeSidebar")?.addEventListener("click", hideSidebar);
-  sidebarOverlay?.addEventListener("click", hideSidebar);
-
-  window.addEventListener("resize", () => {
-    if (window.innerWidth >= 768) {
-      sidebarOverlay?.classList.add("hidden");
-      document.body.classList.remove("overflow-hidden");
-      sidebar?.classList.remove("-translate-x-full");
-    } else {
-      sidebar?.classList.add("-translate-x-full");
-    }
-  });
-
   updateClock();
   window.setInterval(updateClock, 1000);
   updateDashboardCards();

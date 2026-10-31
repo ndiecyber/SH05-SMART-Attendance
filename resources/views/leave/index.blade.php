@@ -1,443 +1,10 @@
-<!doctype html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Smart Attendance Dashboard - Leave Request</title>
+@extends('layouts.app')
 
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-      tailwind.config = {
-        theme: {
-          extend: {
-            fontFamily: {
-              sans: ["Inter", "sans-serif"],
-            },
-            colors: {
-              primary: {
-                50: "#eef2ff",
-                100: "#e0e7ff",
-                500: "#6366f1",
-                600: "#4f46e5",
-                700: "#4338ca",
-              },
-            },
-          },
-        },
-      };
-    </script>
+@section('title', 'Smart Attendance Dashboard - Leave Request')
 
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
-      rel="stylesheet"
-    />
-  </head>
-
-  <body class="bg-slate-100 font-sans text-slate-800">
-    <div class="min-h-screen bg-[#f5f7fb]">
-      <div class="flex min-h-screen">
-        <!-- Overlay mobile -->
-        <div
-          id="sidebarOverlay"
-          class="fixed inset-0 z-30 hidden bg-black/40 md:hidden"
-        ></div>
-
-        <!-- Sidebar -->
-        <aside
-          id="sidebar"
-          class="fixed inset-y-0 left-0 z-40 flex w-72 -translate-x-full flex-col border-r border-slate-200 bg-[#000033] shadow-xl transition-transform duration-300 md:translate-x-0"
-        >
-          <!-- Brand -->
-          <div class="flex items-center justify-between px-6 py-5">
-            <div class="flex items-center gap-3">
-              <div
-                class="flex h-15 w-20 items-center justify-center text-white shadow-lg"
-              >
-                <img
-                  src="assets/LEXA-logo.png"
-                  alt="LEXA Logo"
-                  class="h-15 w-15 rounded-full object-cover shadow-lg"
-                />
-              </div>
-              <div>
-                <p class="text-xs uppercase tracking-[0.35em] text-slate-300">
-                  LEXA
-                </p>
-                <h2
-                  class="text-sm font-semibold uppercase tracking-[0.35em] text-white"
-                >
-                  SMART ATTENDANCE
-                </h2>
-              </div>
-            </div>
-
-            <!-- Close mobile -->
-            <button
-              id="closeSidebar"
-              class="rounded-xl p-2 text-white hover:bg-white/10 md:hidden"
-              aria-label="Close menu"
-            >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                class="h-6 w-6"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-              >
-                <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="2"
-                  d="M6 18L18 6M6 6l12 12"
-                />
-              </svg>
-            </button>
-          </div>
-
-          <!-- Navigation -->
-          <nav class="mt-4 flex-1 space-y-1 px-3">
-            <a
-              href="{{ route('dashboard.index') }}"
-              class="flex items-center gap-3 rounded-2xl px-3 py-1 text-sm font-medium text-slate-200 transition hover:bg-white/10"
-            >
-              <span
-                class="flex h-8 w-8 items-center justify-center rounded-xl bg-white/10"
-              >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  class="h-4 w-4"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                >
-                  <path
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    stroke-width="2"
-                    d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001 1h6a1 1 0 001-1m-7 0h8"
-                  />
-                </svg>
-              </span>
-              Dashboard
-            </a>
-
-            <a
-              href="{{ route('attendance.check-in') }}"
-              class="flex items-center gap-3 rounded-2xl px-3 py-1 text-sm font-medium text-slate-200 transition hover:bg-white/10"
-            >
-              <span
-                class="flex h-8 w-8 items-center justify-center rounded-xl bg-white/10"
-              >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  class="h-4 w-4"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                >
-                  <path
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    stroke-width="2"
-                    d="M12 6v6l4 2m6-2a10 10 0 11-20 0 10 10 0 0120 0z"
-                  />
-                </svg>
-              </span>
-              Check-in / out
-            </a>
-
-            <a
-              href="{{ route('attendance.index') }}"
-              class="flex items-center gap-3 rounded-2xl px-3 py-1 text-sm font-medium text-slate-200 transition hover:bg-white/10"
-            >
-              <span
-                class="flex h-8 w-8 items-center justify-center rounded-xl bg-white/10"
-              >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  class="h-4 w-4"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                >
-                  <path
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    stroke-width="2"
-                    d="M9 3h6a2 2 0 012 2h1a2 2 0 012 2v12a2 2 0 01-2 2H6a2 2 0 01-2-2V7a2 2 0 012-2h1a2 2 0 012-2zm0 0a2 2 0 002 2h2a2 2 0 002-2M8 11h8M8 15h5"
-                  />
-                </svg>
-              </span>
-              Attendance
-            </a>
-
-            <a
-              href="{{ route('schedules.index') }}"
-              class="flex items-center gap-3 rounded-2xl px-3 py-1 text-sm font-medium text-slate-200 transition hover:bg-white/10"
-            >
-              <span
-                class="flex h-8 w-8 items-center justify-center rounded-xl bg-white/10"
-              >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  class="h-4 w-4"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                >
-                  <path
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    stroke-width="2"
-                    d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
-                  />
-                </svg>
-              </span>
-              Schedule
-            </a>
-
-            <a
-              href="#"
-              class="flex items-center gap-3 rounded-2xl bg-indigo-50 px-3 py-1 text-sm font-semibold text-indigo-700"
-            >
-              <span
-                class="flex h-8 w-8 items-center justify-center rounded-xl bg-indigo-100"
-              >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  class="h-4 w-4"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                >
-                  <path
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    stroke-width="2"
-                    d="M3 11L21 3L13 21L11 13L3 11Z"
-                  />
-                </svg>
-              </span>
-              Leave Request
-            </a>
-
-            <a
-              href="{{ route('permissions.index') }}"
-              class="flex items-center gap-3 rounded-2xl px-3 py-1 text-sm font-medium text-slate-200 transition hover:bg-white/10"
-            >
-              <span
-                class="flex h-8 w-8 items-center justify-center rounded-xl bg-white/10"
-              >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  class="h-4 w-4"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                >
-                  <path
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    stroke-width="2"
-                    d="M9 2h6l5 5v13a2 2 0 01-2 2H6a2 2 0 01-2-2V4a2 2 0 012-2h3zm6 0v5h5M8 11h8M8 15h8M8 19h5"
-                  />
-                </svg>
-              </span>
-              Permission
-            </a>
-
-            <a
-              href="{{ route('attendance.logs') }}"
-              class="flex items-center gap-3 rounded-2xl px-3 py-1 text-sm font-medium text-slate-200 transition hover:bg-white/10"
-            >
-              <span
-                class="flex h-8 w-8 items-center justify-center rounded-xl bg-white/10"
-              >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  class="h-4 w-4"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                >
-                  <path
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    stroke-width="2"
-                    d="M8 7h8M8 11h8M8 15h5M6 3h12a2 2 0 012 2v14l-4-2-4 2-4-2-4 2V5a2 2 0 012-2z"
-                  />
-                </svg>
-              </span>
-              Attendance Log
-            </a>
-
-            <a
-              href="{{ route('reports.index') }}"
-              class="flex items-center gap-3 rounded-2xl px-3 py-1 text-sm font-medium text-slate-200 transition hover:bg-white/10"
-            >
-              <span
-                class="flex h-8 w-8 items-center justify-center rounded-xl bg-white/10"
-              >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  class="h-4 w-4"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                >
-                  <path
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    stroke-width="2"
-                    d="M9 17v-2m3 2V7m3 10v-6M5 21h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v14a2 2 0 002 2z"
-                  />
-                </svg>
-              </span>
-              Report
-            </a>
-
-            <a
-              href="{{ route('dashboard.index') }}"
-              class="flex items-center gap-3 rounded-2xl px-3 py-1 text-sm font-medium text-slate-200 transition hover:bg-white/10"
-            >
-              <span
-                class="flex h-8 w-8 items-center justify-center rounded-xl bg-white/10"
-              >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  class="h-4 w-4"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                >
-                  <path
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    stroke-width="2"
-                    d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0a3 3 0 11-6 0"
-                  />
-                </svg>
-              </span>
-              Notification
-            </a>
-
-            <a
-              href="{{ route('profile.edit') }}"
-              class="flex items-center gap-3 rounded-2xl px-3 py-1 text-sm font-medium text-slate-200 transition hover:bg-white/10"
-            >
-              <span
-                class="flex h-8 w-8 items-center justify-center rounded-xl bg-white/10"
-              >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  class="h-4 w-4"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                >
-                  <path
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    stroke-width="2"
-                    d="M5.121 17.804A9 9 0 1118.879 6.196 9 9 0 015.121 17.804z"
-                  />
-                </svg>
-              </span>
-              Profile
-            </a>
-          </nav>
-
-          <!-- Profile card -->
-          <div class="px-3 pb-6 pt-4">
-            <div class="rounded-3xl bg-white/10 p-2 backdrop-blur">
-              <div class="flex items-center gap-3">
-                <img
-                  src="{{ route('profile.avatar', ['v' => auth()->user()->updated_at?->timestamp ?? 0]) }}"
-                  alt="Profile"
-                  class="h-10 w-10 rounded-2xl object-cover"
-                />
-                <div>
-                  <p class="font-semibold text-white">{{ auth()->user()->name }}</p>
-                  <p class="text-sm text-slate-300">{{ auth()->user()->job_title ?: '—' }}</p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </aside>
-
-        <!-- Main -->
-        <main class="flex-1 md:ml-72">
+@section('content')
           <!-- Header -->
-          <header
-            class="sticky top-0 z-20 border-b border-slate-200 bg-white/90 px-4 py-4 backdrop-blur sm:px-6"
-          >
-            <div class="flex items-center justify-between gap-3">
-              <div class="flex items-center gap-3">
-                <!-- Burger mobile -->
-                <button
-                  id="openSidebar"
-                  class="flex h-11 w-11 items-center justify-center rounded-2xl border border-slate-200 text-slate-700 hover:bg-slate-50 md:hidden"
-                  aria-label="Open menu"
-                >
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    class="h-6 w-6"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                  >
-                    <path
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                      stroke-width="2"
-                      d="M4 6h16M4 12h16M4 18h16"
-                    />
-                  </svg>
-                </button>
-
-                <div>
-                  <p class="text-xl text-slate-500">Welcome, {{ auth()->user()->nickname ?: auth()->user()->name }}</p>
-                </div>
-              </div>
-
-              <div class="flex items-center gap-3">
-                <div
-                  class="hidden rounded-2xl bg-slate-100 px-4 py-2 text-sm text-slate-600 md:block"
-                >
-                  <span id="headerTime">--:--</span>
-                </div>
-                <div
-                  class="hidden rounded-2xl bg-slate-100 px-4 py-2 text-sm text-slate-600 md:block"
-                >
-                  <span id="headerDate">--</span>
-                </div>
-
-                <button
-                  class="relative flex h-11 w-11 items-center justify-center rounded-2xl bg-indigo-600 text-white shadow-lg"
-                >
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    class="h-5 w-5"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                  >
-                    <path
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                      stroke-width="2"
-                      d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"
-                    />
-                  </svg>
-                  <span
-                    class="absolute right-2 top-2 h-2.5 w-2.5 rounded-full bg-rose-500 ring-2 ring-white"
-                  ></span>
-                </button>
-              </div>
-            </div>
-          </header>
+          
 
           <!-- Content -->
           <section class="space-y-6 p-4 sm:p-6">
@@ -458,17 +25,6 @@
                 + Request Leave
               </a>
             </div>
-
-            @if (session('success'))
-              <div class="rounded-xl border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm font-medium text-emerald-700" role="status">
-                {{ session('success') }}
-              </div>
-            @endif
-            @if (session('error'))
-              <div class="rounded-xl border border-rose-200 bg-rose-50 px-4 py-3 text-sm font-medium text-rose-700" role="alert">
-                {{ session('error') }}
-              </div>
-            @endif
 
             <!-- 4 Cards Stat Status Cuti -->
             <div class="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
@@ -823,7 +379,7 @@
                       class="rounded-xl border border-slate-200 px-4 py-2 text-sm font-medium text-slate-600 transition hover:bg-slate-100 disabled:cursor-not-allowed disabled:opacity-50"
                       disabled
                     >
-                      ← Previous
+                      â† Previous
                     </button>
 
                     <span
@@ -837,7 +393,7 @@
                       id="nextPage"
                       class="rounded-xl border border-slate-200 px-4 py-2 text-sm font-medium text-slate-600 transition hover:bg-slate-100"
                     >
-                      Next →
+                      Next â†’
                     </button>
                   </div>
                 </div>
@@ -934,11 +490,8 @@
               </div>
             </div>
           </section>
-        </main>
-      </div>
-    </div>
-
-    <!-- Modal Popup Detail Rincian Acara -->
+        
+<!-- Modal Popup Detail Rincian Acara -->
     <div
       id="detailModal"
       class="fixed inset-0 z-50 flex hidden items-center justify-center bg-black/50 p-4 backdrop-blur-sm"
@@ -988,44 +541,14 @@
       </div>
     </div>
 
-    <div
-      id="cancelLeaveModal"
-      class="fixed inset-0 z-[60] flex hidden items-center justify-center bg-black/50 p-4 backdrop-blur-sm"
-      role="dialog"
-      aria-modal="true"
-      aria-labelledby="cancelLeaveTitle"
-    >
-      <form id="cancelLeaveForm" method="POST" action="" class="w-full max-w-md rounded-3xl bg-white p-6 shadow-2xl">
-        @csrf
-        @method('PATCH')
-        <div class="flex items-start justify-between border-b border-slate-100 pb-4">
-          <div>
-            <h3 id="cancelLeaveTitle" class="text-xl font-bold text-slate-800">Cancel Leave Request?</h3>
-            <p class="mt-2 text-sm text-slate-500">Are you sure you want to cancel this pending request?</p>
-          </div>
-          <button id="closeCancelLeaveModal" type="button" class="rounded-xl p-2 text-slate-400 transition hover:bg-slate-100 hover:text-slate-600" aria-label="Close confirmation">
-            <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
-            </svg>
-          </button>
-        </div>
-        <div class="mt-4 rounded-xl bg-slate-50 px-4 py-3">
-          <p class="text-xs text-slate-400">Request</p>
-          <p id="cancelLeaveSummary" class="mt-1 break-words text-sm font-semibold text-slate-700"></p>
-        </div>
-        <div class="mt-6 flex justify-end gap-3 border-t border-slate-100 pt-4">
-          <button id="dismissCancelLeave" type="button" class="rounded-xl border border-slate-200 px-4 py-2 text-sm font-medium text-slate-600 transition hover:bg-slate-50">Keep Request</button>
-          <button type="submit" class="rounded-xl bg-rose-600 px-4 py-2 text-sm font-medium text-white transition hover:bg-rose-700">Cancel Request</button>
-        </div>
-      </form>
-    </div>
+@endsection
 
-    <script>
+@push('scripts')
+  <script>
       window.smartLeaveRequests = @json($leaveData);
       window.smartUpcomingLeaves = @json($upcomingLeaves);
       window.smartLeaveYears = @json($availableYears);
       window.leaveCancelUrlTemplate = @json(route('leave.cancel', ['leaveRequest' => '__LEAVE_REQUEST_ID__']));
     </script>
-    <script src="{{ asset('js/laravel/leave.js') }}"></script>
-  </body>
-</html>
+  <script src="{{ asset('js/laravel/leave.js') }}"></script>
+@endpush

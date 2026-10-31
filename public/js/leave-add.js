@@ -3,7 +3,6 @@ document.addEventListener("DOMContentLoaded", () => {
   const startDateInput = document.getElementById("startDate");
   const endDateInput = document.getElementById("endDate");
   const daysInput = document.getElementById("days");
-  const toast = document.getElementById("toast");
   const backBtn = document.getElementById("backBtn");
 
   // Event handler untuk tombol Kembali
@@ -39,34 +38,13 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // Event handler pengiriman form
   leaveForm.addEventListener("submit", (event) => {
-    event.preventDefault();
-
     // Skenario validasi jika tanggal selesai lebih awal dari tanggal mulai
     const start = new Date(startDateInput.value);
     const end = new Date(endDateInput.value);
     if (end < start) {
-      alert("Tanggal selesai tidak boleh lebih awal dari tanggal mulai.");
+      event.preventDefault();
+      window.LexaAlerts?.warning("Tanggal selesai tidak boleh lebih awal dari tanggal mulai.", "Periksa tanggal cuti");
       return;
     }
-
-    // Tampilkan Popup Toast
-    toast.classList.remove(
-      "opacity-0",
-      "pointer-events-none",
-      "-translate-y-4",
-    );
-    toast.classList.add("opacity-100", "translate-y-0");
-
-    // Reset isi form
-    leaveForm.reset();
-
-    // Sembunyikan toast setelah 2 detik
-    setTimeout(() => {
-      toast.classList.remove("opacity-100", "translate-y-0");
-      toast.classList.add("opacity-0", "pointer-events-none", "-translate-y-4");
-
-      // OPSIONAL: Buka komentar kode di bawah jika ingin langsung pindah halaman setelah submit
-      // window.location.href = 'halaman-tujuan.html';
-    }, 2000);
   });
 });
