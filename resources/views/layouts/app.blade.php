@@ -28,6 +28,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
     <link href="{{ asset('css/global-sidebar.css') }}?v=sidebar-4" rel="stylesheet" />
+    <link href="{{ asset('css/mobile-optimization.css') }}?v=mobile-1" rel="stylesheet" />
     @yield('head')
     @stack('head-scripts')
   </head>

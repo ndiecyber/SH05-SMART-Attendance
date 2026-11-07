@@ -575,7 +575,7 @@ function renderTable() {
     if (pageItems.length === 0) {
       tbody.innerHTML = `<tr><td colspan="8" class="text-center py-6 text-slate-400">No requests found</td></tr>`;
     } else {
-      tbody.innerHTML = pageItems
+       tbody.innerHTML = pageItems
         .map((item) => {
           let badgeClass = "bg-slate-100 text-slate-700";
           if (item.status === "Approved")
@@ -594,17 +594,17 @@ function renderTable() {
 
           return `
             <tr class="hover:bg-slate-50 transition">
-              <td class="px-4 py-4 font-medium text-slate-800">${item.id}</td>
-              <td class="px-4 py-4">${item.title}</td>
-              <td class="px-4 py-4">${periodDisplay}</td>
-              <td class="px-4 py-4">${item.duration} Day${item.duration > 1 ? "s" : ""}</td>
-              <td class="px-4 py-4">${item.reason}</td>
-              <td class="px-4 py-4">
+              <td data-label="Request ID" class="px-4 py-4 font-medium text-slate-800">${item.id}</td>
+              <td data-label="Leave Type" class="px-4 py-4">${item.title}</td>
+              <td data-label="Period" class="px-4 py-4">${periodDisplay}</td>
+              <td data-label="Days" class="px-4 py-4">${item.duration} Day${item.duration > 1 ? "s" : ""}</td>
+              <td data-label="Reason" class="px-4 py-4 hide-mobile">${item.reason}</td>
+              <td data-label="Status" class="px-4 py-4">
                 <span class="rounded-full px-3 py-1 text-xs font-semibold ${badgeClass}">
                   ${item.status}
                 </span>
               </td>
-              <td class="px-4 py-4">${formatter.format(new Date(item.submitted))}</td>
+              <td data-label="Submitted" class="px-4 py-4">${formatter.format(new Date(item.submitted))}</td>
               <td class="px-4 py-4">
                 <div class="flex justify-center gap-2">
                   <button

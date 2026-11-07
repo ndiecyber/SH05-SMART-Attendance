@@ -388,18 +388,18 @@ function renderTable() {
       const tr = document.createElement("tr");
       tr.className = "hover:bg-slate-50 cursor-pointer transition-colors";
       tr.innerHTML = `
-        <td class="px-4 py-4">
+        <td data-label="Time" class="px-4 py-4">
           <p class="font-medium text-slate-800">${escapeHtml(item.time)}</p>
           <p class="text-xs text-slate-500">${formatDisplayDate(item.rawDate)}</p>
         </td>
-        <td class="px-4 py-4">${getEventBadge(item.event)}</td>
-        <td class="px-4 py-4">
+        <td data-label="Event" class="px-4 py-4">${getEventBadge(item.event)}</td>
+        <td data-label="Location / Device" class="px-4 py-4">
           <p class="font-medium">${escapeHtml(item.location)}</p>
           <p class="text-xs text-slate-500">${escapeHtml(item.device)}</p>
         </td>
-        <td class="px-4 py-4">${escapeHtml(item.ip)}</td>
-        <td class="px-4 py-4">${escapeHtml(Array.isArray(item.verify) ? item.verify.join(", ") : "Not recorded")}</td>
-        <td class="px-4 py-4">${getStatusBadge(item.status)}</td>
+        <td data-label="IP Address" class="px-4 py-4">${escapeHtml(item.ip)}</td>
+        <td data-label="Verify" class="px-4 py-4">${escapeHtml(Array.isArray(item.verify) ? item.verify.join(", ") : "Not recorded")}</td>
+        <td data-label="Status" class="px-4 py-4">${getStatusBadge(item.status)}</td>
         <td class="px-4 py-4 text-center">
           <button class="rounded-lg border border-slate-200 bg-white px-3 py-1.5 text-xs font-medium text-slate-700 shadow-sm hover:bg-slate-50 hover:text-indigo-600 transition">Detail</button>
         </td>

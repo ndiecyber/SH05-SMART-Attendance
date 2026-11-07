@@ -1,0 +1,375 @@
+/* ==============================================
+   MOBILE OPTIMIZATION - LEXA Smart Attendance
+   ============================================== */
+
+/* Touch-friendly base */
+* {
+  -webkit-tap-highlight-color: rgba(99, 102, 241, 0.1);
+  -webkit-touch-callout: none;
+}
+
+/* Prevent zoom on input focus (16px minimum) */
+input,
+textarea,
+select {
+  font-size: 16px !important;
+}
+
+/* Touch target minimum 44x44px */
+button,
+a[role="button"],
+[role="button"],
+input[type="checkbox"],
+input[type="radio"],
+summary {
+  min-height: 44px;
+  min-width: 44px;
+}
+
+/* Improve tap area for small clickables */
+.btn-sm,
+.text-xs button,
+button.text-xs {
+  padding: 0.625rem 1rem;
+  min-height: 44px;
+}
+
+/* Mobile-optimized form inputs */
+@media (max-width: 640px) {
+  input[type="text"],
+  input[type="email"],
+  input[type="password"],
+  input[type="number"],
+  input[type="tel"],
+  input[type="date"],
+  input[type="time"],
+  textarea,
+  select {
+    padding: 0.875rem 1rem !important;
+    font-size: 16px !important;
+    border-radius: 0.75rem;
+  }
+
+  /* Larger select dropdown indicators */
+  select {
+    background-size: 1.25rem;
+    padding-right: 2.5rem !important;
+  }
+}
+
+/* ==============================================
+   TABLE → CARD ON MOBILE
+   ============================================== */
+
+@media (max-width: 768px) {
+  /* Hide table structure on mobile */
+  .mobile-card-table thead {
+    display: none;
+  }
+
+  .mobile-card-table tbody {
+    display: block;
+  }
+
+  .mobile-card-table tr {
+    display: block;
+    margin-bottom: 1rem;
+    border: 1px solid #e2e8f0;
+    border-radius: 1rem;
+    background: white;
+    padding: 1rem;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+  }
+
+  .mobile-card-table tr:hover {
+    background: white;
+  }
+
+  .mobile-card-table td {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    padding: 0.5rem 0 !important;
+    border: none !important;
+    text-align: left !important;
+  }
+
+  .mobile-card-table td::before {
+    content: attr(data-label);
+    font-weight: 600;
+    color: #64748b;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    flex-shrink: 0;
+    width: 40%;
+  }
+
+  .mobile-card-table td:last-child {
+    border-top: 1px solid #f1f5f9;
+    padding-top: 0.75rem !important;
+    margin-top: 0.5rem;
+    justify-content: center;
+  }
+
+  /* Action buttons in card */
+  .mobile-card-table td:last-child::before {
+    content: none;
+  }
+
+  .mobile-card-table td > div {
+    width: auto;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+}
+
+/* Tablet: keep some columns hidden */
+@media (min-width: 640px) and (max-width: 1024px) {
+  .mobile-card-table .hidden-tablet {
+    display: none;
+  }
+}
+
+/* ==============================================
+   RESPONSIVE GRID & LAYOUT
+   ============================================== */
+
+/* Prevent horizontal scroll */
+body {
+  overflow-x: hidden;
+}
+
+/* Container max-width adjustments */
+@media (max-width: 414px) {
+  .max-w-\[1600px\],
+  .mx-auto {
+    max-width: 100%;
+  }
+
+  /* Reduce card padding on small screens */
+  .rounded-3xl,
+  .rounded-2xl {
+    border-radius: 1.25rem;
+  }
+
+  .p-6 {
+    padding: 1rem;
+  }
+
+  .p-5 {
+    padding: 0.875rem;
+  }
+
+  .px-6 {
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+
+  .py-6 {
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+  }
+}
+
+/* Grid adjustments for narrow devices */
+@media (max-width: 360px) {
+  .grid-cols-2 {
+    grid-template-columns: 1fr !important;
+  }
+
+  .sm\:grid-cols-2 {
+    grid-template-columns: 1fr !important;
+  }
+}
+
+/* ==============================================
+   NAVIGATION & NAVBAR
+   ============================================== */
+
+@media (max-width: 640px) {
+  /* Reduce navbar height on very small screens */
+  .global-navbar {
+    min-height: 64px !important;
+  }
+
+  .global-navbar-inner {
+    padding-left: 0.75rem;
+    padding-right: 0.75rem;
+  }
+
+  /* Profile dropdown full width on mobile */
+  .global-profile-dropdown {
+    right: 0;
+    left: 0;
+    width: calc(100% - 2rem);
+    margin-left: 1rem;
+  }
+}
+
+/* ==============================================
+   BUTTONS & INTERACTIVE ELEMENTS
+   ============================================== */
+
+/* Improve button spacing on mobile */
+@media (max-width: 640px) {
+  /* Stack buttons vertically on very small screens */
+  .btn-group-mobile {
+    flex-direction: column;
+    width: 100%;
+  }
+
+  .btn-group-mobile > * {
+    width: 100%;
+  }
+
+  /* Ensure settings header buttons wrap and shrink */
+  .flex.flex-wrap button,
+  .flex.flex-wrap form {
+    flex-shrink: 1;
+    min-width: max-content;
+    white-space: nowrap;
+  }
+
+  /* Full-width action buttons on mobile */
+  #settingsSaveButton,
+  .settings-actions button[type="submit"],
+  form[data-confirm] button[type="submit"] {
+    min-height: 44px;
+    min-width: 44px;
+  }
+}
+
+/* ==============================================
+   MODALS & OVERLAYS
+   ============================================== */
+
+@media (max-width: 640px) {
+  /* Full-screen modals on mobile */
+  [role="dialog"],
+  .modal {
+    width: 100% !important;
+    max-width: 100% !important;
+    height: 100vh;
+    max-height: 100vh;
+    margin: 0 !important;
+    border-radius: 0 !important;
+  }
+
+  .modal-content {
+    max-height: calc(100vh - 4rem);
+    overflow-y: auto;
+  }
+}
+
+/* ==============================================
+   CHARTS & VISUALIZATIONS
+   ============================================== */
+
+@media (max-width: 640px) {
+  /* Allow horizontal scroll for charts */
+  canvas {
+    max-width: 100%;
+    height: auto !important;
+  }
+
+  /* Chart containers */
+  .h-80 {
+    height: 16rem;
+  }
+
+  /* Ensure scrollable areas don't overflow */
+  .overflow-x-auto {
+    position: relative;
+    scrollbar-width: thin;
+  }
+
+  /* Ensure tab buttons don't overflow */
+  .tab-btn {
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+
+  /* Fix grid layouts on mobile */
+  .grid.gap-6.lg\:grid-cols-3,
+  .grid.gap-6.lg\:grid-cols-2 {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Hide scrollbar but keep functionality */
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+
+/* ==============================================
+   UTILITY CLASSES
+   ============================================== */
+
+/* Hide on mobile */
+.hide-mobile {
+  display: none !important;
+}
+
+/* Show only on mobile */
+.show-mobile {
+  display: inherit !important;
+}
+
+@media (min-width: 640px) {
+  .hide-mobile {
+    display: inherit !important;
+  }
+
+  .show-mobile {
+    display: none !important;
+  }
+}
+
+/* Tablet breakpoint utilities */
+@media (max-width: 768px) {
+  .hide-tablet {
+    display: none !important;
+  }
+}
+
+/* ==============================================
+   ACCESSIBILITY
+   ============================================== */
+
+/* Focus visible for keyboard navigation */
+*:focus-visible {
+  outline: 2px solid #6366f1;
+  outline-offset: 2px;
+}
+
+/* Improve contrast on small text */
+@media (max-width: 640px) {
+  .text-slate-500,
+  .text-slate-400 {
+    color: #64748b;
+  }
+
+  .text-xs {
+    font-size: 0.8125rem;
+  }
+}
+
+/* ==============================================
+   SAFE AREAS (Notch support)
+   ============================================== */
+
+@supports (padding: env(safe-area-inset-bottom)) {
+  body {
+    padding-bottom: env(safe-area-inset-bottom);
+  }
+
+  .global-navbar {
+    padding-top: env(safe-area-inset-top);
+  }
+}

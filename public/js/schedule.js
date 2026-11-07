@@ -494,23 +494,23 @@ function renderTableRows() {
       const tr = document.createElement("tr");
       tr.className = "hover:bg-slate-50/80 cursor-pointer transition-colors";
       tr.innerHTML = `
-        <td class="whitespace-nowrap px-6 py-4">
+        <td data-label="Date" class="whitespace-nowrap px-6 py-4">
           <p class="font-medium text-slate-800">${item.dayName}</p>
           <p class="text-xs text-slate-500">${item.displayDate}</p>
         </td>
-        <td class="px-6 py-4">
+        <td data-label="Type" class="px-6 py-4">
           <span class="rounded-full ${item.bgBadge} ${item.textBadge} px-3 py-1 text-xs font-medium">
             ${item.type}
           </span>
         </td>
-        <td class="px-6 py-4">
+        <td data-label="Title" class="px-6 py-4">
           <p class="font-medium text-slate-700">${item.title}</p>
           <p class="text-xs text-slate-500">${item.subtitle}</p>
         </td>
-        <td class="whitespace-nowrap px-6 py-4 text-sm text-slate-600">${item.startTime} - ${item.endTime}</td>
-        <td class="whitespace-nowrap px-6 py-4 text-sm text-slate-600">${item.duration}</td>
-        <td class="px-6 py-4 text-sm text-slate-600">${item.location}</td>
-        <td class="px-6 py-4">
+        <td data-label="Time" class="whitespace-nowrap px-6 py-4 text-sm text-slate-600">${item.startTime} - ${item.endTime}</td>
+        <td data-label="Duration" class="whitespace-nowrap px-6 py-4 text-sm text-slate-600">${item.duration}</td>
+        <td data-label="Location" class="px-6 py-4 text-sm text-slate-600">${item.location}</td>
+        <td data-label="Status" class="px-6 py-4">
           <span class="rounded-full ${item.status === "Carried Out" ? "bg-slate-100 text-slate-600" : "bg-blue-100 text-blue-700"} px-3 py-1 text-xs font-medium">
             ${item.status}
           </span>

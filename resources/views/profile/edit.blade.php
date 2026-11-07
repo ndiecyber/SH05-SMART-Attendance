@@ -14,7 +14,7 @@
     ];
   @endphp
 
-  <section class="mx-auto max-w-[1600px] space-y-6 p-4 sm:p-6 lg:p-8">
+  <section class="mx-auto max-w-7xl space-y-6 p-3 sm:p-4 md:p-6 lg:p-8">
     <div class="flex flex-col justify-between gap-4 xl:flex-row xl:items-center">
       <div class="flex min-w-0 flex-1 items-start gap-4">
         <span class="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-blue-100 text-blue-600"><svg class="h-6 w-6" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M12 8a4 4 0 1 0 0 8 4 4 0 0 0 0-8Zm0-6v2m0 16v2m10-10h-2M4 12H2m16.95-6.95-1.4 1.4M6.45 17.55l-1.4 1.4m12.9 0-1.4-1.4m-10.1-10.1-1.4-1.4"/></svg></span>
@@ -32,7 +32,7 @@
     @if ($errors->any())
       <div role="alert" class="rounded-xl border border-rose-200 bg-rose-50 px-4 py-3 text-sm text-rose-700"><p class="font-semibold">Perubahan belum tersimpan. Periksa data berikut:</p><ul class="mt-1 list-inside list-disc">@foreach ($errors->all() as $error)<li>{{ $error }}</li>@endforeach</ul></div>
     @endif
-    <div class="grid gap-4 xl:grid-cols-[minmax(0,1.8fr)_minmax(300px,0.85fr)]">
+    <div class="grid gap-4 lg:grid-cols-[minmax(0,1.8fr)_minmax(300px,0.85fr)] xl:grid-cols-[minmax(0,1.8fr)_minmax(300px,0.85fr)]">
       <article class="flex min-w-0 flex-col gap-4 rounded-3xl border border-slate-200 bg-white p-5 shadow-sm sm:flex-row sm:items-center sm:p-6">
         <div class="relative shrink-0"><img src="{{ route('profile.avatar') }}" alt="Foto profil {{ $profileUser->name }}" class="h-20 w-20 rounded-3xl object-cover ring-1 ring-slate-200" /><span class="absolute -bottom-1 -right-2 rounded-full bg-emerald-50 px-2 py-1 text-[10px] font-bold text-emerald-700 ring-2 ring-white">Aktif</span></div>
         <div class="min-w-0 flex-1">
@@ -55,7 +55,7 @@
       </article>
     </div>
 
-    <nav class="flex gap-1 overflow-x-auto rounded-full bg-slate-100/80 p-1" aria-label="Tab pengaturan" role="tablist">
+    <nav class="flex gap-1 overflow-x-auto rounded-full bg-slate-100/80 p-1 scrollbar-hide" aria-label="Tab pengaturan" role="tablist" style="-webkit-overflow-scrolling: touch;">
       @foreach ($settingsTabs as $tab => $details)
         <button type="button" role="tab" id="settings-tab-{{ $tab }}" aria-controls="settings-panel-{{ $tab }}" aria-selected="{{ $tab === 'profile' ? 'true' : 'false' }}" data-settings-tab="{{ $tab }}" @class(['inline-flex shrink-0 items-center gap-2 rounded-full px-4 py-2.5 text-sm font-medium transition', 'bg-white text-slate-900 shadow-sm' => $tab === 'profile', 'text-slate-600 hover:text-slate-900' => $tab !== 'profile'])><svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="{{ $details['icon'] }}"/></svg>{{ $details['label'] }}</button>
       @endforeach
@@ -63,7 +63,7 @@
 
     <form id="profileSettingsForm" class="contents" method="POST" action="{{ request()->routeIs('profile.edit') ? route('profile.update') : route('settings.update') }}" enctype="multipart/form-data" data-settings-form="profile">
       @csrf @method('PUT')
-      <div id="settings-panel-profile" role="tabpanel" aria-labelledby="settings-tab-profile" data-settings-panel="profile" class="grid items-start gap-4 2xl:grid-cols-[minmax(0,1.55fr)_minmax(300px,0.8fr)_minmax(280px,0.75fr)]">
+      <div id="settings-panel-profile" role="tabpanel" aria-labelledby="settings-tab-profile" data-settings-panel="profile" class="grid items-start gap-4 lg:grid-cols-2 2xl:grid-cols-[minmax(0,1.55fr)_minmax(300px,0.8fr)_minmax(280px,0.75fr)]">
         <article id="profile-details" class="rounded-3xl border border-slate-200 bg-white p-5 shadow-sm sm:p-6">
           <div class="mb-5 flex items-center gap-3"><span class="flex h-10 w-10 items-center justify-center rounded-full bg-blue-50 text-blue-600"><svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M20 21a8 8 0 0 0-16 0m8-10a4 4 0 1 0 0-8 4 4 0 0 0 0 8Z"/></svg></span><div><h2 class="font-semibold text-slate-900">Data Pribadi</h2><p class="text-xs text-slate-500">Informasi ini muncul di laporan kehadiran dan dokumen internship.</p></div></div>
           <div class="grid gap-4 sm:grid-cols-2">

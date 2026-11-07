@@ -152,14 +152,14 @@ function renderHistoryTable() {
     tbody.innerHTML = pageRequests
       .map((request) => `
         <tr class="transition-colors hover:bg-slate-50">
-          <td class="px-2 py-3 font-medium text-slate-800">#${request.id}</td>
-          <td class="px-2 py-3"><span class="rounded-full px-2 py-0.5 text-xs font-semibold ${badgeStyles[request.type] || "bg-slate-100 text-slate-700"}">${escapeHtml(request.type)}</span></td>
-          <td class="px-2 py-3 text-xs sm:text-sm">${formatDate(request.date)}</td>
-          <td class="hidden px-2 py-3 text-xs sm:table-cell">${escapeHtml(request.startTime)} - ${escapeHtml(request.endTime)}</td>
-          <td class="hidden px-2 py-3 lg:table-cell">${durationMinutesToText(request.durationMinutes)}</td>
-          <td class="hidden max-w-[150px] truncate px-2 py-3 md:table-cell">${escapeHtml(request.reason)}</td>
-          <td class="px-2 py-3"><span class="rounded-full px-2 py-0.5 text-xs font-semibold ${statusStyles[request.status] || "bg-slate-100 text-slate-700"}">${escapeHtml(request.status)}</span></td>
-          <td class="hidden px-2 py-3 text-xs xl:table-cell">${escapeHtml(request.submitted || "-")}</td>
+          <td data-label="ID" class="px-2 py-3 font-medium text-slate-800">#${request.id}</td>
+          <td data-label="Type" class="px-2 py-3"><span class="rounded-full px-2 py-0.5 text-xs font-semibold ${badgeStyles[request.type] || "bg-slate-100 text-slate-700"}">${escapeHtml(request.type)}</span></td>
+          <td data-label="Date" class="px-2 py-3 text-xs sm:text-sm">${formatDate(request.date)}</td>
+          <td data-label="Time" class="px-2 py-3 text-xs sm:text-sm">${escapeHtml(request.startTime)} - ${escapeHtml(request.endTime)}</td>
+          <td data-label="Duration" class="px-2 py-3">${durationMinutesToText(request.durationMinutes)}</td>
+          <td data-label="Reason" class="max-w-[150px] truncate px-2 py-3">${escapeHtml(request.reason)}</td>
+          <td data-label="Status" class="px-2 py-3"><span class="rounded-full px-2 py-0.5 text-xs font-semibold ${statusStyles[request.status] || "bg-slate-100 text-slate-700"}">${escapeHtml(request.status)}</span></td>
+          <td data-label="Submitted" class="px-2 py-3 text-xs">${escapeHtml(request.submitted || "-")}</td>
           <td class="px-2 py-3 text-center"><div class="flex justify-center gap-2">
             <button type="button" data-view-id="${request.id}" class="rounded-lg bg-indigo-50 px-3 py-1 text-xs font-medium text-indigo-600 transition hover:bg-indigo-100">View</button>
             ${request.status === "Pending" ? `<button type="button" data-cancel-url="${escapeHtml(request.cancelUrl)}" data-cancel-name="${escapeHtml(request.type)}" class="rounded-lg bg-red-50 px-3 py-1 text-xs font-medium text-red-600 transition hover:bg-red-100">Cancel</button>` : ""}
